@@ -889,12 +889,23 @@ search.value.toLowerCase();
 
 bahan
 
+.map(
+(item,index)=>(
+{
+item,
+index
+}
+)
+)
+
 .filter(
 
 x=>
 
-x.nama
+x.item.nama
+
 .toLowerCase()
+
 .includes(
 keyword
 )
@@ -903,8 +914,10 @@ keyword
 
 .forEach(
 
-(item,i)=>{
+({item,index})=>{
 
+const i =
+index;
 const harga=
 
 (
