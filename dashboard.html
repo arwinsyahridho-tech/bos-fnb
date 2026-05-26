@@ -8,7 +8,7 @@
 <meta name="viewport"
 content="width=device-width,initial-scale=1">
 
-<title>Dashboard</title>
+<title>Smart Food Costing</title>
 
 <style>
 
@@ -28,49 +28,147 @@ color:white;
 
 }
 
-.header{
-
-padding:20px;
-
-background:#0f2559;
+.wrapper{
 
 display:flex;
 
-justify-content:space-between;
+height:100vh;
 
 }
 
-.container{
+.sidebar{
 
-padding:40px;
+width:280px;
+
+background:#102766;
+
+padding:30px;
+
+}
+
+.logo{
+
+font-size:34px;
+
+font-weight:bold;
+
+margin-bottom:50px;
+
+}
+
+.menu{
+
+display:flex;
+
+flex-direction:column;
+
+gap:18px;
+
+}
+
+.menu button{
+
+background:none;
+
+border:none;
+
+color:white;
+
+font-size:22px;
+
+text-align:left;
+
+cursor:pointer;
+
+padding:12px;
+
+border-radius:12px;
+
+}
+
+.menu button:hover{
+
+background:#18367d;
+
+}
+
+.main{
+
+flex:1;
+
+padding:50px;
 
 }
 
 .card{
 
-background:#0f2559;
+background:#12286b;
 
 padding:25px;
 
 border-radius:20px;
 
+width:260px;
+
 margin-top:20px;
 
 }
 
-button{
+.topbar{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.actionBtn{
 
 padding:12px 20px;
 
-border:none;
-
-border-radius:10px;
-
 background:#2563eb;
+
+border:none;
 
 color:white;
 
+border-radius:12px;
+
 cursor:pointer;
+
+}
+
+table{
+
+width:100%;
+
+margin-top:20px;
+
+border-collapse:collapse;
+
+}
+
+th{
+
+background:#12286b;
+
+padding:18px;
+
+text-align:left;
+
+}
+
+td{
+
+padding:18px;
+
+}
+
+.logout{
+
+margin-top:60px;
 
 }
 
@@ -80,13 +178,62 @@ cursor:pointer;
 
 <body>
 
-<div class="header">
+<div class="wrapper">
 
-<h2>
-🍽️ SMART FOOD COSTING
-</h2>
+<div class="sidebar">
 
-<button onclick="logout()">
+<div class="logo">
+
+🍽️ SFC
+
+</div>
+
+<div class="menu">
+
+<button id="dashboardMenu">
+
+🏠 Dashboard
+
+</button>
+
+<button id="rawMenu">
+
+📦 Raw Material
+
+</button>
+
+<button>
+
+🔒 Preparation
+
+</button>
+
+<button>
+
+🔒 Recipe
+
+</button>
+
+<button>
+
+🔒 Menu
+
+</button>
+
+<button>
+
+🔒 HPP
+
+</button>
+
+</div>
+
+<div class="logout">
+
+<button
+class="actionBtn"
+onclick="logout()"
+>
 
 Logout
 
@@ -94,21 +241,12 @@ Logout
 
 </div>
 
-<div class="container">
+</div>
 
-<div class="card">
-
-<h1>
-Dashboard
-</h1>
-
-<br>
-
-<p>
-
-Selamat datang di Smart Food Costing 🚀
-
-</p>
+<div
+class="main"
+id="content"
+>
 
 </div>
 
@@ -116,11 +254,164 @@ Selamat datang di Smart Food Costing 🚀
 
 <script>
 
+const content =
+document.getElementById(
+"content"
+);
+
+
+function loadDashboard(){
+
+content.innerHTML=`
+
+<h1>
+
+Dashboard
+
+</h1>
+
+<br>
+
+<p>
+
+Selamat datang 🚀
+
+</p>
+
+<div class="card">
+
+<div>
+
+Total Raw Material
+
+</div>
+
+<br>
+
+<h2>
+
+0
+
+</h2>
+
+</div>
+
+`;
+
+}
+
+
+function loadRawMaterial(){
+
+content.innerHTML=`
+
+<div
+class="topbar"
+>
+
+<h1>
+
+Raw Material
+
+</h1>
+
+<button
+class="actionBtn"
+onclick="openAdd()"
+>
+
++ Tambah
+
+</button>
+
+</div>
+
+<table>
+
+<tr>
+
+<th>
+
+Nama
+
+</th>
+
+<th>
+
+Unit
+
+</th>
+
+<th>
+
+Harga
+
+</th>
+
+</tr>
+
+<tr>
+
+<td>
+
+Belum ada data
+
+</td>
+
+<td>
+
+-
+
+</td>
+
+<td>
+
+-
+
+</td>
+
+</tr>
+
+</table>
+
+`;
+
+}
+
+
+function openAdd(){
+
+alert(
+"Form tambah Raw Material dibuat berikutnya 🚀"
+);
+
+}
+
+
 function logout(){
 
 window.location.href="/";
 
 }
+
+
+document
+.getElementById(
+"dashboardMenu"
+)
+.onclick=
+loadDashboard;
+
+
+document
+.getElementById(
+"rawMenu"
+)
+.onclick=
+loadRawMaterial;
+
+
+loadDashboard();
 
 </script>
 
