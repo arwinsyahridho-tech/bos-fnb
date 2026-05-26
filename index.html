@@ -4,13 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-
-<title>
-Smart Food Costing
-</title>
+<title>Smart Food Costing</title>
 
 <style>
 
@@ -116,26 +112,6 @@ margin-top:15px;
 
 }
 
-.sidebar{
-
-width:260px;
-
-background:#0f2559;
-
-padding:20px;
-
-height:100vh;
-
-}
-
-.content{
-
-padding:40px;
-
-flex:1;
-
-}
-
 </style>
 
 </head>
@@ -160,9 +136,7 @@ Phase 1 Development
 
 <br>
 
-<button
-id="openBtn"
->
+<button id="openBtn">
 
 Login
 
@@ -226,6 +200,7 @@ document
 "modal"
 );
 
+
 document
 .getElementById(
 "openBtn"
@@ -239,6 +214,7 @@ modal.style.display=
 "flex";
 
 };
+
 
 
 document
@@ -256,6 +232,7 @@ modal.style.display=
 };
 
 
+
 document
 .getElementById(
 "loginBtn"
@@ -265,98 +242,8 @@ document
 =
 ()=>{
 
-document.body.innerHTML=
-
-`
-
-<div
-style="
-display:flex;
-background:#07173a;
-color:white;
-height:100vh;
-font-family:Arial;
-"
->
-
-<div
-class="sidebar"
->
-
-<h2>
-
-🍽️ SFC
-
-</h2>
-
-<br><br>
-
-🏠 Dashboard
-
-<br><br>
-
-📦 Raw Material
-
-<br><br>
-
-🔒 Preparation
-
-<br><br>
-
-🔒 Recipe
-
-<br><br>
-
-🔒 Menu
-
-<br><br>
-
-🔒 HPP
-
-</div>
-
-
-<div
-class="content"
->
-
-<h1>
-
-Dashboard
-
-</h1>
-
-<br>
-
-<p>
-
-Selamat datang 🚀
-
-</p>
-
-<br>
-
-<div
-style="
-background:#0f2559;
-padding:20px;
-border-radius:20px;
-"
->
-
-Total Raw Material
-
-<br><br>
-
-0
-
-</div>
-
-</div>
-
-</div>
-
-`;
+window.location.href=
+"dashboard.html";
 
 };
 
