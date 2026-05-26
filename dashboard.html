@@ -1391,10 +1391,109 @@ render
 
 
 
+function tutupModal(){
+
+document
+.getElementById(
+"editModal"
+)
+
+.style.display=
+"none";
+
+}
+
+
+
+function simpanEdit(){
+
+if(
+editIndex===null
+){
+
+alert(
+"Pilih data dulu"
+);
+
+return;
+
+}
+
+
+bahan[editIndex]={
+
+nama:
+document.getElementById(
+"mNama"
+).value,
+
+merk:
+document.getElementById(
+"mMerk"
+).value,
+
+supplier:
+document.getElementById(
+"mSupplier"
+).value,
+
+kategori:
+document.getElementById(
+"mKategori"
+).value,
+
+qty:
+document.getElementById(
+"mQty"
+).value,
+
+buyUnit:
+document.getElementById(
+"mBuy"
+).value,
+
+harga:
+Number(
+document.getElementById(
+"mHarga"
+).value
+),
+
+conversion:
+Number(
+document.getElementById(
+"mConv"
+).value
+),
+
+unit:
+document.getElementById(
+"mUnit"
+).value,
+
+waste:
+document.getElementById(
+"mWaste"
+).value
+
+};
+
+
 render();
 
-</script>
-  <!-- EDIT MODAL -->
+tutupModal();
+
+alert(
+"Perubahan berhasil disimpan 🚀"
+);
+
+}
+
+
+
+render();
+
+</script>  <!-- EDIT MODAL -->
 
 <div
 id="editModal"
