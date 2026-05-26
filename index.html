@@ -1,209 +1,6 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Smart Food Costing</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-
-height:100vh;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:#07173a;
-
-font-family:Arial;
-
-color:white;
-
-}
-
-.box{
-
-text-align:center;
-
-}
-
-h1{
-
-margin-bottom:10px;
-
-}
-
-p{
-
-margin-bottom:25px;
-
-opacity:.8;
-
-}
-
-button{
-
-padding:14px 28px;
-
-border:none;
-
-border-radius:12px;
-
-background:#2563eb;
-
-color:white;
-
-cursor:pointer;
-
-font-size:16px;
-
-}
-
-.modal{
-
-display:none;
-
-position:fixed;
-
-inset:0;
-
-background:rgba(0,0,0,.5);
-
-justify-content:center;
-
-align-items:center;
-
-}
-
-.card{
-
-background:white;
-
-color:black;
-
-padding:30px;
-
-border-radius:20px;
-
-width:340px;
-
-}
-
-input{
-
-width:100%;
-
-padding:12px;
-
-margin-top:12px;
-
-border:1px solid #ddd;
-
-border-radius:10px;
-
-}
-
-.loginBtn{
-
-margin-top:15px;
-
-width:100%;
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="box">
-
-<h1>
-🍽️ SMART FOOD COSTING
-</h1>
-
-<p>
-Phase 1 Development
-</p>
-
-<button
-onclick="openLogin()"
->
-
-Login
-
-</button>
-
-</div>
-
-<div
-class="modal"
-id="modal"
->
-
-<div class="card">
-
-<h2>
-Login
-</h2>
-
-<br>
-
-<input
-id="email"
-placeholder="Email"
->
-
-<input
-id="password"
-type="password"
-placeholder="Password"
->
-
-<button
-class="loginBtn"
-onclick="login()"
->
-
-Masuk
-
-</button>
-
-<button
-class="loginBtn"
-onclick="closeLogin()"
->
-
-Tutup
-
-</button>
-
-</div>
-
-</div>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
-
-/*
-GANTI KEY SAJA
-JANGAN UBAH URL
-*/
 
 const SUPABASE_URL =
 "https://pkjmkjyylgzjvhcreucc.supabase.co";
@@ -220,12 +17,8 @@ SUPABASE_KEY
 function openLogin(){
 
 document
-.getElementById(
-"modal"
-)
-.style
-.display
-=
+.getElementById("modal")
+.style.display =
 "flex";
 
 }
@@ -233,50 +26,47 @@ document
 function closeLogin(){
 
 document
-.getElementById(
-"modal"
-)
-.style
-.display
-=
+.getElementById("modal")
+.style.display =
 "none";
 
 }
 
 async function login(){
 
-const email =
+try{
 
+const email =
 document
-.getElementById(
-"email"
-)
-.value;
+.getElementById("email")
+.value
+.trim();
 
 const password =
-
 document
-.getElementById(
-"password"
-)
+.getElementById("password")
 .value;
+
+if(!email||!password){
+
+alert(
+"Isi email & password dulu"
+);
+
+return;
+
+}
 
 const {
 error
 }
-
 =
-
 await
-
 supabase
-
 .auth
-
 .signInWithPassword({
 
 email,
-
 password
 
 });
@@ -284,31 +74,29 @@ password
 if(error){
 
 alert(
-
-"Gagal Login ❌\n\n"
-
-+
-
 error.message
-
 );
 
 }else{
 
 alert(
-
-"Login Berhasil 🚀"
-
+"Login berhasil 🚀"
 );
 
 closeLogin();
 
 }
 
+}catch(err){
+
+alert(
+"Script error:\n"
++
+err.message
+);
+
+}
+
 }
 
 </script>
-
-</body>
-
-</html>
