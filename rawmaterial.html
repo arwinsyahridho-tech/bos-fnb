@@ -69,11 +69,21 @@ height:100vh;
 
 .sidebar{
 
-width:250px;
+position:fixed;
+
+left:0;
+
+top:0;
+
+width:260px;
+
+height:100vh;
 
 background:#102766;
 
 padding:30px;
+
+overflow:auto;
 
 }
 
@@ -113,11 +123,15 @@ margin-top:40px;
 
 .main{
 
-flex:1;
+margin-left:260px;
+
+width:
+
+calc(
+100% - 260px
+);
 
 padding:40px;
-
-overflow:auto;
 
 }
 
