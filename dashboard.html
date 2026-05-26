@@ -90,7 +90,7 @@ margin-bottom:25px;
 }
 
 .section{
-
+display:none;
 background:#102766;
 
 padding:28px;
@@ -1041,24 +1041,37 @@ function editData(i){
 
 editIndex=i;
 
+// tampilkan form edit
+document
+.querySelector(
+".section"
+)
+.style.display=
+"block";
+
+// isi form
 isiForm(
 bahan[i]
 );
 
-alert(
-"✏️ Mode Edit Aktif"
-);
+// scroll ke form
+document
+.querySelector(
+".section"
+)
 
-window.scrollTo({
+.scrollIntoView({
 
-top:0,
+behavior:"smooth",
 
-behavior:"smooth"
+block:"start"
 
 });
 
-}
+// fokus ke nama
+input[0].focus();
 
+}
 
 function updateData(){
 
@@ -1164,7 +1177,12 @@ render
 );
 
 
-
+document
+.querySelector(
+".section"
+)
+.style.display=
+"none";
 render();
 
 </script>
