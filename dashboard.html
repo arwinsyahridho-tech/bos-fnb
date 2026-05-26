@@ -1041,20 +1041,154 @@ function editData(i){
 
 editIndex=i;
 
-isiForm(
-bahan[i]
-);
+const data=
+bahan[i];
 
-window.scrollTo({
 
-top:0,
+document
+.getElementById(
+"editModal"
+)
 
-behavior:"smooth"
+.style.display=
+"block";
 
-});
+
+document
+.getElementById(
+"modalContent"
+)
+
+.innerHTML=
+
+`
+
+<div class="grid">
+
+<div class="field">
+
+<label>Nama Bahan</label>
+
+<input
+id="mNama"
+value="${data.nama}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Merk</label>
+
+<input
+id="mMerk"
+value="${data.merk}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Supplier</label>
+
+<input
+id="mSupplier"
+value="${data.supplier}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Category</label>
+
+<input
+id="mKategori"
+value="${data.kategori}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Qty</label>
+
+<input
+id="mQty"
+value="${data.qty}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Buy Unit</label>
+
+<input
+id="mBuy"
+value="${data.buyUnit}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Harga</label>
+
+<input
+id="mHarga"
+value="${data.harga}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Conversion</label>
+
+<input
+id="mConv"
+value="${data.conversion}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Unit</label>
+
+<input
+id="mUnit"
+value="${data.unit}"
+>
+
+</div>
+
+
+<div class="field">
+
+<label>Waste</label>
+
+<input
+id="mWaste"
+value="${data.waste}"
+>
+
+</div>
+
+</div>
+
+`;
 
 }
-
 
 
 function updateData(){
@@ -1073,7 +1207,79 @@ return;
 
 bahan[editIndex]=
 ambilData();
+function tutupModal(){
 
+document
+.getElementById(
+"editModal"
+)
+
+.style.display=
+"none";
+
+}
+
+
+
+function simpanEdit(){
+
+if(
+editIndex===null
+){
+
+return;
+
+}
+
+
+bahan[editIndex]={
+
+nama:
+mNama.value,
+
+merk:
+mMerk.value,
+
+supplier:
+mSupplier.value,
+
+kategori:
+mKategori.value,
+
+qty:
+mQty.value,
+
+buyUnit:
+mBuy.value,
+
+harga:
+Number(
+mHarga.value
+),
+
+conversion:
+Number(
+mConv.value
+),
+
+unit:
+mUnit.value,
+
+waste:
+mWaste.value
+
+};
+
+
+render();
+
+tutupModal();
+
+alert(
+"Data berhasil diupdate 🚀"
+);
+
+}
 render();
 
 }
@@ -1128,6 +1334,83 @@ render
 render();
 
 </script>
+  <!-- EDIT MODAL -->
+
+<div
+id="editModal"
+style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+z-index:9999;
+overflow:auto;
+padding:40px;
+"
+>
+
+<div
+style="
+max-width:1100px;
+margin:auto;
+background:#102766;
+padding:30px;
+border-radius:24px;
+"
+>
+
+<div
+style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:30px;
+"
+>
+
+<h2>
+
+Edit Raw Material
+
+</h2>
+
+<button
+onclick="tutupModal()"
+class="btn"
+style="
+margin:0;
+background:#d62828;
+"
+>
+
+Tutup
+
+</button>
+
+</div>
+
+
+<div id="modalContent">
+
+</div>
+
+
+<button
+class="btn"
+style="
+margin-top:30px;
+background:#f59e0b;
+"
+onclick="simpanEdit()"
+>
+
+Simpan Perubahan
+
+</button>
+
+</div>
+
+</div>
 </body>
 
 </html>
