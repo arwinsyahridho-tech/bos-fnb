@@ -780,6 +780,238 @@ function render(){
 
 area.innerHTML="";
 
+
+if(
+bahan.length===0
+){
+
+area.innerHTML=
+
+`
+
+<div class="card">
+
+<div class="headerCard">
+
+<div>
+
+<div class="name">
+
+Belum Ada Data
+
+</div>
+
+<div class="sub">
+
+Tambah bahan untuk mulai
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+const key=
+search.value.toLowerCase();
+
+
+bahan
+
+.filter(
+
+x=>
+
+x.nama
+.toLowerCase()
+.includes(
+key
+)
+
+)
+
+.forEach(
+
+(item,i)=>{
+
+const harga=
+
+(
+item.harga
+/
+item.conversion
+)
+
+.toFixed(2);
+
+
+area.innerHTML+=`
+
+<div
+class="card"
+style="
+margin-bottom:20px;
+"
+>
+
+<div class="headerCard">
+
+<div>
+
+<div class="name">
+
+${item.nama}
+
+</div>
+
+<div class="sub">
+
+${item.kategori}
+•
+${item.merk}
+
+</div>
+
+</div>
+
+<div>
+
+Rp ${harga}
+/ ${item.unit}
+
+</div>
+
+</div>
+
+
+<div class="info">
+
+<div class="box">
+
+<div class="small">
+
+Supplier
+
+</div>
+
+<div class="big">
+
+${item.supplier}
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="small">
+
+Pembelian
+
+</div>
+
+<div class="big">
+
+${item.qty}
+${item.buyUnit}
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="small">
+
+Konversi
+
+</div>
+
+<div class="big">
+
+${item.conversion}
+${item.unit}
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<div class="small">
+
+Waste
+
+</div>
+
+<div class="big">
+
+${item.waste}%
+
+</div>
+
+</div>
+
+
+<div class="box">
+
+<button
+class="btn"
+style="
+margin:0;
+background:#f59e0b;
+width:100%;
+height:44px;
+"
+onclick="editData(${i})"
+>
+
+Edit
+
+</button>
+
+<br><br>
+
+<button
+class="btn"
+style="
+margin:0;
+background:#d62828;
+width:100%;
+height:44px;
+"
+onclick="hapusData(${i})"
+>
+
+Hapus
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+area.innerHTML="";
+
 const key=
 search.value.toLowerCase();
 
