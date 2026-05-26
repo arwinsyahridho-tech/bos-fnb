@@ -1,554 +1,120 @@
-<!DOCTYPE html>
-<html>
+<script>
 
-<head>
+const data=[];
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+function tambahBahan(){
 
-<title>SFC Dashboard</title>
+const nama=
+document.querySelector(
+'input[placeholder="Tepung Terigu"]'
+).value;
 
-<style>
+const merk=
+document.querySelector(
+'input[placeholder="Segitiga Biru"]'
+).value;
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+const kategori=
+document.querySelectorAll(
+"select"
+)[0].value;
 
-body{
-background:#07173a;
-font-family:Arial;
-color:white;
-}
+const supplier=
+document.querySelector(
+'input[placeholder="Sari Murni"]'
+).value;
 
-.wrapper{
-display:flex;
-height:100vh;
-}
+const qty=
+document.querySelector(
+'input[value="1"]'
+).value;
 
-.sidebar{
+const buyUnit=
+document.querySelectorAll(
+"select"
+)[1].value;
 
-width:250px;
+const harga=
+document.querySelector(
+'input[placeholder="12500"]'
+).value;
 
-background:#102766;
+const conversion=
+document.querySelector(
+'input[placeholder="1000"]'
+).value;
 
-padding:30px;
+const unit=
+document.querySelectorAll(
+"select"
+)[2].value;
 
-}
+const waste=
+document.querySelector(
+'input[value="5"]'
+).value;
 
-.logo{
 
-font-size:34px;
 
-font-weight:bold;
+if(
+!nama||
+!harga||
+!conversion
+){
 
-margin-bottom:45px;
+alert(
+"Lengkapi data dulu"
+);
 
-}
-
-.item{
-
-padding:16px;
-
-margin-bottom:10px;
-
-border-radius:12px;
-
-cursor:pointer;
-
-}
-
-.item:hover{
-
-background:#1a3d95;
-
-}
-
-.logout{
-
-margin-top:40px;
-
-}
-
-.main{
-
-flex:1;
-
-padding:40px;
-
-overflow:auto;
+return;
 
 }
 
-.title{
 
-font-size:44px;
 
-margin-bottom:25px;
+const hargaUnit=
 
-}
+(
+Number(harga)
+/
+Number(conversion)
+)
 
-.section{
+.toFixed(2);
 
-background:#102766;
 
-padding:28px;
 
-border-radius:22px;
+data.unshift({
 
-margin-bottom:24px;
+nama,
+merk,
+kategori,
+supplier,
+qty,
+buyUnit,
+harga,
+conversion,
+unit,
+waste,
+hargaUnit
 
-}
+});
 
-.sectionTitle{
+renderData();
 
-font-size:20px;
-
-margin-bottom:20px;
-
-opacity:.9;
-
-}
-
-.grid{
-
-display:grid;
-
-grid-template-columns:
-
-1fr 1fr;
-
-gap:18px;
+resetForm();
 
 }
 
-.grid3{
 
-display:grid;
 
-grid-template-columns:
+function renderData(){
 
-1fr 1fr 1fr;
+let html="";
 
-gap:18px;
+data.forEach(item=>{
 
-}
-
-.field{
-
-display:flex;
-
-flex-direction:column;
-
-gap:10px;
-
-}
-
-label{
-
-font-size:14px;
-
-opacity:.7;
-
-}
-
-input,
-select{
-
-height:56px;
-
-padding:0 18px;
-
-background:#0d2158;
-
-border:none;
-
-border-radius:14px;
-
-color:white;
-
-font-size:16px;
-
-}
-
-.btn{
-
-margin-top:25px;
-
-height:54px;
-
-padding:0 24px;
-
-border:none;
-
-border-radius:14px;
-
-background:#2563eb;
-
-color:white;
-
-cursor:pointer;
-
-}
-
-.search{
-
-margin:30px 0;
-
-}
-
-.search input{
-
-width:100%;
-
-}
-
-.card{
-
-background:#102766;
-
-padding:25px;
-
-border-radius:22px;
-
-}
-
-.headerCard{
-
-display:flex;
-
-justify-content:space-between;
-
-}
-
-.name{
-
-font-size:26px;
-
-font-weight:bold;
-
-}
-
-.sub{
-
-opacity:.6;
-
-margin-top:8px;
-
-}
-
-.info{
-
-display:grid;
-
-grid-template-columns:
-
-repeat(5,1fr);
-
-gap:16px;
-
-margin-top:25px;
-
-}
-
-.box{
-
-background:#0d2158;
-
-padding:18px;
-
-border-radius:14px;
-
-}
-
-.small{
-
-font-size:12px;
-
-opacity:.6;
-
-}
-
-.big{
-
-margin-top:10px;
-
-font-size:18px;
-
-}
-
-@media(max-width:900px){
-
-.sidebar{
-display:none;
-}
-
-.grid,
-.grid3,
-.info{
-
-grid-template-columns:1fr;
-
-}
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="wrapper">
-
-<div class="sidebar">
-
-<div class="logo">
-
-🍽️ SFC
-
-</div>
-
-<div class="item">
-🏠 Dashboard
-</div>
-
-<div class="item">
-📦 Raw Material
-</div>
-
-<div class="item">
-🔒 Preparation
-</div>
-
-<div class="item">
-🔒 Recipe
-</div>
-
-<div class="item">
-🔒 Menu
-</div>
-
-<div class="item">
-🔒 HPP
-</div>
-
-<div class="logout">
-
-<button class="btn">
-
-Logout
-
-</button>
-
-</div>
-
-</div>
-
-
-
-<div class="main">
-
-<div class="title">
-
-Raw Material Master
-
-</div>
-
-
-
-<!-- IDENTITAS -->
-
-<div class="section">
-
-<div class="sectionTitle">
-
-IDENTITAS BAHAN
-
-</div>
-
-<div class="grid">
-
-<div class="field">
-
-<label>Nama Bahan</label>
-
-<input
-placeholder="Tepung Terigu"
->
-
-</div>
-
-<div class="field">
-
-<label>Merk</label>
-
-<input
-placeholder="Segitiga Biru"
->
-
-</div>
-
-<div class="field">
-
-<label>Category</label>
-
-<select>
-
-<option>Bahan Kering</option>
-
-<option>Bahan Basah</option>
-
-<option>Buah</option>
-
-<option>Packaging</option>
-
-</select>
-
-</div>
-
-<div class="field">
-
-<label>Supplier</label>
-
-<input
-placeholder="Sari Murni"
->
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- PEMBELIAN -->
-
-<div class="section">
-
-<div class="sectionTitle">
-
-PEMBELIAN
-
-</div>
-
-<div class="grid3">
-
-<div class="field">
-
-<label>Qty Beli</label>
-
-<input value="1">
-
-</div>
-
-<div class="field">
-
-<label>Buy Unit</label>
-
-<select>
-
-<option>Kg</option>
-
-<option>Pack</option>
-
-<option>Liter</option>
-
-<option>Pcs</option>
-
-</select>
-
-</div>
-
-<div class="field">
-
-<label>Harga Beli</label>
-
-<input
-placeholder="12500"
->
-
-</div>
-
-</div>
-
-</div>
-
-
-
-<!-- KONVERSI -->
-
-<div class="section">
-
-<div class="sectionTitle">
-
-KONVERSI
-
-</div>
-
-<div class="grid3">
-
-<div class="field">
-
-<label>Conversion Qty</label>
-
-<input
-placeholder="1000"
->
-
-</div>
-
-<div class="field">
-
-<label>Unit Dasar</label>
-
-<select>
-
-<option>gr</option>
-
-<option>ml</option>
-
-<option>pcs</option>
-
-</select>
-
-</div>
-
-<div class="field">
-
-<label>Default Waste %</label>
-
-<input value="5">
-
-</div>
-
-</div>
-
-<button class="btn">
-
-+ Tambah Bahan
-
-</button>
-
-</div>
-
-
-
-<!-- SEARCH -->
-
-<div class="search">
-
-<input
-placeholder="Cari bahan..."
->
-
-</div>
-
-
-
-<!-- CARD -->
+html+=`
 
 <div class="card">
 
@@ -558,13 +124,15 @@ placeholder="Cari bahan..."
 
 <div class="name">
 
-Tepung Terigu
+${item.nama}
 
 </div>
 
 <div class="sub">
 
-Bahan Kering • Segitiga Biru
+${item.kategori}
+•
+${item.merk}
 
 </div>
 
@@ -572,7 +140,8 @@ Bahan Kering • Segitiga Biru
 
 <div>
 
-Rp 13 / gr
+Rp ${item.hargaUnit}
+/ ${item.unit}
 
 </div>
 
@@ -591,7 +160,7 @@ Supplier
 
 <div class="big">
 
-Sari Murni
+${item.supplier}
 
 </div>
 
@@ -608,7 +177,8 @@ Pembelian
 
 <div class="big">
 
-1 Pack
+${item.qty}
+${item.buyUnit}
 
 </div>
 
@@ -625,7 +195,8 @@ Konversi
 
 <div class="big">
 
-1000 gr
+${item.conversion}
+${item.unit}
 
 </div>
 
@@ -642,7 +213,7 @@ Waste
 
 <div class="big">
 
-5%
+${item.waste}%
 
 </div>
 
@@ -669,10 +240,52 @@ ACTIVE
 
 </div>
 
-</div>
+`;
 
-</div>
+});
 
-</body>
+document
+.getElementById(
+"dataArea"
+)
+.innerHTML=
+html;
 
-</html>
+}
+
+
+
+function resetForm(){
+
+document.querySelector(
+'input[placeholder="Tepung Terigu"]'
+).value="";
+
+document.querySelector(
+'input[placeholder="Segitiga Biru"]'
+).value="";
+
+document.querySelector(
+'input[placeholder="Sari Murni"]'
+).value="";
+
+document.querySelector(
+'input[placeholder="12500"]'
+).value="";
+
+document.querySelector(
+'input[placeholder="1000"]'
+).value="";
+
+}
+
+
+
+document
+.querySelector(
+".btn"
+)
+.onclick=
+tambahBahan;
+
+</script>
