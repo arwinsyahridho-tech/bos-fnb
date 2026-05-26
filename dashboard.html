@@ -17,137 +17,86 @@ box-sizing:border-box;
 }
 
 body{
-
 background:#07173a;
 font-family:Arial;
 color:white;
-
 }
 
 .wrapper{
-
 display:flex;
-
 height:100vh;
-
 }
 
 .sidebar{
-
 width:280px;
-
 background:#102766;
-
 padding:30px;
-
 }
 
 .logo{
-
-font-size:38px;
-
+font-size:36px;
 font-weight:bold;
-
-margin-bottom:50px;
-
+margin-bottom:40px;
 }
 
 .item{
-
 padding:16px;
-
-margin-bottom:10px;
-
 border-radius:12px;
-
+margin-bottom:10px;
 cursor:pointer;
-
+transition:.2s;
 }
 
 .item:hover{
-
 background:#1b3d91;
-
 }
 
 .main{
-
 flex:1;
-
 padding:50px;
-
 }
 
 .btn{
-
 padding:12px 20px;
-
 background:#2563eb;
-
-border:none;
-
-border-radius:10px;
-
 color:white;
-
+border:none;
+border-radius:10px;
 cursor:pointer;
-
 }
 
 .card{
-
 margin-top:20px;
-
 background:#12286b;
-
 padding:25px;
-
-border-radius:20px;
-
-width:250px;
-
+border-radius:18px;
+width:260px;
 }
 
 table{
-
 width:100%;
-
 margin-top:20px;
-
 border-collapse:collapse;
-
 }
 
 th{
-
-background:#12286b;
-
 padding:18px;
-
+background:#12286b;
 text-align:left;
-
 }
 
 td{
-
 padding:18px;
-
 }
 
 .top{
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
 }
 
 .logout{
-
-margin-top:50px;
-
+margin-top:40px;
 }
 
 </style>
@@ -166,26 +115,23 @@ margin-top:50px;
 
 </div>
 
-
 <div
 class="item"
-onclick="showDashboard()"
+id="dashboardBtn"
 >
 
 🏠 Dashboard
 
 </div>
 
-
 <div
 class="item"
-onclick="showRaw()"
+id="rawBtn"
 >
 
 📦 Raw Material
 
 </div>
-
 
 <div class="item">
 
@@ -193,13 +139,11 @@ onclick="showRaw()"
 
 </div>
 
-
 <div class="item">
 
 🔒 Recipe
 
 </div>
-
 
 <div class="item">
 
@@ -207,19 +151,17 @@ onclick="showRaw()"
 
 </div>
 
-
 <div class="item">
 
 🔒 HPP
 
 </div>
 
-
 <div class="logout">
 
 <button
 class="btn"
-onclick="logout()"
+id="logoutBtn"
 >
 
 Logout
@@ -231,14 +173,12 @@ Logout
 </div>
 
 
-
 <div
 class="main"
 id="app"
 >
 
 </div>
-
 
 </div>
 
@@ -252,7 +192,7 @@ document.getElementById(
 
 
 
-function showDashboard(){
+function dashboard(){
 
 app.innerHTML=`
 
@@ -294,13 +234,11 @@ Total Raw Material
 
 
 
-function showRaw(){
+function rawMaterial(){
 
 app.innerHTML=`
 
-<div
-class="top"
->
+<div class="top">
 
 <h1>
 
@@ -310,7 +248,7 @@ Raw Material
 
 <button
 class="btn"
-onclick="tambah()"
+id="addBtn"
 >
 
 + Tambah
@@ -319,51 +257,25 @@ onclick="tambah()"
 
 </div>
 
-
 <table>
 
 <tr>
 
-<th>
+<th>Nama</th>
 
-Nama
+<th>Unit</th>
 
-</th>
-
-<th>
-
-Unit
-
-</th>
-
-<th>
-
-Harga
-
-</th>
+<th>Harga</th>
 
 </tr>
 
-
 <tr>
 
-<td>
+<td>Belum ada data</td>
 
-Belum ada data
+<td>-</td>
 
-</td>
-
-<td>
-
--
-
-</td>
-
-<td>
-
--
-
-</td>
+<td>-</td>
 
 </tr>
 
@@ -371,11 +283,16 @@ Belum ada data
 
 `;
 
-}
+setTimeout(()=>{
 
+const btn=
+document.getElementById(
+"addBtn"
+);
 
+if(btn){
 
-function tambah(){
+btn.onclick=function(){
 
 alert(
 "Form tambah dibuat berikutnya 🚀"
@@ -383,17 +300,53 @@ alert(
 
 }
 
+}
 
-
-function logout(){
-
-window.location.href="/";
+},10);
 
 }
 
 
 
-showDashboard();
+document
+.getElementById(
+"dashboardBtn"
+)
+.addEventListener(
+"click",
+dashboard
+);
+
+
+
+document
+.getElementById(
+"rawBtn"
+)
+.addEventListener(
+"click",
+rawMaterial
+);
+
+
+
+document
+.getElementById(
+"logoutBtn"
+)
+.addEventListener(
+"click",
+function(){
+
+window.location.href=
+"/";
+
+}
+);
+
+
+
+dashboard();
 
 </script>
 
