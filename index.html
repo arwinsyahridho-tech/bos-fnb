@@ -8,8 +8,6 @@
 
 <title>Smart Food Costing</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style>
 
 *{
@@ -19,26 +17,27 @@ box-sizing:border-box;
 }
 
 body{
+
 height:100vh;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
+
 background:#07173a;
+
 font-family:Arial;
+
 color:white;
+
 }
 
 .box{
+
 text-align:center;
-}
 
-h1{
-margin-bottom:10px;
-}
-
-p{
-margin-bottom:24px;
-opacity:.8;
 }
 
 button{
@@ -54,16 +53,6 @@ background:#2563eb;
 color:white;
 
 cursor:pointer;
-
-font-size:16px;
-
-transition:.2s;
-
-}
-
-button:hover{
-
-transform:translateY(-2px);
 
 }
 
@@ -81,7 +70,9 @@ width:100%;
 
 height:100%;
 
-background:rgba(0,0,0,.5);
+background:rgba(0,0,0,.6);
+
+z-index:9999;
 
 justify-content:center;
 
@@ -111,25 +102,13 @@ padding:12px;
 
 margin-top:12px;
 
-border-radius:10px;
-
-border:1px solid #ddd;
-
 }
 
 .loginBtn{
 
 width:100%;
 
-margin-top:14px;
-
-}
-
-.loading{
-
-opacity:.7;
-
-pointer-events:none;
+margin-top:15px;
 
 }
 
@@ -145,42 +124,47 @@ pointer-events:none;
 🍽️ SMART FOOD COSTING
 </h1>
 
+<br>
+
 <p>
 Phase 1 Development
 </p>
 
-<button onclick="openLogin()">
+<br>
+
+<button id="openBtn">
+
 Login
+
 </button>
 
 </div>
 
 
 <div
-class="modal"
 id="modal"
+class="modal"
 >
 
 <div class="card">
 
-<h2>Login</h2>
+<h2>
+Login
+</h2>
+
+<br>
 
 <input
-id="email"
-type="email"
 placeholder="Email"
 >
 
 <input
-id="password"
 type="password"
 placeholder="Password"
 >
 
 <button
-id="loginBtn"
 class="loginBtn"
-onclick="login()"
 >
 
 Masuk
@@ -189,7 +173,7 @@ Masuk
 
 <button
 class="loginBtn"
-onclick="closeLogin()"
+id="closeBtn"
 >
 
 Tutup
@@ -202,183 +186,41 @@ Tutup
 
 <script>
 
-/* SUPABASE */
-
-const SUPABASE_URL =
-"https://pkjmkjyylgzjvhcreucc.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_Tq4d0o3PIAd_zh11uJa2uQ_M_zPIYFX";
-
-const supabase =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-/* AUTO LOGIN */
-
-(async()=>{
-
-const {
-
-data
-
-}
-
-=
-
-await
-
-supabase
-.auth
-.getSession();
-
-if(
-data.session
-){
-
-window.location.replace(
-"./dashboard.html"
-);
-
-}
-
-})();
-
-
-function openLogin(){
-
+const modal =
 document
 .getElementById(
 "modal"
+);
+
+document
+.getElementById(
+"openBtn"
 )
-.style
-.display
-=
+
+.addEventListener(
+"click",
+()=>{
+
+modal.style.display=
 "flex";
 
 }
-
-
-function closeLogin(){
+);
 
 document
 .getElementById(
-"modal"
+"closeBtn"
 )
-.style
-.display
-=
+
+.addEventListener(
+"click",
+()=>{
+
+modal.style.display=
 "none";
 
 }
-
-
-async function login(){
-
-const btn =
-document.getElementById(
-"loginBtn"
 );
-
-try{
-
-const email =
-document
-.getElementById(
-"email"
-)
-.value
-.trim();
-
-const password =
-document
-.getElementById(
-"password"
-)
-.value;
-
-if(
-!email||
-!password
-){
-
-alert(
-"Isi email & password"
-);
-
-return;
-
-}
-
-btn.innerText=
-"Loading...";
-
-btn.classList.add(
-"loading"
-);
-
-const {
-
-error
-
-}
-
-=
-
-await
-
-supabase
-.auth
-.signInWithPassword({
-
-email,
-
-password
-
-});
-
-
-if(error){
-
-alert(
-error.message
-);
-
-btn.innerText=
-"Masuk";
-
-btn.classList.remove(
-"loading"
-);
-
-return;
-
-}
-
-
-window.location.replace(
-"./dashboard.html"
-);
-
-}catch(e){
-
-alert(
-e.message
-);
-
-btn.innerText=
-"Masuk";
-
-btn.classList.remove(
-"loading"
-);
-
-}
-
-}
 
 </script>
 
