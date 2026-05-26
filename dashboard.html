@@ -9,7 +9,47 @@
 <title>SFC Dashboard</title>
 
 <style>
+.modal{
 
+display:none;
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+background:rgba(0,0,0,.65);
+
+z-index:999;
+
+justify-content:center;
+
+align-items:center;
+
+}
+
+.modalBox{
+
+width:900px;
+
+max-width:95%;
+
+background:#102766;
+
+padding:30px;
+
+border-radius:22px;
+
+max-height:90vh;
+
+overflow:auto;
+
+}
 *{
 margin:0;
 padding:0;
@@ -1041,21 +1081,83 @@ function editData(i){
 
 editIndex=i;
 
-isiForm(
-bahan[i]
-);
+let x=bahan[i];
 
-window.scrollTo({
+eNama.value=x.nama;
+eMerk.value=x.merk;
+eKategori.value=x.kategori;
+eSupplier.value=x.supplier;
 
-top:0,
+eQty.value=x.qty;
+eBuyUnit.value=x.buyUnit;
 
-behavior:"smooth"
+eHarga.value=x.harga;
 
-});
+eConversion.value=x.conversion;
+
+eUnit.value=x.unit;
+
+eWaste.value=x.waste;
+
+document
+.getElementById(
+"editModal"
+)
+
+.style.display=
+"flex";
 
 }
 
 
+function tutupModal(){
+
+document
+.getElementById(
+"editModal"
+)
+
+.style.display=
+"none";
+
+}
+
+
+function simpanEdit(){
+
+bahan[editIndex]={
+
+nama:eNama.value,
+
+merk:eMerk.value,
+
+kategori:eKategori.value,
+
+supplier:eSupplier.value,
+
+qty:eQty.value,
+
+buyUnit:eBuyUnit.value,
+
+harga:Number(
+eHarga.value
+),
+
+conversion:Number(
+eConversion.value
+),
+
+unit:eUnit.value,
+
+waste:eWaste.value
+
+};
+
+render();
+
+tutupModal();
+
+}
 
 function updateData(){
 
@@ -1126,7 +1228,113 @@ render
 
 
 render();
+<!-- POPUP EDIT -->
 
+<div id="editModal" class="modal">
+
+<div class="modalBox">
+
+<h2>Edit Bahan</h2>
+
+<div class="grid">
+
+<div class="field">
+<label>Nama</label>
+<input id="eNama">
+</div>
+
+<div class="field">
+<label>Merk</label>
+<input id="eMerk">
+</div>
+
+<div class="field">
+<label>Kategori</label>
+
+<select id="eKategori">
+<option>Bahan Kering</option>
+<option>Bahan Basah</option>
+<option>Buah</option>
+<option>Packaging</option>
+</select>
+
+</div>
+
+<div class="field">
+<label>Supplier</label>
+<input id="eSupplier">
+</div>
+
+<div class="field">
+<label>Qty</label>
+<input id="eQty">
+</div>
+
+<div class="field">
+<label>Buy Unit</label>
+
+<select id="eBuyUnit">
+<option>Kg</option>
+<option>Pack</option>
+<option>Liter</option>
+<option>Pcs</option>
+</select>
+
+</div>
+
+<div class="field">
+<label>Harga</label>
+<input id="eHarga">
+</div>
+
+<div class="field">
+<label>Konversi</label>
+<input id="eConversion">
+</div>
+
+<div class="field">
+<label>Unit</label>
+
+<select id="eUnit">
+<option>gr</option>
+<option>ml</option>
+<option>pcs</option>
+</select>
+
+</div>
+
+<div class="field">
+<label>Waste</label>
+<input id="eWaste">
+</div>
+
+</div>
+
+<div
+style="
+display:flex;
+gap:10px;
+margin-top:20px;
+"
+>
+
+<button class="btn" onclick="simpanEdit()">
+Simpan
+</button>
+
+<button
+class="btn"
+style="background:#d62828"
+onclick="tutupModal()"
+>
+Batal
+</button>
+
+</div>
+
+</div>
+
+</div>
 </script>
 </body>
 
