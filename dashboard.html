@@ -11,7 +11,7 @@ content="width=device-width,initial-scale=1"
 >
 
 <title>
-SFC Dashboard
+SFC
 </title>
 
 <style>
@@ -34,9 +34,9 @@ color:white;
 
 .wrapper{
 
-padding:40px;
+padding:50px;
 
-max-width:1400px;
+max-width:1500px;
 
 margin:auto;
 
@@ -44,19 +44,31 @@ margin:auto;
 
 .logo{
 
-font-size:44px;
+font-size:48px;
 
 font-weight:bold;
 
-margin-bottom:10px;
+margin-bottom:8px;
 
 }
 
-.subtitle{
+.sub{
 
 opacity:.7;
 
-margin-bottom:40px;
+margin-bottom:50px;
+
+}
+
+.section{
+
+font-size:14px;
+
+opacity:.6;
+
+margin-bottom:18px;
+
+letter-spacing:2px;
 
 }
 
@@ -69,13 +81,13 @@ grid-template-columns:
 repeat(
 auto-fit,
 minmax(
-280px,
+320px,
 1fr
 )
 
 );
 
-gap:24px;
+gap:26px;
 
 }
 
@@ -83,9 +95,9 @@ gap:24px;
 
 background:#102766;
 
-border-radius:24px;
+padding:32px;
 
-padding:30px;
+border-radius:26px;
 
 cursor:pointer;
 
@@ -96,33 +108,13 @@ transition:.25s;
 .card:hover{
 
 transform:
-translateY(-6px);
-
-background:#183a92;
+translateY(-8px);
 
 }
 
-.icon{
+.active:hover{
 
-font-size:50px;
-
-margin-bottom:20px;
-
-}
-
-.title{
-
-font-size:26px;
-
-margin-bottom:10px;
-
-}
-
-.desc{
-
-opacity:.7;
-
-line-height:1.6;
+background:#1c45aa;
 
 }
 
@@ -134,33 +126,61 @@ cursor:not-allowed;
 
 }
 
-.header{
+.icon{
 
-display:flex;
+font-size:52px;
 
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:40px;
+margin-bottom:20px;
 
 }
 
-.btn{
+.title{
 
-height:54px;
+font-size:30px;
 
-padding:0 28px;
+margin-bottom:10px;
 
-border:none;
+}
 
-border-radius:14px;
+.desc{
 
-background:#2563eb;
+opacity:.7;
 
-color:white;
+line-height:1.7;
 
-cursor:pointer;
+}
+
+.badge{
+
+margin-top:18px;
+
+display:inline-block;
+
+padding:
+
+8px
+14px;
+
+border-radius:999px;
+
+background:
+
+rgba(
+255,
+255,
+255,
+.08
+);
+
+font-size:13px;
+
+}
+
+.footer{
+
+margin-top:70px;
+
+opacity:.45;
 
 }
 
@@ -172,31 +192,23 @@ cursor:pointer;
 
 <div class="wrapper">
 
-<div class="header">
-
-<div>
-
 <div class="logo">
 
 🍽️ SFC
 
 </div>
 
-<div class="subtitle">
+<div class="sub">
 
 Business in Your Hand
 
 </div>
 
-</div>
 
-<button
-class="btn"
->
 
-Profile
+<div class="section">
 
-</button>
+MODULES
 
 </div>
 
@@ -205,101 +217,17 @@ Profile
 <div class="grid">
 
 <div
-class="card"
-onclick="
+class="
+card
+active
+"
+
+onclick=
+"
 location.href=
 'rawmaterial.html'
 "
->
 
-<div class="icon">
-
-📦
-
-</div>
-
-<div class="title">
-
-Raw Material
-
-</div>
-
-<div class="desc">
-
-Master bahan baku,
-supplier,
-konversi,
-dan harga.
-
-</div>
-
-</div>
-
-
-
-<div
-class="
-card
-lock
-"
->
-
-<div class="icon">
-
-🥣
-
-</div>
-
-<div class="title">
-
-Preparation
-
-</div>
-
-<div class="desc">
-
-Coming Soon
-
-</div>
-
-</div>
-
-
-
-<div
-class="
-card
-lock
-"
->
-
-<div class="icon">
-
-📖
-
-</div>
-
-<div class="title">
-
-Recipe
-
-</div>
-
-<div class="desc">
-
-Coming Soon
-
-</div>
-
-</div>
-
-
-
-<div
-class="
-card
-lock
-"
 >
 
 <div class="icon">
@@ -310,13 +238,24 @@ lock
 
 <div class="title">
 
-Menu
+Cost Management
 
 </div>
 
 <div class="desc">
 
-Coming Soon
+Dashboard,
+Raw Material,
+Preparation,
+Recipe,
+Menu,
+dan HPP.
+
+</div>
+
+<div class="badge">
+
+AVAILABLE
 
 </div>
 
@@ -329,27 +268,121 @@ class="
 card
 lock
 "
+
 >
 
 <div class="icon">
 
-💰
+📦
 
 </div>
 
 <div class="title">
 
-HPP
+Inventory
 
 </div>
 
 <div class="desc">
 
-Coming Soon
+Stock,
+purchase,
+supplier,
+warehouse.
+
+</div>
+
+<div class="badge">
+
+COMING SOON
 
 </div>
 
 </div>
+
+
+
+<div
+class="
+card
+lock
+"
+
+>
+
+<div class="icon">
+
+💳
+
+</div>
+
+<div class="title">
+
+Finance
+
+</div>
+
+<div class="desc">
+
+Cashflow,
+profit,
+expense.
+
+</div>
+
+<div class="badge">
+
+COMING SOON
+
+</div>
+
+</div>
+
+
+
+<div
+class="
+card
+lock
+"
+
+>
+
+<div class="icon">
+
+🧠
+
+</div>
+
+<div class="title">
+
+Intelligent Cost
+
+</div>
+
+<div class="desc">
+
+AI analysis
+untuk optimasi
+bisnis.
+
+</div>
+
+<div class="badge">
+
+COMING SOON
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<div class="footer">
+
+SFC © Phase 1 Development
 
 </div>
 
