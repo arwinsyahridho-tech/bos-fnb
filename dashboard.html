@@ -526,15 +526,53 @@ placeholder="1000"
 
 </div>
 
+<div
+style="
+display:flex;
+gap:12px;
+margin-top:25px;
+"
+>
+
 <button
 id="tambahBtn"
 class="btn"
+style="margin:0"
 >
 
 + Tambah Bahan
 
 </button>
 
+
+<button
+id="updateBtn"
+class="btn"
+style="
+margin:0;
+background:#f59e0b;
+"
+>
+
+Update
+
+</button>
+
+
+<button
+id="hapusBtn"
+class="btn"
+style="
+margin:0;
+background:#d62828;
+"
+>
+
+Hapus
+
+</button>
+
+</div>
 </div>
 
 
@@ -667,38 +705,6 @@ Status
 
 ACTIVE
 
-</div>
-<div
-style="
-margin-top:20px;
-display:flex;
-gap:12px;
-"
->
-
-<button
-id="updateBtn"
-class="btn"
-style="margin:0"
->
-
-Update
-
-</button>
-
-
-<button
-id="hapusBtn"
-class="btn"
-style="
-margin:0;
-background:#d62828;
-"
->
-
-Hapus
-
-</button>
 
 </div>
 </div>
@@ -920,10 +926,151 @@ alert(
 
 );
 
-</script>
-  <script>
+<script>
 
-/* UPDATE */
+function ambilData(){
+
+const input=
+document.querySelectorAll("input");
+
+const select=
+document.querySelectorAll("select");
+
+return{
+
+nama:input[0].value,
+
+merk:input[1].value,
+
+kategori:select[0].value,
+
+supplier:input[2].value,
+
+qty:input[3].value,
+
+buyUnit:select[1].value,
+
+harga:input[4].value,
+
+conversion:input[5].value,
+
+unit:select[2].value,
+
+waste:input[6].value
+
+};
+
+}
+
+
+
+function render(data){
+
+const hargaUnit=
+
+(
+Number(data.harga)
+/
+
+Number(data.conversion)
+)
+
+.toFixed(2);
+
+
+
+document.querySelector(".name")
+.innerText=
+data.nama;
+
+
+document.querySelector(".sub")
+.innerText=
+
+data.kategori
+
++
+
+" • "
+
++
+
+data.merk;
+
+
+
+const big=
+document.querySelectorAll(".big");
+
+big[0].innerText=
+data.supplier;
+
+big[1].innerText=
+data.qty+
+" "+
+data.buyUnit;
+
+big[2].innerText=
+data.conversion+
+" "+
+data.unit;
+
+big[3].innerText=
+data.waste+"%";
+
+
+document
+.querySelector(
+".headerCard > div:last-child"
+)
+
+.innerText=
+
+"Rp "
++
+hargaUnit
++
+" / "
++
+data.unit;
+
+}
+
+
+
+document
+.getElementById(
+"tambahBtn"
+)
+
+.onclick=
+
+function(){
+
+const data=
+ambilData();
+
+if(
+!data.nama
+){
+
+alert(
+"Lengkapi data"
+);
+
+return;
+
+}
+
+render(data);
+
+alert(
+"Bahan berhasil ditambah 🚀"
+);
+
+};
+
+
 
 document
 .getElementById(
@@ -934,22 +1081,30 @@ document
 
 function(){
 
-document
-.getElementById(
-"tambahBtn"
-)
+const data=
+ambilData();
 
-.click();
+if(
+!data.nama
+){
 
 alert(
-"Data berhasil diupdate 🚀"
+"Isi form dulu"
+);
+
+return;
+
+}
+
+render(data);
+
+alert(
+"Data berhasil diupdate ✏️"
 );
 
 };
 
 
-
-/* HAPUS */
 
 document
 .getElementById(
@@ -960,89 +1115,7 @@ document
 
 function(){
 
-document
-.querySelector(
-".name"
-)
-
-.innerText=
-
-"Tepung Terigu";
-
-
-document
-.querySelector(
-".sub"
-)
-
-.innerText=
-
-"Bahan Kering • Segitiga Biru";
-
-
-
-document
-.querySelectorAll(
-".big"
-)
-
-[0]
-
-.innerText=
-
-"Sari Murni";
-
-
-document
-.querySelectorAll(
-".big"
-)
-
-[1]
-
-.innerText=
-
-"1 Pack";
-
-
-document
-.querySelectorAll(
-".big"
-)
-
-[2]
-
-.innerText=
-
-"1000 gr";
-
-
-document
-.querySelectorAll(
-".big"
-)
-
-[3]
-
-.innerText=
-
-"5%";
-
-
-
-document
-.querySelector(
-".headerCard > div:last-child"
-)
-
-.innerText=
-
-"Rp 13 / gr";
-
-
-alert(
-"Data dihapus 🗑️"
-);
+location.reload();
 
 };
 
