@@ -545,6 +545,66 @@
       background:var(--danger);
     }
 
+
+    .list-tools{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      width:100%;
+    }
+
+    .search-box{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:320px;
+      max-width:560px;
+      flex:1;
+      height:50px;
+      padding:0 16px;
+      border-radius:14px;
+      background:var(--panel-2);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .search-box span{
+      opacity:.75;
+      font-size:16px;
+      line-height:1;
+    }
+
+    .search-box input{
+      flex:1;
+      height:100%;
+      padding:0;
+      background:transparent;
+      border:none;
+      outline:none;
+      color:var(--text);
+    }
+
+    .search-box input::placeholder{
+      color:rgba(255,255,255,.45);
+    }
+
+    .clear-search-btn{
+      height:50px;
+      padding:0 16px;
+      border:none;
+      border-radius:14px;
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      cursor:pointer;
+      font-weight:700;
+      transition:.2s;
+    }
+
+    .clear-search-btn:hover{
+      background:rgba(255,255,255,.12);
+    }
+
     @media (max-width: 1180px){
       .detail-grid{
         grid-template-columns:repeat(2,minmax(0,1fr));
@@ -703,6 +763,14 @@
               <div class="section-title">Preparation List</div>
               <div class="section-sub">Daftar resep preparation yang sudah dibuat</div>
             </div>
+
+            <div class="list-tools">
+              <div class="search-box">
+                <span>🔎</span>
+                <input id="prepSearch" type="search" placeholder="Cari nama atau kategori..." autocomplete="off" />
+              </div>
+              <button type="button" class="clear-search-btn" onclick="clearPrepSearch()">Reset</button>
+            </div>
           </div>
 
           <div id="prepList" class="prep-list-empty">Belum ada data preparation</div>
@@ -730,6 +798,7 @@
 
     const tableBody = document.getElementById("tableBody");
     const prepList = document.getElementById("prepList");
+    const prepSearch = document.getElementById("prepSearch");
     const saveBtn = document.getElementById("saveBtn");
     const formTitle = document.getElementById("formTitle");
 
@@ -756,6 +825,30 @@
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#39;");
+    }
+
+
+    function normalizeText(text) {
+      return String(text || "").toLowerCase().trim();
+    }
+
+    function getFilteredPreparations() {
+      const query = normalizeText(prepSearch?.value);
+      if (!query) return preparations.slice();
+      return preparations.filter(prep => {
+        return (
+          normalizeText(prep.name).includes(query) ||
+          normalizeText(prep.category).includes(query)
+        );
+      });
+    }
+
+    function clearPrepSearch() {
+      if (prepSearch) {
+        prepSearch.value = "";
+        prepSearch.focus();
+        renderPreparationList();
+      }
     }
 
     function getMaterialOptions(selectedName = "") {
@@ -929,9 +1022,17 @@
     }
 
     function renderPreparationList() {
+      const filtered = getFilteredPreparations();
+
       if (preparations.length === 0) {
         prepList.className = "prep-list-empty";
         prepList.innerHTML = "Belum ada data preparation";
+        return;
+      }
+
+      if (filtered.length === 0) {
+        prepList.className = "prep-list-empty";
+        prepList.innerHTML = "Tidak ada preparation yang cocok dengan pencarian";
         return;
       }
 
@@ -945,7 +1046,7 @@
         order.push(cat);
       });
 
-      preparations.forEach(prep => {
+      filtered.forEach(prep => {
         if (!grouped[prep.category]) {
           grouped[prep.category] = [];
           order.push(prep.category);
@@ -1101,6 +1202,10 @@
     document.addEventListener("DOMContentLoaded", () => {
       addRow();
       renderPreparationList();
+
+      if (prepSearch) {
+        prepSearch.addEventListener("input", renderPreparationList);
+      }
     });
   </script>
 </body>
