@@ -33,221 +33,203 @@ display:flex;
 }
 
 .sidebar{
-
 position:fixed;
-
 left:0;
-
 top:0;
-
 width:260px;
-
 height:100vh;
-
 background:#102766;
-
 padding:30px;
-
 }
 
 .logo{
-
 font-size:34px;
-
 font-weight:bold;
-
 margin-bottom:45px;
-
 }
 
 .item{
-
 height:56px;
-
 padding:0 18px;
-
 display:flex;
-
 align-items:center;
-
 border-radius:16px;
-
 margin-bottom:12px;
-
 cursor:pointer;
-
 font-size:16px;
-
 transition:.22s;
-
 color:white;
-
 }
-
 
 .item:hover{
-
-transform:
-
-translateX(6px);
-
-background:
-
-rgba(
-255,
-255,
-255,
-.06
-);
-
+transform:translateX(6px);
+background:rgba(255,255,255,.06);
 }
-
 
 .item.active{
-
 background:#2563eb;
-
-transform:
-
-translateX(10px);
-
-box-shadow:
-
-0 10px 30px
-
-rgba(
-37,
-99,
-235,
-.35
-);
-
+transform:translateX(10px);
+box-shadow:0 10px 30px rgba(37,99,235,.35);
 }
+
 .btn{
-
 margin-top:40px;
-
 height:54px;
-
 width:100%;
-
 border:none;
-
 border-radius:14px;
-
 background:#2563eb;
-
 color:white;
-
 cursor:pointer;
-
+font-weight:bold;
 }
 
 .main{
-
 margin-left:260px;
-
 width:calc(100% - 260px);
-
 padding:40px;
-
 }
 
 .title{
-
 font-size:44px;
-
 margin-bottom:10px;
-
 }
 
 .sub{
-
 opacity:.7;
-
 margin-bottom:35px;
-
 }
 
 .grid{
-
 display:grid;
-
-grid-template-columns:
-
-1fr 1fr;
-
+grid-template-columns:1fr 1fr;
 gap:20px;
-
 }
 
 .section{
-
 background:#102766;
-
 padding:28px;
-
 border-radius:22px;
-
 margin-bottom:24px;
-
 }
 
 label{
-
 display:block;
-
 margin-bottom:10px;
-
 opacity:.7;
-
 }
 
 input,
 select{
-
 width:100%;
-
 height:56px;
-
 padding:0 18px;
-
 background:#0d2158;
-
 border:none;
-
 border-radius:14px;
-
 color:white;
-
 }
 
 .card{
-
 background:#102766;
-
 padding:25px;
-
 border-radius:22px;
-
 margin-top:20px;
-
 }
 
 .big{
-
 font-size:28px;
-
 font-weight:bold;
-
 }
 
 .small{
-
 opacity:.6;
-
 margin-bottom:8px;
+}
 
+/* TABLE */
+
+.table-wrapper{
+margin-top:30px;
+overflow:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th{
+background:#1b3d96;
+padding:16px;
+font-size:14px;
+text-align:left;
+}
+
+td{
+padding:14px;
+background:#0d2158;
+border-bottom:1px solid rgba(255,255,255,.05);
+}
+
+.table-input,
+.table-select{
+width:100%;
+height:46px;
+background:#07173a;
+border:none;
+border-radius:10px;
+padding:0 12px;
+color:white;
+}
+
+.add-row-btn{
+margin-top:18px;
+height:50px;
+padding:0 24px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+font-weight:bold;
+}
+
+.delete-btn{
+width:40px;
+height:40px;
+border:none;
+border-radius:10px;
+background:#ef4444;
+color:white;
+cursor:pointer;
+font-size:18px;
+}
+
+.summary{
+margin-top:25px;
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.summary-box{
+flex:1;
+min-width:200px;
+background:#0d2158;
+padding:20px;
+border-radius:16px;
+}
+
+.summary-title{
+opacity:.6;
+margin-bottom:10px;
+}
+
+.summary-value{
+font-size:24px;
+font-weight:bold;
 }
 
 </style>
@@ -258,6 +240,8 @@ margin-bottom:8px;
 
 <div class="wrapper">
 
+<!-- SIDEBAR -->
+
 <div class="sidebar">
 
 <div class="logo">
@@ -266,29 +250,19 @@ margin-bottom:8px;
 
 <div
 class="item"
-
-onclick="
-location.href=
-'costdashboard.html'
-"
+onclick="location.href='costdashboard.html'"
 >
 📊 Dashboard
 </div>
 
 <div
 class="item"
-
-onclick="
-location.href=
-'rawmaterial.html'
-"
+onclick="location.href='rawmaterial.html'"
 >
 📦 Raw Material
 </div>
 
-<div
-class="item active"
->
+<div class="item active">
 🥣 Preparation
 </div>
 
@@ -306,167 +280,403 @@ class="item active"
 
 <button
 class="btn"
-
-onclick="
-location.href=
-'dashboard.html'
-"
+onclick="location.href='dashboard.html'"
 >
-
 ← Kembali
-
 </button>
 
 </div>
 
-
+<!-- MAIN -->
 
 <div class="main">
 
 <div class="title">
-
 Preparation
-
 </div>
 
 <div class="sub">
-
 Produk setengah jadi sebelum masuk Recipe
-
 </div>
 
-
+<!-- HEADER -->
 
 <div class="section">
 
 <div class="grid">
 
 <div>
-
 <label>Nama Preparation</label>
-
 <input
-placeholder=
-"Saus Coklat"
+id="prepName"
+placeholder="Saus Coklat"
 >
-
 </div>
 
 <div>
-
 <label>Status</label>
-
-<select>
-
+<select id="prepStatus">
 <option>ACTIVE</option>
-
 <option>INACTIVE</option>
-
 </select>
-
 </div>
 
 <div>
-
 <label>Yield Qty</label>
-
 <input
-placeholder=
-"1000"
+id="yieldQty"
+type="number"
+placeholder="1000"
 >
-
 </div>
 
 <div>
-
 <label>Yield Unit</label>
-
-<select>
-
+<select id="yieldUnit">
 <option>gr</option>
-
 <option>ml</option>
-
 <option>pcs</option>
-
 </select>
-
 </div>
 
 <div>
-
 <label>Waste %</label>
-
 <input
+id="waste"
+type="number"
 value="5"
 >
-
 </div>
 
 <div>
-
 <label>Total Cost</label>
-
 <input
-placeholder=
-"Auto"
+id="grandTotal"
+placeholder="0"
 disabled
 >
+</div>
 
+</div>
+
+<!-- TABLE -->
+
+<div class="table-wrapper">
+
+<table id="ingredientTable">
+
+<thead>
+
+<tr>
+<th>Nama Bahan</th>
+<th>Qty</th>
+<th>Unit</th>
+<th>Harga / Unit</th>
+<th>Total</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="tableBody">
+
+</tbody>
+
+</table>
+
+<button
+class="add-row-btn"
+onclick="addRow()"
+>
++ Tambah Bahan
+</button>
+
+</div>
+
+<!-- SUMMARY -->
+
+<div class="summary">
+
+<div class="summary-box">
+<div class="summary-title">
+Total Bahan
+</div>
+<div
+class="summary-value"
+id="totalItems"
+>
+0
+</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-title">
+Total Cost
+</div>
+<div
+class="summary-value"
+id="summaryCost"
+>
+Rp 0
+</div>
 </div>
 
 </div>
 
 <button
 class="btn"
-style="
-margin-top:25px
-"
+onclick="savePreparation()"
 >
-
-+ Buat Preparation
-
++ Simpan Preparation
 </button>
 
 </div>
 
-
-
-<div class="card">
-
-<div class="small">
-
-Total Preparation
-
-</div>
-
-<div class="big">
-
-0
-
 </div>
 
 </div>
 
+<script>
 
+/* DUMMY RAW MATERIAL */
 
-<div class="card">
+const rawMaterials = [
 
-<div class="small">
+{
+name:"Cabai",
+unit:"gr",
+price:50
+},
 
-Preview
+{
+name:"Bawang Putih",
+unit:"gr",
+price:40
+},
 
-</div>
+{
+name:"Minyak",
+unit:"ml",
+price:20
+},
 
-<br>
+{
+name:"Gula",
+unit:"gr",
+price:15
+}
 
-Belum ada data preparation
+];
 
-</div>
+const tableBody =
+document.getElementById("tableBody");
 
-</div>
+/* ADD ROW */
 
-</div>
+function addRow(){
+
+const row =
+document.createElement("tr");
+
+let options = "";
+
+rawMaterials.forEach(item=>{
+
+options += `
+<option value="${item.name}">
+${item.name}
+</option>
+`;
+
+});
+
+row.innerHTML = `
+
+<td>
+
+<select
+class="table-select material-select"
+onchange="updateRow(this)"
+>
+
+${options}
+
+</select>
+
+</td>
+
+<td>
+
+<input
+type="number"
+class="table-input qty-input"
+value="1"
+oninput="calculateRow(this)"
+>
+
+</td>
+
+<td>
+
+<input
+class="table-input unit-input"
+disabled
+>
+
+</td>
+
+<td>
+
+<input
+class="table-input price-input"
+disabled
+>
+
+</td>
+
+<td>
+
+<input
+class="table-input total-input"
+disabled
+>
+
+</td>
+
+<td>
+
+<button
+class="delete-btn"
+onclick="deleteRow(this)"
+>
+✕
+</button>
+
+</td>
+
+`;
+
+tableBody.appendChild(row);
+
+updateRow(
+row.querySelector(".material-select")
+);
+
+updateSummary();
+
+}
+
+/* UPDATE ROW */
+
+function updateRow(select){
+
+const row =
+select.closest("tr");
+
+const material =
+rawMaterials.find(
+item => item.name === select.value
+);
+
+row.querySelector(".unit-input").value =
+material.unit;
+
+row.querySelector(".price-input").value =
+material.price;
+
+calculateRow(
+row.querySelector(".qty-input")
+);
+
+}
+
+/* CALCULATE */
+
+function calculateRow(input){
+
+const row =
+input.closest("tr");
+
+const qty =
+parseFloat(
+row.querySelector(".qty-input").value
+) || 0;
+
+const price =
+parseFloat(
+row.querySelector(".price-input").value
+) || 0;
+
+const total = qty * price;
+
+row.querySelector(".total-input").value =
+total;
+
+updateSummary();
+
+}
+
+/* DELETE */
+
+function deleteRow(button){
+
+button.closest("tr").remove();
+
+updateSummary();
+
+}
+
+/* SUMMARY */
+
+function updateSummary(){
+
+const rows =
+document.querySelectorAll("#tableBody tr");
+
+let grandTotal = 0;
+
+rows.forEach(row=>{
+
+const total =
+parseFloat(
+row.querySelector(".total-input").value
+) || 0;
+
+grandTotal += total;
+
+});
+
+document.getElementById(
+"grandTotal"
+).value = grandTotal;
+
+document.getElementById(
+"summaryCost"
+).innerText =
+"Rp " + grandTotal.toLocaleString();
+
+document.getElementById(
+"totalItems"
+).innerText =
+rows.length;
+
+}
+
+/* SAVE */
+
+function savePreparation(){
+
+alert(
+"Preparation berhasil disimpan"
+);
+
+}
+
+/* DEFAULT ROW */
+
+addRow();
+
+</script>
 
 </body>
 
