@@ -276,21 +276,22 @@
 </head>
 <body>
   <div class="wrapper">
-    <aside class="sidebar">
+
+    <div class="sidebar">
       <div class="logo">🍽️ SFC</div>
 
       <div class="item" onclick="location.href='costdashboard.html'">📊 Dashboard</div>
       <div class="item active">📦 Raw Material</div>
       <div class="item" onclick="location.href='preparation.html'">🥣 Preparation</div>
       <div class="item" onclick="location.href='menu.html'">🍔 Menu</div>
-      <div class="item" onclick="location.href='product_hpp_ready.html'">📈 Product HPP</div>
+      <div class="item" onclick="location.href='producthpp.html'">📈 Product HPP</div>
+      <div class="item" onclick="location.href='exportcenter.html'">📄 Export Center</div>
+      <div class="item" onclick="location.href='settings.html'">⚙ Settings</div>
 
-      
-        <button class="btn" onclick="location.href='dashboard.html'">← Kembali</button>
+      <button class="btn" onclick="location.href='dashboard.html'">← Kembali</button>
+    </div>
 
-    </aside>
-
-    <main class="main">
+<main class="main">
       <div class="title">Raw Material Master</div>
       <div class="sub">Data bahan baku untuk kebutuhan costing, preparation, dan menu.</div>
 
@@ -448,6 +449,14 @@
 
 <script>
 const rawMaterials = [];
+    const storedRawMaterials = JSON.parse(localStorage.getItem("biya_rawMaterials") || "null");
+    if (Array.isArray(storedRawMaterials) && storedRawMaterials.length) {
+      rawMaterials.splice(0, rawMaterials.length, ...storedRawMaterials);
+    }
+    function persistRawMaterials(){
+      localStorage.setItem("biya_rawMaterials", JSON.stringify(rawMaterials));
+      localStorage.setItem("biya_rawMaterials_updated", new Date().toISOString());
+    }
 
 let editIndex = null;
 
@@ -604,6 +613,7 @@ function addItem(){
   }
 
   rawMaterials.unshift(data);
+  persistRawMaterials();
   clearForm();
   render();
 }
@@ -647,6 +657,8 @@ function saveEdit(){
     waste: Number(el.eWaste.value) || 0
   };
 
+  persistRawMaterials();
+
   editIndex = null;
   closeModal();
   render();
@@ -655,6 +667,7 @@ function saveEdit(){
 function deleteItem(index){
   if(!confirm("Hapus data bahan ini?")) return;
   rawMaterials.splice(index, 1);
+  persistRawMaterials();
   render();
 }
 
