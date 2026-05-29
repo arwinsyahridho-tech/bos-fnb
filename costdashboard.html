@@ -300,6 +300,7 @@
 </head>
 <body>
   <div class="wrapper">
+
     <div class="sidebar">
       <div class="logo">🍽️ SFC</div>
 
@@ -308,11 +309,13 @@
       <div class="item" onclick="location.href='preparation.html'">🥣 Preparation</div>
       <div class="item" onclick="location.href='menu.html'">🍔 Menu</div>
       <div class="item" onclick="location.href='producthpp.html'">📈 Product HPP</div>
+      <div class="item" onclick="location.href='exportcenter.html'">📄 Export Center</div>
+      <div class="item" onclick="location.href='settings.html'">⚙ Settings</div>
 
       <button class="btn" onclick="location.href='dashboard.html'">← Kembali</button>
     </div>
 
-    <div class="main">
+<div class="main">
       <div class="title">Dashboard</div>
       <div class="sub">Ringkasan cepat kondisi bisnis, profit, dan performa menu.</div>
 
@@ -332,6 +335,22 @@
         <div class="summary-box">
           <div class="summary-title">Potential Revenue</div>
           <div class="summary-value" id="dashPotentialRevenue">Rp 0</div>
+        </div>
+      </div>
+
+
+      <div class="section">
+        <div class="card-title">Quick Actions</div>
+        <div class="card-sub">Akses cepat ke fitur baru BIYA</div>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));">
+          <div class="card" onclick="location.href='exportcenter.html'" style="cursor:pointer;">
+            <div class="title" style="font-size:22px;margin-bottom:8px;">📄 Export Center</div>
+            <div class="desc">Backup, PDF, dan Excel export.</div>
+          </div>
+          <div class="card" onclick="location.href='settings.html'" style="cursor:pointer;">
+            <div class="title" style="font-size:22px;margin-bottom:8px;">⚙ Settings</div>
+            <div class="desc">Business profile dan target costing.</div>
+          </div>
         </div>
       </div>
 
