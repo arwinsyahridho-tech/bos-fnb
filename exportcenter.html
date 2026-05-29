@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>BIYA • Export Center</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#07173a;font-family:Arial,sans-serif;color:#fff}
+.wrapper{display:flex;min-height:100vh}
+.sidebar{position:fixed;left:0;top:0;width:260px;height:100vh;background:#102766;padding:30px;overflow:auto}
+.logo{font-size:34px;font-weight:bold;margin-bottom:45px}
+.item{height:56px;padding:0 18px;display:flex;align-items:center;border-radius:16px;margin-bottom:12px;cursor:pointer;font-size:16px;transition:.22s;color:white}
+.item:hover{transform:translateX(6px);background:rgba(255,255,255,.06)}
+.item.active{background:#2563eb;transform:translateX(10px);box-shadow:0 10px 30px rgba(37,99,235,.35)}
+.btn{margin-top:18px;height:54px;width:100%;border:none;border-radius:14px;background:#2563eb;color:white;cursor:pointer;font-weight:bold}
+.main{margin-left:260px;width:calc(100% - 260px);padding:40px}
+.title{font-size:44px;margin-bottom:10px}
+.sub{opacity:.7;margin-bottom:30px}
+.section{background:#102766;padding:28px;border-radius:22px;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:#0d2158;padding:20px;border-radius:16px}
+.card h3{margin-bottom:8px;font-size:18px}
+.card p{opacity:.7;line-height:1.6;font-size:14px}
+.action{margin-top:16px;height:46px;width:100%;border:none;border-radius:12px;background:#2563eb;color:white;cursor:pointer;font-weight:bold}
+.action.alt{background:#334155}
+.notice{opacity:.65;text-align:center;padding:20px}
+.small{opacity:.65;font-size:13px}
+table{width:100%;border-collapse:collapse}
+th{background:#1b3d96;padding:14px 16px;font-size:14px;text-align:left;white-space:nowrap}
+td{padding:14px 16px;background:#0d2158;border-bottom:1px solid rgba(255,255,255,.05);vertical-align:top}
+input[type=file]{width:100%;background:#0d2158;padding:12px;border-radius:12px;border:none;color:#fff}
+@media (max-width:980px){.sidebar{position:relative;width:100%;height:auto}.main{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="sidebar">
+    <div class="logo">🍽️ BIYA</div>
+    <div class="item" onclick="location.href='costdashboard.html'">📊 Dashboard</div>
+    <div class="item" onclick="location.href='rawmaterial.html'">📦 Raw Material</div>
+    <div class="item" onclick="location.href='preparation.html'">🥣 Preparation</div>
+    <div class="item" onclick="location.href='menu.html'">🍔 Menu</div>
+    <div class="item" onclick="location.href='producthpp.html'">📈 Product HPP</div>
+    <div class="item active">📄 Export Center</div>
+    <div class="item" onclick="location.href='settings.html'">⚙ Settings</div>
+    <button class="btn" onclick="location.href='dashboard.html'">← Kembali</button>
+  </div>
+
+  <div class="main">
+    <div class="title">Export Center</div>
+    <div class="sub">Backup data, export report, dan cetak recipe tanpa cost.</div>
+
+    <div class="section">
+      <div class="grid">
+        <div class="card">
+          <h3>Full Backup JSON</h3>
+          <p>Menyimpan settings, raw material, preparation, menu, dan product HPP ke file JSON.</p>
+          <button class="action" onclick="downloadBackup()">Download Backup</button>
+        </div>
+        <div class="card">
+          <h3>Restore Backup</h3>
+          <p>Upload file JSON backup untuk mengembalikan data yang tersimpan.</p>
+          <input id="restoreFile" type="file" accept=".json" />
+          <button class="action alt" onclick="restoreBackup()">Restore</button>
+        </div>
+        <div class="card">
+          <h3>PDF Cost Report</h3>
+          <p>Print-friendly report untuk disimpan sebagai PDF dari browser.</p>
+          <button class="action" onclick="exportPrintable('cost')">Open Print View</button>
+        </div>
+        <div class="card">
+          <h3>PDF Recipe Book</h3>
+          <p>Recipe tanpa cost agar aman dibagikan ke kitchen.</p>
+          <button class="action" onclick="exportPrintable('recipe')">Open Print View</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div style="font-size:22px;font-weight:bold;margin-bottom:14px;">Excel / CSV Export</div>
+      <div class="grid">
+        <div class="card">
+          <h3>Raw Material</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action" onclick="downloadCSV('rawmaterials')">Export CSV</button>
+        </div>
+        <div class="card">
+          <h3>Preparation</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action" onclick="downloadCSV('preparations')">Export CSV</button>
+        </div>
+        <div class="card">
+          <h3>Menu</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action" onclick="downloadCSV('menus')">Export CSV</button>
+        </div>
+        <div class="card">
+          <h3>Product HPP</h3><p>CSV ringkasan product HPP.</p><button class="action" onclick="downloadCSV('producthpp')">Export CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div style="font-size:22px;font-weight:bold;margin-bottom:14px;">Data Snapshot</div>
+      <div style="overflow:auto;">
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Count</th><th>Last Update</th></tr>
+          </thead>
+          <tbody id="snapshotBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const KEY = "biya_settings";
+const getJSON = (k, fallback=[]) => {
+  try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fallback)); }
+  catch(e) { return fallback; }
+};
+const getSettings = () => {
+  try { return JSON.parse(localStorage.getItem(KEY) || "{}"); }
+  catch(e) { return {}; }
+};
+function download(filename, text, type="application/json"){
+  const blob = new Blob([text], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function toCSV(rows, headers){
+  const esc = v => `"${String(v ?? "").replaceAll('"','""')}"`;
+  return [headers.map(esc).join(","), ...rows.map(r => headers.map(h => esc(r[h])).join(","))].join("\n");
+}
+function slugDate(){
+  return new Date().toISOString().slice(0,10);
+}
+function makeBackup(){
+  return {
+    settings: getSettings(),
+    rawMaterials: getJSON("biya_rawMaterials", []),
+    preparations: getJSON("biya_preparations", []),
+    menus: getJSON("biya_menus", []),
+    productHPP: getJSON("biya_producthpp", []),
+  };
+}
+function downloadBackup(){
+  download(`BIYA_BACKUP_${slugDate()}.json`, JSON.stringify(makeBackup(), null, 2));
+}
+function restoreBackup(){
+  const f = restoreFile.files[0];
+  if(!f){ alert("Pilih file JSON backup"); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const data = JSON.parse(reader.result);
+      if(data.settings) localStorage.setItem(KEY, JSON.stringify(data.settings));
+      if(data.rawMaterials) localStorage.setItem("biya_rawMaterials", JSON.stringify(data.rawMaterials));
+      if(data.preparations) localStorage.setItem("biya_preparations", JSON.stringify(data.preparations));
+      if(data.menus) localStorage.setItem("biya_menus", JSON.stringify(data.menus));
+      if(data.productHPP) localStorage.setItem("biya_producthpp", JSON.stringify(data.productHPP));
+      alert("Backup berhasil direstore");
+      location.reload();
+    }catch(e){
+      alert("File backup tidak valid");
+    }
+  };
+  reader.readAsText(f);
+}
+function downloadCSV(kind){
+  const s = getSettings();
+  let rows = [], headers = [];
+  if(kind === "rawmaterials"){
+    rows = getJSON("biya_rawMaterials", []);
+    headers = ["nama","merk","kategori","supplier","qty","buyUnit","harga","conversion","unit","waste"];
+  }else if(kind === "preparations"){
+    rows = getJSON("biya_preparations", []);
+    headers = ["name","category","status","yieldQty","yieldUnit","waste","total","costPerYield"];
+  }else if(kind === "menus"){
+    rows = getJSON("biya_menus", []);
+    headers = ["name","category","subCategory","sellingPrice","status","description","photoUrl"];
+  }else if(kind === "producthpp"){
+    rows = getJSON("biya_producthpp", []);
+    headers = ["name","category","subCategory","sellingPrice","hpp","profitRp","profitPct","foodCostPct"];
+  }
+  const csv = toCSV(rows, headers);
+  download(`${kind}_${slugDate()}.csv`, csv, "text/csv");
+}
+function exportPrintable(kind){
+  const s = getSettings();
+  let body = "";
+  if(kind === "cost"){
+    const menus = getJSON("biya_menus", []);
+    body = `<h1>BIYA Cost Report</h1><p>${s.businessName || "BIYA"}</p>` + menus.map(m => `<div style="margin:16px 0;padding:16px;border:1px solid #ccc;border-radius:12px;"><h3>${m.name}</h3><p>Category: ${m.category}</p><p>Sub Category: ${m.subCategory || "-"}</p><p>Selling Price: ${m.sellingPrice || "-"}</p><p>Description: ${m.description || "-"}</p></div>`).join("");
+  }else{
+    const menus = getJSON("biya_menus", []);
+    body = `<h1>BIYA Recipe Book</h1><p>${s.businessName || "BIYA"}</p>` + menus.map(m => {
+      const rows = (m.ingredients || []).map(i => `<li>${i.ingredient || i.name || "-"} • ${i.qty || ""} ${i.unit || ""}</li>`).join("");
+      return `<div style="margin:16px 0;padding:16px;border:1px solid #ccc;border-radius:12px;"><h3>${m.name}</h3><ul>${rows || "<li>-</li>"}</ul></div>`;
+    }).join("");
+  }
+  const w = window.open("", "_blank");
+  w.document.write(`<html><head><title>BIYA Print</title><style>body{font-family:Arial;padding:24px} h1{margin-bottom:8px}</style></head><body>${body}</body></html>`);
+  w.document.close();
+  w.focus();
+  w.print();
+}
+function renderSnapshot(){
+  const rows = [
+    ["Raw Material", getJSON("biya_rawMaterials", []).length, localStorage.getItem("biya_rawMaterials_updated") || "-"],
+    ["Preparation", getJSON("biya_preparations", []).length, localStorage.getItem("biya_preparations_updated") || "-"],
+    ["Menu", getJSON("biya_menus", []).length, localStorage.getItem("biya_menus_updated") || "-"],
+    ["Product HPP", getJSON("biya_producthpp", []).length, localStorage.getItem("biya_producthpp_updated") || "-"],
+    ["Settings", getSettings().businessName ? 1 : 0, localStorage.getItem("biya_settings_updated") || "-"],
+  ];
+  snapshotBody.innerHTML = rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("");
+}
+renderSnapshot();
+</script>
+</body>
+</html>
