@@ -752,6 +752,14 @@ tbody tr:hover td{
 
 </head>
 <body>
+
+<div class="mobile-header">
+  <button id="menuToggle" class="menu-toggle">☰</button>
+  <div class="mobile-logo">BIYA</div>
+</div>
+
+<div id="mobileOverlay" class="mobile-overlay"></div>
+
 <div class="wrapper">
 <div class="sidebar" id="biyaSidebar">
 
@@ -792,17 +800,6 @@ tbody tr:hover td{
     ← Kembali
   </button>
 
-</div>
-<div class="logo">BIYA<small>BUSINESS IN YOUR HAND</small></div>
-<div class="item active">📊 Dashboard</div>
-<div class="item" onclick="location.href='rawmaterial.html'">📦 Raw Material</div>
-<div class="item" onclick="location.href='preparation.html'">🥣 Preparation</div>
-<div class="item" onclick="location.href='menu.html'">🍔 Menu</div>
-<div class="item" onclick="location.href='producthpp.html'">📈 Product HPP</div>
-<div class="item" onclick="location.href='exportcenter.html'">📄 Export Center</div>
-<div class="item" onclick="location.href='settings.html'">⚙ Settings</div>
-<button class="btn" onclick="location.href='dashboard.html'">← Kembali</button>
-</aside>
 <main class="main">
 <div class="page">
 <div class="title">Dashboard</div>
@@ -1484,64 +1481,5 @@ document.addEventListener("DOMContentLoaded", () => {
   document.head.appendChild(style);
 })();
 </script>
-<script>
-
-(function(){
-
-  const toggle =
-    document.getElementById("menuToggle");
-
-  const sidebar =
-    document.getElementById("biyaSidebar");
-
-  const overlay =
-    document.getElementById("mobileOverlay");
-
-  if(!toggle || !sidebar || !overlay)
-    return;
-
-  function openMenu(){
-
-    sidebar.classList.add("open");
-    overlay.classList.add("open");
-
-  }
-
-  function closeMenu(){
-
-    sidebar.classList.remove("open");
-    overlay.classList.remove("open");
-
-  }
-
-  toggle.addEventListener(
-    "click",
-    ()=>{
-
-      if(sidebar.classList.contains("open"))
-        closeMenu();
-      else
-        openMenu();
-
-    }
-  );
-
-  overlay.addEventListener(
-    "click",
-    closeMenu
-  );
-
-})();
-
-</script>
 </body>
-    <!-- MOBILE HEADER -->
-<div class="mobile-header">
-  <button id="menuToggle" class="menu-toggle">☰</button>
-  <div class="mobile-logo">BIYA</div>
-</div>
-
-<div id="mobileOverlay" class="mobile-overlay"></div>
-
-<div class="wrapper">
 </html>
