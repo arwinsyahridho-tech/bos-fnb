@@ -127,7 +127,7 @@ div.sidebar{ position:fixed !important; left:-280px !important; top:0 !important
 .top-grid,
 .summary-grid,
 .info,
-.detail-grid,
+detail-grid,
 .summary-callout,
 .info-grid,
 .prep-groups{ display:grid !important; grid-template-columns:1fr !important; gap:14px !important;
@@ -355,8 +355,8 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-const SUPABASE_URL = window.BIYA_SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = window.BIYA_SUPABASE_ANON_KEY || "";
+const SUPABASE_URL = window.BIYA_SUPABASE_URL || "https://pkjmkjyylgzjvhcreucc.supabase.co";
+const SUPABASE_ANON_KEY = window.BIYA_SUPABASE_ANON_KEY || "sb_publishable_Tq4d0o3PIAd_zh11uJa2uQ_M_zPIYFX";
 const configuredSupabaseClient = window.biyaSupabase || window.supabaseClient || null;
 const supabaseClient = configuredSupabaseClient || ((SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase)
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
