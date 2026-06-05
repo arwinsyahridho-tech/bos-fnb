@@ -51,6 +51,8 @@ input,select{width:100%;height:56px;padding:0 18px;background:#0d2158;border:non
 .metric-value{font-size:20px;font-weight:bold;line-height:1.25}
 .metric-note{opacity:.7;font-size:12px;margin-top:6px;line-height:1.45}
 .detail-desc{opacity:.86;line-height:1.65;margin-top:18px;white-space:pre-wrap}
+.detail-actions{display:flex;justify-content:flex-start;margin-bottom:18px}
+.back-btn{min-height:48px;padding:0 18px;border:none;border-radius:12px;background:linear-gradient(135deg,#0066FF,#00D66B);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .menu-item{background:#0d2158;border-radius:18px;padding:20px;margin-bottom:16px;border:1px solid rgba(255,255,255,.06);cursor:pointer}
 .menu-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;flex-wrap:wrap}
 .menu-left{display:flex;gap:14px;min-width:0;flex:1}
@@ -103,6 +105,7 @@ td{background:#102B63!important;color:#fff!important}
   .list-header,.product-title-row,.menu-top{flex-direction:column!important;align-items:stretch!important}
   .filter-grid{grid-template-columns:1fr!important;gap:10px!important}
   .filter-field,.btn{width:100%!important;max-width:100%!important}
+  .back-btn{width:100%;min-height:52px}
   .menu-cost{width:100%;min-width:0;text-align:left!important}
   .menu-left{width:100%}
 }
@@ -201,12 +204,10 @@ td{background:#102B63!important;color:#fff!important}
           </div>
         </div>
       </div>
-      <div id="selectedProduct">
-        <div class="notice">Memuat data menu...</div>
-      </div>
+      <div id="selectedProduct" class="hidden"></div>
     </section>
 
-    <section class="section">
+    <section class="section" id="productListSection">
       <div class="list-header">
         <div>
           <div style="font-size:28px;font-weight:bold;margin-bottom:6px;">Product HPP List</div>
@@ -229,6 +230,7 @@ const supabaseClient = configuredSupabaseClient || ((SUPABASE_URL && SUPABASE_AN
 
 let menus = [];
 let selectedMenuId = "";
+let detailOpen = false;
 
 const el = {
   errorBox: document.getElementById("errorBox"),
@@ -237,6 +239,7 @@ const el = {
   filterCategory: document.getElementById("filterCategory"),
   filterSubCategory: document.getElementById("filterSubCategory"),
   selectedProduct: document.getElementById("selectedProduct"),
+  productListSection: document.getElementById("productListSection"),
   productList: document.getElementById("productList"),
   sumTotalProduct: document.getElementById("sumTotalProduct"),
   sumAverageFoodCost: document.getElementById("sumAverageFoodCost"),
@@ -337,7 +340,11 @@ function setError(message = "") {
 }
 
 function showLoading() {
-  el.selectedProduct.innerHTML = '<div class="notice">Memuat data menu dari Supabase...</div>';
+  detailOpen = false;
+  selectedMenuId = "";
+  el.selectedProduct.classList.add("hidden");
+  el.selectedProduct.innerHTML = "";
+  el.productListSection.classList.remove("hidden");
   el.productList.innerHTML = '<div class="notice">Memuat data menu dari Supabase...</div>';
 }
 
@@ -372,15 +379,11 @@ function populateMenuSelect(list) {
   }
   if (!list.length) {
     el.menuSelect.innerHTML = '<option value="">Tidak ada menu cocok</option>';
-    selectedMenuId = "";
     return;
   }
   const options = list;
-  el.menuSelect.innerHTML = options.map(menu => `<option value="${escapeHtml(menu.id)}">${escapeHtml(menu.name || "-")}</option>`).join("");
-  if (!options.some(menu => String(menu.id) === String(selectedMenuId))) {
-    selectedMenuId = options[0]?.id || "";
-  }
-  el.menuSelect.value = selectedMenuId;
+  el.menuSelect.innerHTML = '<option value="">Pilih produk/menu</option>' + options.map(menu => `<option value="${escapeHtml(menu.id)}">${escapeHtml(menu.name || "-")}</option>`).join("");
+  el.menuSelect.value = "";
 }
 
 function updateSummaryCards(list) {
@@ -398,18 +401,22 @@ function updateSummaryCards(list) {
 
 function renderSelectedProduct() {
   if (!menus.length) {
-    el.selectedProduct.innerHTML = '<div class="notice">Belum ada data menu. Tambahkan menu terlebih dahulu dari halaman Menu.</div>';
+    el.selectedProduct.classList.add("hidden");
+    el.selectedProduct.innerHTML = "";
     return;
   }
-  const currentList = filteredMenus();
-  const menu = currentList.find(item => String(item.id) === String(selectedMenuId)) || currentList[0];
+  const menu = menus.find(item => String(item.id) === String(selectedMenuId));
   if (!menu) {
-    el.selectedProduct.innerHTML = '<div class="notice">Tidak ada menu yang cocok dengan filter.</div>';
+    el.selectedProduct.classList.add("hidden");
+    el.selectedProduct.innerHTML = "";
     return;
   }
-  selectedMenuId = menu.id;
   const status = getStatusInfo(menu);
+  el.selectedProduct.classList.remove("hidden");
   el.selectedProduct.innerHTML = `
+    <div class="detail-actions">
+      <button class="back-btn" type="button" onclick="backToProductList()">← Kembali ke Daftar Produk</button>
+    </div>
     <div class="product-hero">
       <div class="product-photo">
         ${menu.photoUrl ? `<img src="${escapeHtml(menu.photoUrl)}" alt="${escapeHtml(menu.name)}">` : '<div>Tidak ada foto menu</div>'}
@@ -500,14 +507,20 @@ function renderProductList() {
   const list = filteredMenus();
   updateSummaryCards(list);
   populateMenuSelect(list);
+  if (detailOpen) {
+    el.productListSection.classList.add("hidden");
+    renderSelectedProduct();
+    return;
+  }
+  el.selectedProduct.classList.add("hidden");
+  el.selectedProduct.innerHTML = "";
+  el.productListSection.classList.remove("hidden");
   if (!menus.length) {
     el.productList.innerHTML = '<div class="notice">Belum ada data menu. Product HPP akan muncul setelah data Menu tersimpan di Supabase.</div>';
-    renderSelectedProduct();
     return;
   }
   if (!list.length) {
     el.productList.innerHTML = '<div class="notice">Tidak ada menu yang cocok dengan pencarian atau filter.</div>';
-    el.selectedProduct.innerHTML = '<div class="notice">Tidak ada menu yang cocok dengan pencarian atau filter.</div>';
     return;
   }
   el.productList.innerHTML = list.map(menu => {
@@ -545,13 +558,27 @@ function renderProductList() {
       }
     });
   });
-  renderSelectedProduct();
 }
 
 function selectMenu(id) {
+  if (!id) return;
   selectedMenuId = id;
-  el.menuSelect.value = id;
+  detailOpen = true;
+  el.searchProduct.value = "";
+  el.menuSelect.value = "";
+  el.productListSection.classList.add("hidden");
   renderSelectedProduct();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function backToProductList() {
+  detailOpen = false;
+  selectedMenuId = "";
+  el.searchProduct.value = "";
+  el.selectedProduct.classList.add("hidden");
+  el.selectedProduct.innerHTML = "";
+  el.productListSection.classList.remove("hidden");
+  renderProductList();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -585,7 +612,8 @@ async function loadMenusFromSupabase() {
       itemMap.get(key).push(item);
     });
     menus = menuRows.map(row => normalizeMenu(row, itemMap.get(String(row.id)) || []));
-    selectedMenuId = menus[0]?.id || "";
+    selectedMenuId = "";
+    detailOpen = false;
     populateFilters();
     renderProductList();
   } catch (error) {
@@ -603,8 +631,7 @@ async function loadMenusFromSupabase() {
 }
 
 el.menuSelect.addEventListener("change", event => {
-  selectedMenuId = event.target.value;
-  renderSelectedProduct();
+  if (event.target.value) selectMenu(event.target.value);
 });
 el.searchProduct.addEventListener("input", renderProductList);
 el.filterCategory.addEventListener("change", renderProductList);
@@ -614,7 +641,8 @@ document.addEventListener("DOMContentLoaded", loadMenusFromSupabase);
 Object.assign(window, {
   loadMenusFromSupabase,
   renderProductList,
-  selectMenu
+  selectMenu,
+  backToProductList
 });
 </script>
 <script>
