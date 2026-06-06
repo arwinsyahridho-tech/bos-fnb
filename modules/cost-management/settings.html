@@ -201,6 +201,57 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
     padding-top:18px!important;
   }
 }
+</style>
+<style id="biya-settings-layout">
+.settings-page{max-width:1600px}
+.settings-header{margin-bottom:18px}
+.settings-header .title{margin-bottom:6px}
+.settings-header .sub{max-width:680px;margin-bottom:0;font-size:14px}
+.settings-layout{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(280px,.8fr);gap:18px;align-items:start}
+.settings-form{display:grid;gap:16px;min-width:0}
+.settings-section{margin-bottom:0!important;padding:20px!important;overflow:hidden}
+.settings-section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}
+.settings-section-title{font-size:18px;font-weight:700;line-height:1.25}
+.settings-section-description{max-width:420px;color:rgba(215,227,255,.62);font-size:12px;line-height:1.5;text-align:right}
+.settings-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.settings-field{min-width:0}
+.settings-field-wide{grid-column:1/-1}
+.settings-field label{margin-bottom:7px;color:rgba(215,227,255,.78);font-size:12px;font-weight:600;line-height:1.3}
+.settings-field input,.settings-field select{height:46px;padding:0 14px;font-size:14px}
+.settings-field textarea{min-height:86px;padding:12px 14px;font-size:14px;line-height:1.5}
+.settings-helper{display:block;width:fit-content;max-width:100%;margin-top:12px;padding:5px 9px;font-size:11px;line-height:1.4}
+.settings-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:2px 0}
+.settings-actions .btn-action{width:auto!important;min-width:138px;height:44px;padding:0 18px;font-size:13px}
+.settings-actions .btn-reset{min-width:92px;background:rgba(255,255,255,.08)!important;border:1px solid var(--biya-border)!important;box-shadow:none!important;color:rgba(255,255,255,.82)!important}
+.settings-summary{position:sticky;top:24px;margin-bottom:0!important;padding:18px!important;border-color:rgba(46,216,255,.16)!important}
+.settings-summary .settings-section-head{margin-bottom:12px}
+.settings-summary .settings-section-description{display:none}
+.settings-summary-grid{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+.settings-summary-grid .summary-box{display:flex;align-items:center;justify-content:space-between;gap:16px;min-width:0;padding:11px 12px!important;border-radius:12px!important;box-shadow:none!important}
+.settings-summary-grid .summary-title{margin:0;font-size:11px;line-height:1.35}
+.settings-summary-grid .summary-value{max-width:64%;font-size:14px;font-weight:700;line-height:1.35;text-align:right;overflow-wrap:anywhere}
+@media (max-width:980px){
+  .main.settings-page{padding:18px 16px 28px!important}
+  .settings-header{margin-bottom:14px}
+  .settings-header .title{font-size:30px!important}
+  .settings-header .sub{font-size:13px;line-height:1.5}
+  .settings-layout{grid-template-columns:1fr;gap:16px}
+  .settings-form{gap:14px}
+  .settings-section{padding:16px!important}
+  .settings-section-head{display:block;margin-bottom:13px}
+  .settings-section-title{font-size:17px}
+  .settings-section-description{margin-top:4px;max-width:none;font-size:11px;text-align:left}
+  .settings-grid{grid-template-columns:1fr!important;gap:11px!important}
+  .settings-field-wide{grid-column:auto}
+  .settings-field input,.settings-field select{height:44px}
+  .settings-field textarea{min-height:76px}
+  .settings-actions{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.55fr);gap:10px}
+  .settings-actions .btn-action{width:100%!important;min-width:0;height:44px}
+  .settings-summary{position:static;padding:16px!important}
+}
+@media (max-width:420px){
+  .settings-actions{grid-template-columns:1fr}
+}
 </style></head>
 <body> <svg class="biya-icon-sprite" xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"> <symbol id="biya-icon-layout-dashboard" viewBox="0 0 24 24"> <rect width="7" height="9" x="3" y="3" rx="1"></rect> <rect width="7" height="5" x="14" y="3" rx="1"></rect> <rect width="7" height="9" x="14" y="12" rx="1"></rect> <rect width="7" height="5" x="3" y="16" rx="1"></rect> </symbol> <symbol id="biya-icon-package" viewBox="0 0 24 24"> <path d="m7.5 4.27 9 5.15"></path> <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path> <path d="m3.3 7 8.7 5 8.7-5"></path> <path d="M12 22V12"></path> </symbol> <symbol id="biya-icon-flask-conical" viewBox="0 0 24 24"> <path d="M10 2v7.31"></path> <path d="M14 9.3V2"></path> <path d="M8.5 2h7"></path> <path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path> <path d="M5.52 16h12.96"></path> </symbol> <symbol id="biya-icon-clipboard-list" viewBox="0 0 24 24"> <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path> </symbol> <symbol id="biya-icon-calculator" viewBox="0 0 24 24"> <rect width="16" height="20" x="4" y="2" rx="2"></rect> <path d="M8 6h8"></path> <path d="M16 14v4"></path> <path d="M16 10h.01"></path> <path d="M12 10h.01"></path> <path d="M8 10h.01"></path> <path d="M12 14h.01"></path> <path d="M8 14h.01"></path> <path d="M12 18h.01"></path> <path d="M8 18h.01"></path> </symbol> <symbol id="biya-icon-download" viewBox="0 0 24 24"> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="M7 10l5 5 5-5"></path> <path d="M12 15V3"></path> </symbol> <symbol id="biya-icon-settings" viewBox="0 0 24 24"> <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"></path> <circle cx="12" cy="12" r="3"></circle> </symbol> <symbol id="biya-icon-arrow-left" viewBox="0 0 24 24"> <path d="M19 12H5"></path> <path d="m12 19-7-7 7-7"></path> </symbol> <symbol id="biya-icon-search" viewBox="0 0 24 24"> <circle cx="11" cy="11" r="8"></circle> <path d="m21 21-4.3-4.3"></path> </symbol> <symbol id="biya-icon-x" viewBox="0 0 24 24"> <path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path> </symbol>
 </svg> <header class="mobile-header" aria-label="BIYA mobile navigation"> <div class="mobile-logo">BIYA<small>BUSINESS IN YOUR HAND</small></div> <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka menu">&#9776;</button>
@@ -218,45 +269,63 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 <div class="item active"><svg class="biya-icon" aria-hidden="true"><use href="#biya-icon-settings"></use></svg><span>Settings</span></div>
 <button class="btn" onclick="location.href='/menu-modules/dashboard.html'"><svg class="biya-icon" aria-hidden="true"><use href="#biya-icon-arrow-left"></use></svg><span>Kembali</span></button>
 </div>
-<div class="main">
+<div class="main settings-page">
+<div class="settings-header">
 <div class="title">Settings</div>
 <div class="sub">Atur identitas bisnis, target costing, dan preferensi sistem BIYA.</div>
-<div class="section">
-<div style="font-size:22px;font-weight:bold;margin-bottom:16px;">Business Profile</div>
-<div class="grid">
-<div><label>Business Name</label><input id="businessName" placeholder="Coffee XYZ"/></div>
-<div><label>Business Type</label><input id="businessType" placeholder="Coffee Shop"/></div>
-<div><label>Owner Name</label><input id="ownerName" placeholder="Nama Owner"/></div>
-<div><label>Phone</label><input id="phone" placeholder="08xxxxxxxxxx"/></div>
-<div><label>Email</label><input id="email" placeholder="owner@email.com"/></div>
-<div><label>Logo URL</label><input id="logoUrl" placeholder="https://.../logo.png"/></div>
-<div style="grid-column:1/-1;"><label>Address</label><textarea id="address" placeholder="Alamat bisnis"></textarea></div>
 </div>
+<div class="settings-layout">
+<div class="settings-form">
+<section class="section settings-section" aria-labelledby="businessProfileTitle">
+<div class="settings-section-head">
+<div class="settings-section-title" id="businessProfileTitle">Business Profile</div>
+<div class="settings-section-description">Informasi utama yang ditampilkan pada laporan dan export.</div>
 </div>
-<div class="section">
-<div style="font-size:22px;font-weight:bold;margin-bottom:16px;">Cost Settings</div>
-<div class="grid">
-<div><label>Food Cost Target %</label><input id="foodCostTarget" placeholder="35" type="number"/></div>
-<div><label>Profit Target %</label><input id="profitTarget" placeholder="50" type="number"/></div>
-<div><label>Currency</label><select id="currency"><option value="IDR">IDR</option><option value="USD">USD</option><option value="MYR">MYR</option></select></div>
-<div><label>Date Format</label><select id="dateFormat"><option value="dd/mm/yyyy">DD/MM/YYYY</option><option value="yyyy-mm-dd">YYYY-MM-DD</option></select></div>
+<div class="settings-grid">
+<div class="settings-field"><label for="businessName">Business Name</label><input id="businessName" placeholder="Coffee XYZ"/></div>
+<div class="settings-field"><label for="businessType">Business Type</label><input id="businessType" placeholder="Coffee Shop"/></div>
+<div class="settings-field"><label for="ownerName">Owner Name</label><input id="ownerName" placeholder="Nama Owner"/></div>
+<div class="settings-field"><label for="phone">Phone</label><input id="phone" placeholder="08xxxxxxxxxx"/></div>
+<div class="settings-field"><label for="email">Email</label><input id="email" placeholder="owner@email.com"/></div>
+<div class="settings-field"><label for="logoUrl">Logo URL</label><input id="logoUrl" placeholder="https://.../logo.png"/></div>
+<div class="settings-field settings-field-wide"><label for="address">Address</label><textarea id="address" placeholder="Alamat bisnis"></textarea></div>
 </div>
-<div class="pill-note" style="margin-top:10px;">Dipakai di Dashboard, Product HPP, dan Export Center</div>
+</section>
+<section class="section settings-section" aria-labelledby="costSettingsTitle">
+<div class="settings-section-head">
+<div class="settings-section-title" id="costSettingsTitle">Cost Settings</div>
+<div class="settings-section-description">Target utama untuk perhitungan biaya dan profit.</div>
 </div>
-<div class="section">
-<div style="font-size:22px;font-weight:bold;margin-bottom:16px;">System</div>
-<div class="grid">
-<div><label>Auto Capitalize</label><select id="autoCapitalize"><option value="on">ON</option><option value="off">OFF</option></select></div>
-<div><label>Default Status</label><select id="defaultStatus"><option>ACTIVE</option><option>INACTIVE</option></select></div>
+<div class="settings-grid">
+<div class="settings-field"><label for="foodCostTarget">Food Cost Target %</label><input id="foodCostTarget" placeholder="35" type="number"/></div>
+<div class="settings-field"><label for="profitTarget">Profit Target %</label><input id="profitTarget" placeholder="50" type="number"/></div>
+<div class="settings-field"><label for="currency">Currency</label><select id="currency"><option value="IDR">IDR</option><option value="USD">USD</option><option value="MYR">MYR</option></select></div>
+<div class="settings-field"><label for="dateFormat">Date Format</label><select id="dateFormat"><option value="dd/mm/yyyy">DD/MM/YYYY</option><option value="yyyy-mm-dd">YYYY-MM-DD</option></select></div>
 </div>
-<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px;">
+<div class="pill-note settings-helper">Dipakai di Dashboard, Product HPP, dan Export Center</div>
+</section>
+<section class="section settings-section" aria-labelledby="systemSettingsTitle">
+<div class="settings-section-head">
+<div class="settings-section-title" id="systemSettingsTitle">System</div>
+<div class="settings-section-description">Preferensi default untuk input dan status data baru.</div>
+</div>
+<div class="settings-grid">
+<div class="settings-field"><label for="autoCapitalize">Auto Capitalize</label><select id="autoCapitalize"><option value="on">ON</option><option value="off">OFF</option></select></div>
+<div class="settings-field"><label for="defaultStatus">Default Status</label><select id="defaultStatus"><option>ACTIVE</option><option>INACTIVE</option></select></div>
+</div>
+</section>
+<div class="settings-actions" aria-label="Settings actions">
 <button class="btn-action" id="saveBtn">Simpan Settings</button>
-<button class="btn-action" id="resetBtn" style="background:#334155">Reset</button>
+<button class="btn-action btn-reset" id="resetBtn">Reset</button>
 </div>
 </div>
-<div class="section">
-<div style="font-size:22px;font-weight:bold;margin-bottom:16px;">Current Summary</div>
-<div class="summary-grid" id="summaryGrid"></div>
+<section class="section settings-section settings-summary" aria-labelledby="currentSummaryTitle">
+<div class="settings-section-head">
+<div class="settings-section-title" id="currentSummaryTitle">Current Summary</div>
+<div class="settings-section-description">Ringkasan setting aktif.</div>
+</div>
+<div class="summary-grid settings-summary-grid" id="summaryGrid"></div>
+</section>
 </div>
 </div>
 </div>
@@ -267,7 +336,7 @@ const defaults = { businessName: "BIYA Cost Management", businessType: "F&B", ow
 }
 function saveSettings(s){ localStorage.setItem(KEY, JSON.stringify(s));
 }
-function fill(){ const s = loadSettings(); businessName.value = s.businessName; businessType.value = s.businessType; ownerName.value = s.ownerName; phone.value = s.phone; email.value = s.email; address.value = s.address; logoUrl.value = s.logoUrl; foodCostTarget.value = s.foodCostTarget; profitTarget.value = s.profitTarget; currency.value = s.currency; dateFormat.value = s.dateFormat; autoCapitalize.value = s.autoCapitalize; defaultStatus.value = s.defaultStatus; const summary = [ ["Business", s.businessName], ["Type", s.businessType], ["Food Cost Target", s.foodCostTarget + "%"], ["Profit Target", s.profitTarget + "%"], ["Currency", s.currency], ["Auto Capitalize", s.autoCapitalize.toUpperCase()] ]; summaryGrid.innerHTML = summary.map(([k,v])=>`<div class="summary-box"><div class="summary-title">${k}</div><div class="summary-value">${v}</div></div>`).join("");
+function fill(){ const s = loadSettings(); businessName.value = s.businessName; businessType.value = s.businessType; ownerName.value = s.ownerName; phone.value = s.phone; email.value = s.email; address.value = s.address; logoUrl.value = s.logoUrl; foodCostTarget.value = s.foodCostTarget; profitTarget.value = s.profitTarget; currency.value = s.currency; dateFormat.value = s.dateFormat; autoCapitalize.value = s.autoCapitalize; defaultStatus.value = s.defaultStatus; const displayValue = value => value === null || value === undefined || String(value).trim() === "" ? "-" : value; const displayPercent = value => displayValue(value) === "-" ? "-" : `${value}%`; const summary = [ ["Business", displayValue(s.businessName)], ["Type", displayValue(s.businessType)], ["Food Cost Target", displayPercent(s.foodCostTarget)], ["Profit Target", displayPercent(s.profitTarget)], ["Currency", displayValue(s.currency)], ["Auto Capitalize", displayValue(s.autoCapitalize).toString().toUpperCase()] ]; summaryGrid.innerHTML = summary.map(([k,v])=>`<div class="summary-box"><div class="summary-title">${k}</div><div class="summary-value">${v}</div></div>`).join("");
 } saveBtn.onclick = () => { const s = { businessName: businessName.value.trim() || defaults.businessName, businessType: businessType.value.trim(), ownerName: ownerName.value.trim(), phone: phone.value.trim(), email: email.value.trim(), address: address.value.trim(), logoUrl: logoUrl.value.trim(), foodCostTarget: Number(foodCostTarget.value) || defaults.foodCostTarget, profitTarget: Number(profitTarget.value) || defaults.profitTarget, currency: currency.value, dateFormat: dateFormat.value, autoCapitalize: autoCapitalize.value, defaultStatus: defaultStatus.value }; saveSettings(s); fill(); alert("Settings tersimpan");
 };
 resetBtn.onclick = () => { localStorage.removeItem(KEY); fill(); alert("Settings direset");
