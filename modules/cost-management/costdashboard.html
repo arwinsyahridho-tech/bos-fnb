@@ -281,6 +281,355 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
   .status{font-size:10px!important;padding:5px 8px!important;width:max-content}
   .insight-item{padding:10px 11px!important;border-radius:12px!important;line-height:1.45!important;font-size:12px!important}
 }
+</style> <style id="biya-dashboard-top-cards">
+.top-grid{
+  gap:12px!important;
+  margin-top:14px;
+  align-items:stretch;
+}
+.top-grid > .top-card{
+  min-width:0;
+  margin-bottom:0!important;
+  padding:18px!important;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.top-card .card-title{
+  margin-bottom:4px;
+  font-size:18px;
+  line-height:1.2;
+}
+.top-card .card-sub{
+  min-height:30px;
+  margin-bottom:12px;
+  font-size:11px;
+  line-height:1.35;
+}
+.top-card-body{
+  min-height:0;
+  flex:1;
+}
+.health-score-compact{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.health-score-compact .score-circle{
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
+  border-radius:14px;
+  font-size:23px;
+}
+.health-copy{
+  min-width:0;
+}
+.health-label{
+  font-size:15px;
+  font-weight:800;
+  line-height:1.25;
+}
+.health-metrics,
+.product-mini-stats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+}
+.health-metrics{
+  gap:6px;
+  margin-top:8px;
+}
+.health-metric{
+  padding:6px 8px;
+}
+.health-metric .metric-label{
+  margin-bottom:2px;
+}
+.health-metric,
+.product-mini-stat{
+  min-width:0;
+  padding:8px 9px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;
+  background:rgba(4,18,43,.48);
+}
+.metric-label{
+  display:block;
+  margin-bottom:3px;
+  color:rgba(215,227,255,.6);
+  font-size:9px;
+  line-height:1.15;
+  text-transform:uppercase;
+  letter-spacing:.35px;
+}
+.metric-value{
+  display:block;
+  min-width:0;
+  overflow:hidden;
+  font-size:12px;
+  font-weight:800;
+  line-height:1.2;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.product-compact{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+.product-compact-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+.product-compact-thumb{
+  width:44px;
+  height:44px;
+  flex:0 0 44px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:11px;
+  background:#07173a;
+}
+.product-compact-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.product-compact-thumb .empty{
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:4px;
+  color:#9bb3ee;
+  font-size:8px;
+  line-height:1.15;
+  text-align:center;
+}
+.product-compact-copy{
+  min-width:0;
+}
+.product-compact .product-name,
+.ranking-name{
+  display:-webkit-box;
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+}
+.product-compact .product-name{
+  margin:0 0 5px;
+  font-size:14px;
+  line-height:1.25;
+}
+.product-category-row{
+  display:flex;
+  gap:5px;
+  min-width:0;
+  overflow:hidden;
+}
+.product-category-badge{
+  display:inline-block;
+  max-width:100%;
+  overflow:hidden;
+  padding:3px 6px;
+  border-radius:999px;
+  background:rgba(0,102,255,.18);
+  color:#b9d5ff;
+  font-size:9px;
+  line-height:1.15;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.product-category-badge.secondary{
+  background:rgba(255,255,255,.07);
+  color:rgba(215,227,255,.72);
+}
+.product-mini-stats{
+  margin-top:auto;
+  padding-top:12px;
+}
+.product-mini-stat.best{
+  background:rgba(0,214,107,.1);
+}
+.product-mini-stat.worst{
+  background:rgba(255,77,79,.1);
+}
+.ranking-list{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+.ranking-item{
+  display:grid;
+  grid-template-columns:22px minmax(0,1fr) auto;
+  gap:8px;
+  align-items:center;
+  min-height:45px;
+  padding:7px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.ranking-item:last-child{
+  border-bottom:0;
+}
+.ranking-position{
+  width:22px;
+  height:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:7px;
+  background:rgba(0,102,255,.18);
+  color:#b9d5ff;
+  font-size:10px;
+  font-weight:800;
+}
+.ranking-copy{
+  min-width:0;
+}
+.ranking-name{
+  font-size:11px;
+  font-weight:800;
+  line-height:1.2;
+}
+.ranking-category{
+  max-width:100%;
+  margin-top:3px;
+  overflow:hidden;
+  color:rgba(215,227,255,.6);
+  font-size:9px;
+  line-height:1.15;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.ranking-stats{
+  max-width:82px;
+  text-align:right;
+}
+.ranking-profit{
+  overflow:hidden;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.2;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.ranking-margin{
+  margin-top:3px;
+  color:#96f5b7;
+  font-size:9px;
+  line-height:1.15;
+}
+@media (min-width:981px){
+  .top-grid{
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  }
+  .top-grid > .top-card{
+    height:244px;
+  }
+}
+@media (min-width:981px) and (max-width:1180px){
+  .top-grid > .top-card{
+    padding:14px!important;
+  }
+  .top-card .card-title{
+    font-size:15px;
+  }
+  .top-card .card-sub{
+    min-height:27px;
+    margin-bottom:8px;
+    font-size:10px;
+  }
+  .health-score-compact{
+    gap:8px;
+  }
+  .health-score-compact .score-circle{
+    width:42px;
+    height:42px;
+    flex-basis:42px;
+    border-radius:12px;
+    font-size:20px;
+  }
+  .health-label{
+    font-size:12px;
+  }
+  .health-copy .muted{
+    display:none;
+  }
+  .health-metrics{
+    margin-top:6px;
+  }
+  .health-metric{
+    padding:5px 6px;
+  }
+  .metric-label{
+    font-size:8px;
+  }
+  .metric-value{
+    font-size:11px;
+  }
+  .product-compact-head{
+    gap:7px;
+  }
+  .product-compact-thumb{
+    width:38px;
+    height:38px;
+    flex-basis:38px;
+  }
+  .product-compact .product-name{
+    font-size:12px;
+  }
+  .product-category-badge{
+    padding:3px 5px;
+    font-size:8px;
+  }
+  .product-mini-stats{
+    gap:5px;
+  }
+  .product-mini-stat{
+    padding:7px 6px;
+  }
+  .ranking-item{
+    grid-template-columns:19px minmax(0,1fr) auto;
+    gap:5px;
+  }
+  .ranking-position{
+    width:19px;
+    height:19px;
+  }
+  .ranking-stats{
+    max-width:58px;
+  }
+}
+@media (min-width:769px) and (max-width:980px){
+  .top-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+}
+@media (max-width:768px){
+  .top-grid{
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+  }
+  .top-grid > .top-card{
+    height:auto;
+    min-height:0;
+    padding:14px!important;
+  }
+  .top-card .card-sub{
+    min-height:0;
+    margin-bottom:10px!important;
+  }
+  .product-mini-stats{
+    margin-top:10px;
+    padding-top:0;
+  }
+  .ranking-item{
+    min-height:43px;
+  }
+}
 </style></head>
 <body> <svg class="biya-icon-sprite" xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true"> <symbol id="biya-icon-layout-dashboard" viewBox="0 0 24 24"> <rect width="7" height="9" x="3" y="3" rx="1"></rect> <rect width="7" height="5" x="14" y="3" rx="1"></rect> <rect width="7" height="9" x="14" y="12" rx="1"></rect> <rect width="7" height="5" x="3" y="16" rx="1"></rect> </symbol> <symbol id="biya-icon-package" viewBox="0 0 24 24"> <path d="m7.5 4.27 9 5.15"></path> <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path> <path d="m3.3 7 8.7 5 8.7-5"></path> <path d="M12 22V12"></path> </symbol> <symbol id="biya-icon-flask-conical" viewBox="0 0 24 24"> <path d="M10 2v7.31"></path> <path d="M14 9.3V2"></path> <path d="M8.5 2h7"></path> <path d="M14 9.3a6.5 6.5 0 1 1-4 0"></path> <path d="M5.52 16h12.96"></path> </symbol> <symbol id="biya-icon-clipboard-list" viewBox="0 0 24 24"> <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect> <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path> <path d="M12 11h4"></path> <path d="M12 16h4"></path> <path d="M8 11h.01"></path> <path d="M8 16h.01"></path> </symbol> <symbol id="biya-icon-calculator" viewBox="0 0 24 24"> <rect width="16" height="20" x="4" y="2" rx="2"></rect> <path d="M8 6h8"></path> <path d="M16 14v4"></path> <path d="M16 10h.01"></path> <path d="M12 10h.01"></path> <path d="M8 10h.01"></path> <path d="M12 14h.01"></path> <path d="M8 14h.01"></path> <path d="M12 18h.01"></path> <path d="M8 18h.01"></path> </symbol> <symbol id="biya-icon-download" viewBox="0 0 24 24"> <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path> <path d="M7 10l5 5 5-5"></path> <path d="M12 15V3"></path> </symbol> <symbol id="biya-icon-settings" viewBox="0 0 24 24"> <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2Z"></path> <circle cx="12" cy="12" r="3"></circle> </symbol> <symbol id="biya-icon-arrow-left" viewBox="0 0 24 24"> <path d="M19 12H5"></path> <path d="m12 19-7-7 7-7"></path> </symbol> <symbol id="biya-icon-search" viewBox="0 0 24 24"> <circle cx="11" cy="11" r="8"></circle> <path d="m21 21-4.3-4.3"></path> </symbol> <symbol id="biya-icon-x" viewBox="0 0 24 24"> <path d="M18 6 6 18"></path> <path d="m6 6 12 12"></path> </symbol>
 </svg> <header class="mobile-header" aria-label="BIYA mobile navigation"> <div class="mobile-logo">BIYA<small>BUSINESS IN YOUR HAND</small></div> <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka menu">&#9776;</button>
@@ -322,30 +671,30 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 </div>
 </div>
 <div class="top-grid">
-<div class="section">
+<div class="section top-card">
 <div class="card-title">Business Health</div>
 <div class="card-sub">Skor ringkas kondisi bisnis</div>
-<div id="healthScoreCard"></div>
+<div class="top-card-body" id="healthScoreCard"></div>
 </div>
 <div class="section dashboard-smart-mobile">
 <div class="card-title">Smart Alert</div>
 <div class="card-sub">Peringatan otomatis yang perlu dicek</div>
 <div id="quickAlertCardMobile"></div>
 </div>
-<div class="section">
+<div class="section top-card">
 <div class="card-title">Best Product</div>
 <div class="card-sub">Produk dengan profit tertinggi</div>
-<div id="bestProductCard"></div>
+<div class="top-card-body" id="bestProductCard"></div>
 </div>
-<div class="section">
+<div class="section top-card">
 <div class="card-title">Worst Product</div>
 <div class="card-sub">Produk dengan margin terendah</div>
-<div id="worstProductCard"></div>
+<div class="top-card-body" id="worstProductCard"></div>
 </div>
-<div class="section">
+<div class="section top-card">
 <div class="card-title">Top Profit Ranking</div>
 <div class="card-sub">3 produk paling untung</div>
-<div id="rankingCard"></div>
+<div class="top-card-body" id="rankingCard"></div>
 </div>
 </div>
 <div class="section dashboard-smart-section dashboard-smart-desktop">
@@ -463,10 +812,11 @@ function buildAlerts(data = dashboardData()){ const alerts = []; const validFood
 function getHealthScore(avgMargin, avgFood, totalProduct, alertCount){ let score = 0; if(avgMargin >= PROFIT_TARGET) score += 2; else if(avgMargin >= PROFIT_TARGET * 0.8) score += 1; if(avgFood > 0 && avgFood <= FOOD_COST_TARGET) score += 2; else if(avgFood > 0 && avgFood <= FOOD_COST_TARGET * 1.15) score += 1; if(totalProduct >= 4) score += 1; if(alertCount <= 1) score += 1; else if(alertCount <= 3) score += 0.5; if(score >= 5) return { letter:"A", label:"Sangat Sehat" }; if(score >= 4) return { letter:"B", label:"Sehat" }; if(score >= 2.5) return { letter:"C", label:"Perlu Perhatian" }; return { letter:"D", label:"Bahaya" }; }
 function topByProfit(data){ return [...data].filter(p => p.hasSelling).sort((a,b) => (b.grossProfit - a.grossProfit) || (b.grossMarginPct - a.grossMarginPct))[0]; }
 function lowestByMargin(data){ return [...data].filter(p => p.hasSelling).sort((a,b) => (a.grossMarginPct - b.grossMarginPct) || (a.grossProfit - b.grossProfit))[0]; }
-function renderSummary(){ const data = dashboardData(); const valid = data.filter(p => p.hasSelling); const avgMargin = calcAverage(valid, p => p.grossMarginPct); const avgFood = calcAverage(valid, p => p.foodCostPct); const revenue = data.reduce((sum, p) => sum + p.sellingPrice, 0); document.getElementById("dashTotalProduct").innerText = data.length; document.getElementById("dashAverageProfit").innerText = valid.length ? formatPercent(avgMargin) : "-"; document.getElementById("dashAverageFoodCost").innerText = valid.length ? formatPercent(avgFood) : "-"; document.getElementById("dashPotentialRevenue").innerText = formatRupiah(revenue); const alertCount = buildAlerts(data).filter(a => a.color !== "green").length; const score = getHealthScore(avgMargin, avgFood, data.length, alertCount); document.getElementById("healthScoreCard").innerHTML = '<div class="health-score"><div class="score-circle">' + escapeHtml(score.letter) + '</div><div><div style="font-size:22px;font-weight:700;">' + escapeHtml(score.label) + '</div><div class="score-desc">Food Cost Target: ' + FOOD_COST_TARGET + '%<br>Profit Target: ' + PROFIT_TARGET + '%<br>Total Product: ' + data.length + '<br>Alert Aktif: ' + alertCount + '</div></div></div>'; }
+function renderSummary(){ const data = dashboardData(); const valid = data.filter(p => p.hasSelling); const avgMargin = calcAverage(valid, p => p.grossMarginPct); const avgFood = calcAverage(valid, p => p.foodCostPct); const revenue = data.reduce((sum, p) => sum + p.sellingPrice, 0); document.getElementById("dashTotalProduct").innerText = data.length; document.getElementById("dashAverageProfit").innerText = valid.length ? formatPercent(avgMargin) : "-"; document.getElementById("dashAverageFoodCost").innerText = valid.length ? formatPercent(avgFood) : "-"; document.getElementById("dashPotentialRevenue").innerText = formatRupiah(revenue); const alertCount = buildAlerts(data).filter(a => a.color !== "green").length; const score = getHealthScore(avgMargin, avgFood, data.length, alertCount); document.getElementById("healthScoreCard").innerHTML = '<div class="health-score-compact"><div class="score-circle">' + escapeHtml(score.letter) + '</div><div class="health-copy"><div class="health-label">' + escapeHtml(score.label) + '</div><div class="muted">Ringkasan target dan alert aktif</div></div></div><div class="health-metrics"><div class="health-metric"><span class="metric-label">Food Cost</span><span class="metric-value">' + FOOD_COST_TARGET + '%</span></div><div class="health-metric"><span class="metric-label">Profit</span><span class="metric-value">' + PROFIT_TARGET + '%</span></div><div class="health-metric"><span class="metric-label">Produk</span><span class="metric-value">' + data.length + '</span></div><div class="health-metric"><span class="metric-label">Alert</span><span class="metric-value">' + alertCount + '</span></div></div>'; }
 function renderProductHero(product, tone = "green"){ if(!product) return emptyNotice("Belum ada data produk dari Supabase"); return '<div class="product-hero"><div class="thumb">' + (product.photoUrl ? '<img src="' + escapeHtml(product.photoUrl) + '" alt="' + escapeHtml(product.name) + '" />' : '<div class="empty">No Photo</div>') + '</div><div><div class="product-name">' + escapeHtml(product.name) + '</div><div class="pill-row"><span class="pill">' + escapeHtml(product.category || "-") + '</span><span class="pill gray">' + escapeHtml(product.subCategory || "-") + '</span></div><div class="pill-row"><span class="pill ' + tone + '">Profit ' + formatRupiah(product.grossProfit) + '</span><span class="pill ' + tone + '">Margin ' + displayPercent(product.grossMarginPct, product.hasSelling) + '</span></div></div></div>'; }
-function renderBestWorst(){ const data = dashboardData(); document.getElementById("bestProductCard").innerHTML = renderProductHero(topByProfit(data), "green"); document.getElementById("worstProductCard").innerHTML = renderProductHero(lowestByMargin(data), "red"); document.getElementById("lowestMarginCard").innerHTML = renderProductHero(lowestByMargin(data), "red"); }
-function renderRankings(){ const ranking = dashboardData().filter(p => p.hasSelling).sort((a,b) => (b.grossProfit - a.grossProfit) || (b.grossMarginPct - a.grossMarginPct)).slice(0,3); document.getElementById("rankingCard").innerHTML = ranking.map((p, i) => '<div style="display:flex;justify-content:space-between;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.06);' + (i===ranking.length-1 ? 'border-bottom:none;' : '') + '"><div><div style="font-weight:700;">' + (i+1) + '. ' + escapeHtml(p.name) + '</div><div class="muted">' + escapeHtml(p.category || "-") + ' - ' + escapeHtml(p.subCategory || "-") + '</div></div><div style="text-align:right;"><div style="font-weight:700;">' + formatRupiah(p.grossProfit) + '</div><div class="muted">' + displayPercent(p.grossMarginPct, p.hasSelling) + '</div></div></div>').join("") || emptyNotice("Belum ada produk valid untuk ranking"); }
+function renderCompactProduct(product, tone = "best"){ if(!product) return emptyNotice("Belum ada data produk dari Supabase"); return '<div class="product-compact"><div class="product-compact-head"><div class="product-compact-thumb">' + (product.photoUrl ? '<img src="' + escapeHtml(product.photoUrl) + '" alt="' + escapeHtml(product.name) + '" />' : '<div class="empty">No Photo</div>') + '</div><div class="product-compact-copy"><div class="product-name">' + escapeHtml(product.name) + '</div><div class="product-category-row"><span class="product-category-badge">' + escapeHtml(product.category || "Tanpa kategori") + '</span>' + (product.subCategory ? '<span class="product-category-badge secondary">' + escapeHtml(product.subCategory) + '</span>' : '') + '</div></div></div><div class="product-mini-stats"><div class="product-mini-stat ' + tone + '"><span class="metric-label">Profit</span><span class="metric-value">' + formatRupiah(product.grossProfit) + '</span></div><div class="product-mini-stat ' + tone + '"><span class="metric-label">Margin</span><span class="metric-value">' + displayPercent(product.grossMarginPct, product.hasSelling) + '</span></div></div></div>'; }
+function renderBestWorst(){ const data = dashboardData(); const worst = lowestByMargin(data); document.getElementById("bestProductCard").innerHTML = renderCompactProduct(topByProfit(data), "best"); document.getElementById("worstProductCard").innerHTML = renderCompactProduct(worst, "worst"); document.getElementById("lowestMarginCard").innerHTML = renderProductHero(worst, "red"); }
+function renderRankings(){ const ranking = dashboardData().filter(p => p.hasSelling).sort((a,b) => (b.grossProfit - a.grossProfit) || (b.grossMarginPct - a.grossMarginPct)).slice(0,3); document.getElementById("rankingCard").innerHTML = ranking.length ? '<div class="ranking-list">' + ranking.map((p, i) => '<div class="ranking-item"><div class="ranking-position">' + (i+1) + '</div><div class="ranking-copy"><div class="ranking-name">' + escapeHtml(p.name) + '</div><div class="ranking-category">' + escapeHtml(p.category || "Tanpa kategori") + '</div></div><div class="ranking-stats"><div class="ranking-profit">' + formatRupiah(p.grossProfit) + '</div><div class="ranking-margin">' + displayPercent(p.grossMarginPct, p.hasSelling) + '</div></div></div>').join("") + '</div>' : emptyNotice("Belum ada produk valid untuk ranking"); }
 function renderSmartAlert(){ const alerts = buildAlerts(dashboardData()); const moreNote = alerts.length > 3 ? '<div class="dashboard-more-note">Lihat semua alert (' + alerts.length + ')</div>' : ""; const html = '<div class="alert-list">' + alerts.map(a => '<div class="alert-item"><span class="alert-dot dot-' + a.color + '"></span><div>' + escapeHtml(a.text) + '</div></div>').join("") + moreNote + '</div>'; ["quickAlertCard","quickAlertCardMobile"].forEach(id => { const target = document.getElementById(id); if(target) target.innerHTML = html; }); }
 function renderCategoryPerformance(){ const groups = {}; dashboardData().forEach(p => { const key = p.category || "Uncategorized"; (groups[key] ||= []).push(p); }); const entries = Object.entries(groups).sort((a,b) => b[1].length - a[1].length); document.getElementById("categoryMeta").innerText = entries.length + " kategori"; document.getElementById("categoryPerformance").innerHTML = entries.map(([cat, items]) => { const valid = items.filter(p => p.hasSelling); return '<div class="mini-box"><div class="mini-title">' + escapeHtml(cat) + '</div><div class="mini-value">' + items.length + ' Product</div><div class="muted" style="margin-top:8px;">Avg Profit ' + (valid.length ? formatPercent(calcAverage(valid, p => p.grossMarginPct)) : '-') + '</div><div class="muted">Avg Food Cost ' + (valid.length ? formatPercent(calcAverage(valid, p => p.foodCostPct)) : '-') + '</div></div>'; }).join("") || emptyNotice("Belum ada kategori dari Supabase"); }
 function renderMissingData(){ const data = dashboardData(); const missing = []; const count = predicate => data.filter(predicate).length; const noPhoto = count(p => !p.photoUrl), noSelling = count(p => !p.hasSelling), noRecipe = count(p => !p.hasRecipe), noCategory = count(p => !p.category), noSub = count(p => !p.subCategory), invalid = count(p => !Number.isFinite(p.sellingPrice) || !Number.isFinite(p.recipeCost)); if(noPhoto) missing.push({ color:"yellow", text:noPhoto + " produk belum memiliki foto" }); if(noSelling) missing.push({ color:"red", text:noSelling + " produk belum memiliki selling price" }); if(noRecipe) missing.push({ color:"red", text:noRecipe + " produk belum memiliki HPP/recipe lengkap" }); if(noCategory) missing.push({ color:"yellow", text:noCategory + " produk belum memiliki category" }); if(noSub) missing.push({ color:"yellow", text:noSub + " produk belum memiliki sub category" }); if(invalid) missing.push({ color:"red", text:invalid + " produk memiliki angka tidak valid" }); if(!missing.length) missing.push({ color:"green", text:"Semua data produk terlihat lengkap." }); document.getElementById("missingDataList").innerHTML = missing.map(a => '<div class="alert-item"><span class="alert-dot dot-' + a.color + '"></span><div>' + escapeHtml(a.text) + '</div></div>').join(""); }
