@@ -245,6 +245,10 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 .restore-message{min-height:16px}
 .restore-message.success{color:#96f5b7}
 .restore-message.error{color:#ffb4b4}
+.export-status{margin-bottom:16px;padding:13px 15px;border:1px solid rgba(46,216,255,.2);border-radius:13px;background:rgba(0,102,255,.12);color:#d7e3ff;font-size:13px;line-height:1.5}
+.export-status.hidden{display:none}
+.export-status.error{border-color:rgba(255,77,79,.35);background:rgba(255,77,79,.14);color:#ffcccc}
+.export-status.success{border-color:rgba(0,214,107,.3);background:rgba(0,214,107,.12);color:#b8ffd4}
 .export-card .action:disabled{opacity:.48;cursor:not-allowed;filter:saturate(.65);box-shadow:none!important}
 .snapshot-table-wrap{overflow:auto}
 .snapshot-mobile-list{display:none}
@@ -301,12 +305,13 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 <div class="export-page">
 <div class="title">Export Center</div>
 <div class="sub">Backup data, export report, dan cetak recipe tanpa cost.</div>
+<div class="export-status" id="exportStatus" role="status" aria-live="polite">Memuat data Cost Management dari Supabase...</div>
 <div class="section">
 <div class="grid">
 <div class="card export-card">
 <h3>Full Backup JSON</h3>
 <p>Simpan semua data sistem ke file JSON.</p>
-<button class="action" onclick="downloadBackup()">Download Backup</button>
+<button class="action export-action" onclick="downloadBackup()">Download Backup</button>
 </div>
 <div class="card export-card restore-card">
 <h3>Restore Backup</h3>
@@ -316,18 +321,18 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 <label class="restore-upload-btn" for="restoreFile">Pilih File JSON</label>
 <div class="restore-file-name" id="restoreFileName">Belum ada file dipilih</div>
 </div>
-<button class="action alt" id="restoreButton" onclick="restoreBackup()" disabled>Restore</button>
+<button class="action alt export-action" id="restoreButton" onclick="restoreBackup()" disabled>Restore</button>
 <div class="restore-message" id="restoreMessage" aria-live="polite"></div>
 </div>
 <div class="card export-card">
 <h3>PDF Cost Report</h3>
 <p>Cetak laporan cost dalam format PDF.</p>
-<button class="action" onclick="exportPrintable('cost')">Open Print View</button>
+<button class="action export-action" onclick="exportPrintable('cost')">Open Print View</button>
 </div>
 <div class="card export-card">
 <h3>PDF Recipe Book</h3>
 <p>Recipe tanpa cost agar aman dibagikan ke kitchen.</p>
-<button class="action" onclick="exportPrintable('recipe')">Open Print View</button>
+<button class="action export-action" onclick="exportPrintable('recipe')">Open Print View</button>
 </div>
 </div>
 </div>
@@ -336,16 +341,16 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 <div class="export-section-sub">Unduh data operasional dalam format CSV.</div>
 <div class="grid">
 <div class="card export-card">
-<h3>Raw Material</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action" onclick="downloadCSV('rawmaterials')">Export CSV</button>
+<h3>Raw Material</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action export-action" onclick="downloadCSV('rawmaterials')">Export CSV</button>
 </div>
 <div class="card export-card">
-<h3>Preparation</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action" onclick="downloadCSV('preparations')">Export CSV</button>
+<h3>Preparation</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action export-action" onclick="downloadCSV('preparations')">Export CSV</button>
 </div>
 <div class="card export-card">
-<h3>Menu</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action" onclick="downloadCSV('menus')">Export CSV</button>
+<h3>Menu</h3><p>CSV yang bisa dibuka di Excel.</p><button class="action export-action" onclick="downloadCSV('menus')">Export CSV</button>
 </div>
 <div class="card export-card">
-<h3>Product HPP</h3><p>CSV ringkasan product HPP.</p><button class="action" onclick="downloadCSV('producthpp')">Export CSV</button>
+<h3>Product HPP</h3><p>CSV ringkasan product HPP.</p><button class="action export-action" onclick="downloadCSV('producthpp')">Export CSV</button>
 </div>
 </div>
 </div>
@@ -365,41 +370,286 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 </div>
 </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="cost-settings-service.js"></script>
+<script src="export-center-service.js"></script>
 <script>
-const KEY = "biya_settings";
-const getJSON = (k, fallback=[]) => { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fallback)); } catch(e) { return fallback; }
-};
-const getSettings = () => { try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch(e) { return {}; }
-};
-function download(filename, text, type="application/json"){ const blob = new Blob([text], {type}); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
+const SUPABASE_URL = window.BIYA_SUPABASE_URL || "https://pkjmkjyylgzjvhcreucc.supabase.co";
+const SUPABASE_ANON_KEY = window.BIYA_SUPABASE_ANON_KEY || "sb_publishable_Tq4d0o3PIAd_zh11uJa2uQ_M_zPIYFX";
+const configuredSupabaseClient = window.biyaSupabase || window.supabaseClient || null;
+const supabaseClient = configuredSupabaseClient || ((SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
+const settingsService = window.BiyaCostSettings;
+const exportService = window.BiyaExportCenter;
+const exportStatus = document.getElementById("exportStatus");
+const restoreFile = document.getElementById("restoreFile");
+const restoreFileName = document.getElementById("restoreFileName");
+const restoreButton = document.getElementById("restoreButton");
+const restoreMessage = document.getElementById("restoreMessage");
+const snapshotBody = document.getElementById("snapshotBody");
+const snapshotCards = document.getElementById("snapshotCards");
+let exportDataset = null;
+let isBusy = false;
+
+function escapeHTML(value){
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;"
+  }[character]));
 }
-function toCSV(rows, headers){ const esc = v => `"${String(v ?? "").replaceAll('"','""')}"`; return [headers.map(esc).join(","), ...rows.map(r => headers.map(h => esc(r[h])).join(","))].join("\n");
+function showStatus(message = "", tone = "info"){
+  exportStatus.textContent = message;
+  exportStatus.className = "export-status" + (message ? "" : " hidden") + (tone === "error" ? " error" : tone === "success" ? " success" : "");
 }
-function slugDate(){ return new Date().toISOString().slice(0,10);
+function setRestoreMessage(message = "", tone = ""){
+  restoreMessage.textContent = message;
+  restoreMessage.className = ("restore-message " + tone).trim();
 }
-function makeBackup(){ return { settings: getSettings(), rawMaterials: getJSON("biya_rawMaterials", []), preparations: getJSON("biya_preparations", []), menus: getJSON("biya_menus", []), productHPP: getJSON("biya_producthpp", []), };
+function setBusy(state, message){
+  isBusy = state;
+  document.querySelectorAll(".export-action").forEach(button => {
+    button.disabled = state || (button === restoreButton && !restoreFile.files?.[0]);
+  });
+  if(message) showStatus(message);
 }
-function downloadBackup(){ download(`BIYA_BACKUP_${slugDate()}.json`, JSON.stringify(makeBackup(), null, 2));
+function download(filename, text, type = "application/json"){
+  const blob = new Blob(["\ufeff", text], { type });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
 }
-function setRestoreMessage(message="", type=""){ const box = document.getElementById("restoreMessage"); if(!box) return; box.textContent = message; box.className = `restore-message ${type}`.trim();
+function toCSV(rows){
+  if(!rows.length) return "";
+  const headers = [...new Set(rows.flatMap(row => Object.keys(row)))];
+  const escapeCell = value => `"${String(value ?? "").replaceAll('"', '""')}"`;
+  return [
+    headers.map(escapeCell).join(","),
+    ...rows.map(row => headers.map(header => escapeCell(row[header])).join(","))
+  ].join("\n");
 }
-function updateRestoreFileName(){ const input = document.getElementById("restoreFile"), label = document.getElementById("restoreFileName"), button = document.getElementById("restoreButton"), file = input?.files?.[0]; if(label) label.textContent = file ? file.name : "Belum ada file dipilih"; if(button) button.disabled = !file; setRestoreMessage("");
+function slugDate(){ return new Date().toISOString().slice(0, 10); }
+function formatMoney(value, currency = "IDR"){
+  const amount = Number(value) || 0;
+  try{
+    return new Intl.NumberFormat("id-ID", { style:"currency", currency, maximumFractionDigits:0 }).format(amount);
+  }catch(error){
+    return "Rp " + Math.round(amount).toLocaleString("id-ID");
+  }
 }
-function restoreBackup(){ const input = document.getElementById("restoreFile"), f = input?.files?.[0]; if(!f){ setRestoreMessage("Pilih file JSON terlebih dahulu.", "error"); return; } const reader = new FileReader(); reader.onload = () => { try{ const data = JSON.parse(reader.result); if(data.settings) localStorage.setItem(KEY, JSON.stringify(data.settings)); if(data.rawMaterials) localStorage.setItem("biya_rawMaterials", JSON.stringify(data.rawMaterials)); if(data.preparations) localStorage.setItem("biya_preparations", JSON.stringify(data.preparations)); if(data.menus) localStorage.setItem("biya_menus", JSON.stringify(data.menus)); if(data.productHPP) localStorage.setItem("biya_producthpp", JSON.stringify(data.productHPP)); setRestoreMessage("Backup berhasil direstore. Memuat ulang halaman...", "success"); setTimeout(() => location.reload(), 700); }catch(e){ console.error("[Export Center] Restore backup gagal", e); setRestoreMessage("File backup tidak valid.", "error"); } }; reader.onerror = () => setRestoreMessage("Gagal membaca file backup.", "error"); reader.readAsText(f);
+function formatPercent(value){ return (Number(value) || 0).toFixed(2) + "%"; }
+function formatSnapshotDate(value){
+  if(!value) return "-";
+  const date = new Date(value);
+  if(Number.isNaN(date.getTime())) return String(value);
+  return new Intl.DateTimeFormat("id-ID", {
+    dateStyle:"medium",
+    timeStyle:"short"
+  }).format(date);
 }
-function downloadCSV(kind){ const s = getSettings(); let rows = [], headers = []; if(kind === "rawmaterials"){ rows = getJSON("biya_rawMaterials", []); headers = ["nama","merk","kategori","supplier","qty","buyUnit","harga","conversion","unit","waste"]; }else if(kind === "preparations"){ rows = getJSON("biya_preparations", []); headers = ["name","category","status","yieldQty","yieldUnit","waste","total","costPerYield"]; }else if(kind === "menus"){ rows = getJSON("biya_menus", []); headers = ["name","category","subCategory","sellingPrice","status","description","photoUrl"]; }else if(kind === "producthpp"){ rows = getJSON("biya_producthpp", []); headers = ["name","category","subCategory","sellingPrice","hpp","profitRp","profitPct","foodCostPct"]; } const csv = toCSV(rows, headers); download(`${kind}_${slugDate()}.csv`, csv, "text/csv");
+function renderSnapshot(dataset){
+  const rows = exportService.snapshotRows(dataset).map(row => [row[0], row[1], formatSnapshotDate(row[2])]);
+  snapshotBody.innerHTML = rows.map(row =>
+    `<tr><td>${escapeHTML(row[0])}</td><td>${escapeHTML(row[1])}</td><td>${escapeHTML(row[2])}</td></tr>`
+  ).join("");
+  snapshotCards.innerHTML = rows.map(row =>
+    `<div class="snapshot-card"><div class="snapshot-card-top"><div class="snapshot-name">${escapeHTML(row[0])}</div><div class="snapshot-count">Count: ${escapeHTML(row[1])}</div></div><div class="snapshot-date">Last Update: ${escapeHTML(row[2])}</div></div>`
+  ).join("");
 }
-function exportPrintable(kind){ const s = getSettings(); let body = ""; if(kind === "cost"){ const menus = getJSON("biya_menus", []); body = `<h1>BIYA Cost Report</h1><p>${s.businessName || "BIYA"}</p>` + menus.map(m => `<div style="margin:16px 0;padding:16px;border:1px solid #ccc;border-radius:12px;"><h3>${m.name}</h3><p>Category: ${m.category}</p><p>Sub Category: ${m.subCategory || "-"}</p><p>Selling Price: ${m.sellingPrice || "-"}</p><p>Description: ${m.description || "-"}</p></div>`).join(""); }else{ const menus = getJSON("biya_menus", []); body = `<h1>BIYA Recipe Book</h1><p>${s.businessName || "BIYA"}</p>` + menus.map(m => { const rows = (m.ingredients || []).map(i => `<li>${i.ingredient || i.name || "-"} - ${i.qty || ""} ${i.unit || ""}</li>`).join(""); return `<div style="margin:16px 0;padding:16px;border:1px solid #ccc;border-radius:12px;"><h3>${m.name}</h3><ul>${rows || "<li>-</li>"}</ul></div>`; }).join(""); } const w = window.open("", "_blank"); w.document.write(`<html><head><title>BIYA Print</title><style>body{font-family:Arial;padding:24px} h1{margin-bottom:8px}</style></head><body>${body}
-</body></html>`); w.document.close(); w.focus(); w.print();
+async function loadExportData(){
+  if(!supabaseClient || !settingsService || !exportService){
+    const error = new Error("Supabase client atau service Export Center belum tersedia.");
+    console.error("[Export Center] Inisialisasi gagal", { error });
+    exportDataset = exportService?.loadLocalFallback(settingsService) || null;
+    if(exportDataset) renderSnapshot(exportDataset);
+    showStatus("Supabase tidak tersedia. Data fallback localStorage digunakan sementara; hasil mungkin tidak lengkap.", "error");
+    return exportDataset;
+  }
+  setBusy(true, "Memuat data Cost Management dari Supabase...");
+  try{
+    exportDataset = await exportService.loadAll(supabaseClient, settingsService);
+    renderSnapshot(exportDataset);
+    const warning = exportDataset.warnings.join(" ");
+    showStatus(warning || "Data Supabase siap diekspor.", warning ? "error" : "success");
+    return exportDataset;
+  }catch(error){
+    exportService.logError("Load seluruh data Supabase gagal", error);
+    exportDataset = exportService.loadLocalFallback(settingsService);
+    renderSnapshot(exportDataset);
+    showStatus("Gagal memuat Supabase. Data fallback localStorage digunakan sementara dan tidak dianggap sebagai sumber utama.", "error");
+    return exportDataset;
+  }finally{
+    setBusy(false);
+  }
 }
-function escapeHTML(value){ return String(value ?? "").replace(/[&<>"']/g, ch => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;" }[ch]));
+async function requireDataset(){
+  if(exportDataset) return exportDataset;
+  return loadExportData();
 }
-function formatSnapshotDate(value){ if(!value) return "-"; const text = String(value).trim(); if(!text || text === "-") return "-"; const iso = text.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/); if(iso){ const months = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"]; return `${iso[3]} ${months[Number(iso[2]) - 1] || iso[2]} ${iso[1]}, ${iso[4]}:${iso[5]}`; } const parsed = new Date(text); if(!Number.isNaN(parsed.getTime())){ const months = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"]; const pad = n => String(n).padStart(2, "0"); return `${pad(parsed.getDate())} ${months[parsed.getMonth()]} ${parsed.getFullYear()}, ${pad(parsed.getHours())}:${pad(parsed.getMinutes())}`; } return text;
+async function downloadBackup(){
+  if(isBusy) return;
+  setBusy(true, "Menyiapkan Full Backup dari Supabase...");
+  try{
+    const dataset = await requireDataset();
+    const backup = {
+      ...dataset,
+      derived: { product_hpp: exportService.buildProductHpp(dataset) }
+    };
+    download(`BIYA_SUPABASE_BACKUP_${slugDate()}.json`, JSON.stringify(backup, null, 2));
+    showStatus("Full Backup JSON berhasil disiapkan.", "success");
+  }catch(error){
+    exportService.logError("Download backup gagal", error);
+    showStatus("Gagal membuat Full Backup JSON. Cek console untuk detail error.", "error");
+  }finally{
+    setBusy(false);
+  }
 }
-function renderSnapshot(){ const rows = [ ["Raw Material", getJSON("biya_rawMaterials", []).length, localStorage.getItem("biya_rawMaterials_updated") || "-"], ["Preparation", getJSON("biya_preparations", []).length, localStorage.getItem("biya_preparations_updated") || "-"], ["Menu", getJSON("biya_menus", []).length, localStorage.getItem("biya_menus_updated") || "-"], ["Product HPP", getJSON("biya_producthpp", []).length, localStorage.getItem("biya_producthpp_updated") || "-"], ["Settings", getSettings().businessName ? 1 : 0, localStorage.getItem("biya_settings_updated") || "-"], ]; const formattedRows = rows.map(r => [r[0], r[1], formatSnapshotDate(r[2])]); snapshotBody.innerHTML = formattedRows.map(r => `<tr><td>${escapeHTML(r[0])}</td><td>${escapeHTML(r[1])}</td><td>${escapeHTML(r[2])}</td></tr>`).join(""); const snapshotCards = document.getElementById("snapshotCards"); if(snapshotCards) snapshotCards.innerHTML = formattedRows.map(r => `<div class="snapshot-card"><div class="snapshot-card-top"><div class="snapshot-name">${escapeHTML(r[0])}</div><div class="snapshot-count">Count: ${escapeHTML(r[1])}</div></div><div class="snapshot-date">Last Update: ${escapeHTML(r[2])}</div></div>`).join("");
+async function downloadCSV(kind){
+  if(isBusy) return;
+  setBusy(true, "Menyiapkan CSV " + kind + "...");
+  try{
+    const dataset = await requireDataset();
+    const builders = {
+      rawmaterials: exportService.rawMaterialCsvRows,
+      preparations: exportService.preparationCsvRows,
+      menus: exportService.menuCsvRows,
+      producthpp: exportService.buildProductHpp
+    };
+    if(!builders[kind]) throw new Error("Jenis CSV tidak dikenal: " + kind);
+    const rows = builders[kind](dataset);
+    download(`${kind}_${slugDate()}.csv`, toCSV(rows), "text/csv;charset=utf-8");
+    showStatus(`CSV ${kind} berhasil disiapkan (${rows.length} baris).`, "success");
+  }catch(error){
+    exportService.logError("Export CSV gagal", error, { kind });
+    showStatus("Gagal membuat CSV " + kind + ". Cek console untuk detail error.", "error");
+  }finally{
+    setBusy(false);
+  }
 }
-renderSnapshot();
-document.getElementById("restoreFile")?.addEventListener("change", updateRestoreFileName);
+function recipeItemsByMenu(dataset){
+  const map = new Map();
+  (dataset.tables.menu_items || []).forEach(item => {
+    const key = String(item.menu_id || "");
+    if(!map.has(key)) map.set(key, []);
+    map.get(key).push(item);
+  });
+  return map;
+}
+function buildPrintDocument(kind, dataset){
+  const settings = dataset.settings || {};
+  const businessName = settings.business_name || "BIYA";
+  const currency = settings.currency || "IDR";
+  const generated = new Intl.DateTimeFormat("id-ID", { dateStyle:"long", timeStyle:"short" }).format(new Date());
+  let content = "";
+  if(kind === "cost"){
+    const hpp = exportService.buildProductHpp(dataset);
+    content = hpp.map(item => `
+      <article>
+        <h2>${escapeHTML(item.name || "-")}</h2>
+        <div class="meta">${escapeHTML(item.category || "-")} / ${escapeHTML(item.sub_category || "-")}</div>
+        <table>
+          <tr><th>Selling Price</th><td>${escapeHTML(formatMoney(item.selling_price, currency))}</td></tr>
+          <tr><th>HPP / Recipe Cost</th><td>${escapeHTML(formatMoney(item.hpp, currency))}</td></tr>
+          <tr><th>Gross Profit</th><td>${escapeHTML(formatMoney(item.profit_rp, currency))}</td></tr>
+          <tr><th>Gross Margin</th><td>${escapeHTML(formatPercent(item.profit_pct))}</td></tr>
+          <tr><th>Food Cost</th><td>${escapeHTML(formatPercent(item.food_cost_pct))}</td></tr>
+        </table>
+      </article>
+    `).join("") || "<p>Belum ada data menu.</p>";
+  }else{
+    const itemMap = recipeItemsByMenu(dataset);
+    content = (dataset.tables.menus || []).map(menu => {
+      const items = itemMap.get(String(menu.id)) || [];
+      return `
+        <article>
+          <h2>${escapeHTML(menu.nama || menu.name || "-")}</h2>
+          <div class="meta">${escapeHTML(menu.category || "-")} / ${escapeHTML(menu.sub_category || "-")}</div>
+          ${menu.description ? `<p>${escapeHTML(menu.description)}</p>` : ""}
+          <table>
+            <thead><tr><th>Bahan / Preparation</th><th>Qty</th><th>Unit</th></tr></thead>
+            <tbody>${items.map(item => `<tr><td>${escapeHTML(item.ingredient_name || "-")}</td><td>${escapeHTML(item.qty || "")}</td><td>${escapeHTML(item.unit || "")}</td></tr>`).join("") || '<tr><td colspan="3">Belum ada recipe.</td></tr>'}</tbody>
+          </table>
+        </article>
+      `;
+    }).join("") || "<p>Belum ada data menu.</p>";
+  }
+  const title = kind === "cost" ? "BIYA Cost Report" : "BIYA Recipe Book";
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${escapeHTML(title)}</title><style>
+    body{font-family:Arial,sans-serif;color:#172033;padding:28px;line-height:1.5}
+    header{border-bottom:2px solid #172033;margin-bottom:24px;padding-bottom:14px}
+    h1{margin:0 0 4px;font-size:28px} h2{margin:0 0 4px;font-size:19px}
+    .meta,.generated{color:#667085;font-size:12px} article{break-inside:avoid;margin:0 0 22px;padding-bottom:18px;border-bottom:1px solid #ddd}
+    table{width:100%;border-collapse:collapse;margin-top:12px} th,td{border:1px solid #d0d5dd;padding:8px;text-align:left;font-size:12px}
+    th{background:#f2f4f7}@media print{body{padding:0}article{page-break-inside:avoid}}
+  </style></head><body><header><h1>${escapeHTML(title)}</h1><strong>${escapeHTML(businessName)}</strong><div class="generated">Dibuat ${escapeHTML(generated)}</div></header>${content}</body></html>`;
+}
+async function exportPrintable(kind){
+  if(isBusy) return;
+  setBusy(true, "Menyiapkan tampilan cetak...");
+  try{
+    const dataset = await requireDataset();
+    const printWindow = window.open("", "_blank");
+    if(!printWindow) throw new Error("Popup diblokir browser.");
+    printWindow.document.open();
+    printWindow.document.write(buildPrintDocument(kind, dataset));
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+    showStatus(kind === "cost" ? "Cost Report siap dicetak ke PDF." : "Recipe Book tanpa harga/cost siap dicetak.", "success");
+  }catch(error){
+    exportService.logError("Export printable gagal", error, { kind });
+    showStatus("Gagal membuka tampilan cetak. Pastikan popup browser diizinkan.", "error");
+  }finally{
+    setBusy(false);
+  }
+}
+function updateRestoreFileName(){
+  const file = restoreFile.files?.[0];
+  restoreFileName.textContent = file ? file.name : "Belum ada file dipilih";
+  restoreButton.disabled = isBusy || !file;
+  setRestoreMessage("");
+}
+async function restoreBackup(){
+  const file = restoreFile.files?.[0];
+  if(!file){
+    setRestoreMessage("Pilih file JSON terlebih dahulu.", "error");
+    return;
+  }
+  if(!supabaseClient || !settingsService || !exportService){
+    setRestoreMessage("Restore membutuhkan koneksi Supabase yang aktif.", "error");
+    return;
+  }
+  if(!confirm("Restore akan menimpa seluruh data Cost Management yang dapat diakses di Supabase. Lanjutkan?")) return;
+  setBusy(true, "Membaca dan memvalidasi file backup...");
+  setRestoreMessage("Restore sedang berjalan. Jangan tutup halaman ini.");
+  try{
+    const backup = JSON.parse(await file.text());
+    exportService.validateBackup(backup);
+    exportDataset = await exportService.restoreAll(
+      supabaseClient,
+      settingsService,
+      backup,
+      message => {
+        showStatus(message);
+        setRestoreMessage(message);
+      }
+    );
+    renderSnapshot(exportDataset);
+    setRestoreMessage("Backup berhasil direstore ke Supabase.", "success");
+    showStatus("Restore Supabase selesai dan snapshot sudah diperbarui.", "success");
+  }catch(error){
+    exportService.logError("Restore backup gagal", error, { fileName:file.name });
+    setRestoreMessage("Restore gagal: " + (error.message || "cek console untuk detail."), "error");
+    showStatus("Restore Supabase gagal. Sebagian langkah mungkin sudah berjalan; cek console dan backup sebelum mencoba lagi.", "error");
+  }finally{
+    setBusy(false);
+  }
+}
+restoreFile.addEventListener("change", updateRestoreFileName);
+document.addEventListener("DOMContentLoaded", loadExportData);
+Object.assign(window, { buildPrintDocument, downloadBackup, downloadCSV, exportPrintable, restoreBackup });
 updateRestoreFileName();
 </script>
 <script>
