@@ -244,15 +244,19 @@ td{background:#102B63!important;color:#fff!important}
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="cost-settings-service.js"></script>
 <script>
 const SUPABASE_URL = window.BIYA_SUPABASE_URL || "https://pkjmkjyylgzjvhcreucc.supabase.co";
 const SUPABASE_ANON_KEY = window.BIYA_SUPABASE_ANON_KEY || "sb_publishable_Tq4d0o3PIAd_zh11uJa2uQ_M_zPIYFX";
 const configuredSupabaseClient = window.biyaSupabase || window.supabaseClient || null;
 const supabaseClient = configuredSupabaseClient || ((SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
+const settingsService = window.BiyaCostSettings;
 
 let menus = [];
 let selectedMenuId = "";
 let detailOpen = false;
+let foodCostTarget = settingsService?.DEFAULTS.food_cost_target || 35;
+let settingsLoadError = "";
 
 const el = {
   errorBox: document.getElementById("errorBox"),
@@ -313,7 +317,7 @@ function normalizeMenu(row, items = []) {
     foodCostPercent: sellingPrice > 0 ? (recipeCost / sellingPrice) * 100 : 0,
     grossProfit,
     grossMarginPercent: sellingPrice > 0 ? (grossProfit / sellingPrice) * 100 : 0,
-    recommendedSellingPrice: recipeCost > 0 ? recipeCost / 0.30 : 0,
+    recommendedSellingPrice: recipeCost > 0 ? recipeCost / (foodCostTarget / 100) : 0,
     status: row.status || "ACTIVE",
     photoUrl: row.photo_url || row.photoUrl || "",
     description: row.description || "",
@@ -344,10 +348,11 @@ function getStatusInfo(menu) {
   if (menu.sellingPrice <= 0) {
     return { label: "Harga Jual Kosong", cls: "status-gray" };
   }
-  if (menu.foodCostPercent <= 30) {
+  const healthyLimit = settingsService ? settingsService.healthyFoodCostLimit(foodCostTarget) : foodCostTarget * 0.85;
+  if (menu.foodCostPercent <= healthyLimit) {
     return { label: "Aman / Sehat", cls: "status-green" };
   }
-  if (menu.foodCostPercent <= 35) {
+  if (menu.foodCostPercent <= foodCostTarget) {
     return { label: "Perlu Dipantau", cls: "status-yellow" };
   }
   return { label: "Tidak Ideal / Perlu Review Harga", cls: "status-red" };
@@ -477,7 +482,7 @@ function renderSelectedProduct() {
           <div class="metric"><div class="metric-label">Estimated Food Cost</div><div class="metric-value">${formatPercent(menu.foodCostPercent)}</div></div>
           <div class="metric"><div class="metric-label">Gross Profit</div><div class="metric-value">${formatRupiah(menu.grossProfit)}</div></div>
           <div class="metric"><div class="metric-label">Gross Margin</div><div class="metric-value">${formatPercent(menu.grossMarginPercent)}</div></div>
-          <div class="metric"><div class="metric-label">Recommended Selling Price</div><div class="metric-value">${formatRupiah(menu.recommendedSellingPrice)}</div><div class="metric-note">Target food cost 30%</div></div>
+          <div class="metric"><div class="metric-label">Recommended Selling Price</div><div class="metric-value">${formatRupiah(menu.recommendedSellingPrice)}</div><div class="metric-note">Target food cost ${formatPercent(foodCostTarget).replace(".00%", "%")}</div></div>
         </div>
         ${menu.description ? `<div class="detail-desc">${escapeHtml(menu.description)}</div>` : ""}
       </div>
@@ -619,7 +624,7 @@ async function loadMenusFromSupabase() {
     return;
   }
   showLoading();
-  setError("");
+  setError(settingsLoadError);
   try {
     let menuResult = await supabaseClient.from("menus").select("*").order("created_at", { ascending: false });
     if (menuResult.error && menuResult.error.code === "42703") {
@@ -653,10 +658,35 @@ async function loadMenusFromSupabase() {
       hint: error?.hint,
       code: error?.code
     });
-    setError("Gagal memuat data Product HPP dari Supabase. Cek console untuk detail error.");
+    setError([settingsLoadError, "Gagal memuat data Product HPP dari Supabase. Cek console untuk detail error."].filter(Boolean).join(" "));
     menus = [];
     renderProductList();
   }
+}
+
+async function loadCostSettings() {
+  if (!settingsService) {
+    settingsLoadError = "Service Cost Settings tidak tersedia. Product HPP memakai target default 35%.";
+    console.error("[Product HPP] Load cost_settings gagal", { message: settingsLoadError });
+    return;
+  }
+  try {
+    const result = await settingsService.load(supabaseClient);
+    foodCostTarget = result.settings.food_cost_target;
+    settingsLoadError = "";
+  } catch (error) {
+    settingsService.logError("Product HPP gagal memuat cost_settings", error);
+    settingsLoadError = "Gagal memuat target Settings dari Supabase. Product HPP memakai target default 35%; cek console untuk detail.";
+  }
+}
+
+async function initProductHpp() {
+  if (!supabaseClient) {
+    await loadMenusFromSupabase();
+    return;
+  }
+  await loadCostSettings();
+  await loadMenusFromSupabase();
 }
 
 el.menuSelect.addEventListener("change", event => {
@@ -665,7 +695,7 @@ el.menuSelect.addEventListener("change", event => {
 el.searchProduct.addEventListener("input", renderProductList);
 el.filterCategory.addEventListener("change", renderProductList);
 el.filterSubCategory.addEventListener("change", renderProductList);
-document.addEventListener("DOMContentLoaded", loadMenusFromSupabase);
+document.addEventListener("DOMContentLoaded", initProductHpp);
 
 Object.assign(window, {
   loadMenusFromSupabase,
