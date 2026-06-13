@@ -51,11 +51,33 @@
     }
   }
 
+  function isLoginPage() {
+    const pathname = window.location && window.location.pathname ? window.location.pathname : "";
+    return pathname === "/" || pathname.endsWith("/index.html");
+  }
+
+  function shouldClearSessionOnLoginPage(session) {
+    if (!session || !isLoginPage()) return false;
+
+    const params = new URLSearchParams(window.location.search || "");
+    if (params.get("reason") === "logout" || params.get("forceLogout") === "1") return true;
+
+    const sessionEmail = String(session.user && session.user.email ? session.user.email : "").trim().toLowerCase();
+    const demoEmail = String(config.demoEmail || "").trim().toLowerCase();
+    return Boolean(sessionEmail && demoEmail && sessionEmail === demoEmail);
+  }
+
   async function getSession() {
     if (!client || !client.auth) return null;
     const { data, error } = await client.auth.getSession();
     if (error) throw error;
-    return data && data.session ? data.session : null;
+    const session = data && data.session ? data.session : null;
+    if (shouldClearSessionOnLoginPage(session)) {
+      const { error: signOutError } = await client.auth.signOut();
+      if (signOutError) throw signOutError;
+      return null;
+    }
+    return session;
   }
 
   async function signIn(email, password) {
