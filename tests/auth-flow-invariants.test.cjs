@@ -70,5 +70,124 @@ test("demo login menggunakan credential konfigurasi dan pesan kegagalan yang jel
   const source = read("assets/js/login-page.js");
   assert.match(source, /demoEmail, demoPassword/);
   assert.match(source, /auth\.signIn\(demoEmail, demoPassword\)/);
-  assert.match(source, /Demo akun belum tersedia atau konfigurasi demo salah\./);
+  assert.match(source, /Akun demo belum dibuat di Supabase atau password demo tidak sesuai\. Silakan buat akun demo di Supabase Auth\./);
+  assert.match(source, /setButtonLoading\(demoButton, true, "Menyiapkan demo…"\)/);
+  assert.match(source, /setButtonLoading\(demoButton, false\)/);
+});
+
+test("credential demo default terpusat di konfigurasi auth", () => {
+  const code = read("assets/js/biya-config.js");
+  const context = { window: {} };
+  vm.runInNewContext(code, context);
+
+  assert.equal(context.window.BIYA_AUTH_CONFIG.demoEmail, "demo@biya.id");
+  assert.equal(context.window.BIYA_AUTH_CONFIG.demoPassword, "BIYA-Demo-2026!");
+  assert.ok(Object.isFrozen(context.window.BIYA_AUTH_CONFIG));
+});
+
+test("signIn meneruskan credential ke Supabase Auth tanpa bypass", async () => {
+  let submittedCredentials;
+  const client = {
+    auth: {
+      async signInWithPassword(credentials) {
+        submittedCredentials = credentials;
+        return { data: { session: { access_token: "test-token" } }, error: null };
+      }
+    }
+  };
+  const code = read("assets/js/biya-auth.js");
+  const context = {
+    window: {
+      BIYA_AUTH_CONFIG: { dashboardPath: "/menu-modules/dashboard.html" },
+      biyaSupabase: client,
+      location: { origin: "https://biya.test", replace() {} }
+    },
+    URL
+  };
+  vm.runInNewContext(code, context);
+
+  const result = await context.window.BiyaAuth.signIn(" demo@biya.id ", "BIYA-Demo-2026!");
+  assert.equal(submittedCredentials.email, "demo@biya.id");
+  assert.equal(submittedCredentials.password, "BIYA-Demo-2026!");
+  assert.equal(result.session.access_token, "test-token");
+});
+
+test("klik Demo Login menjaga loading state dan menampilkan error Supabase yang jelas", async () => {
+  let demoClick;
+  let submittedCredentials;
+  const elements = new Map();
+  const element = (id) => {
+    if (!elements.has(id)) {
+      const value = {
+        id,
+        className: "",
+        dataset: {},
+        disabled: false,
+        hidden: false,
+        textContent: "",
+        value: "",
+        addEventListener(type, handler) {
+          if (id === "demoButton" && type === "click") demoClick = handler;
+        },
+        classList: { toggle() {} },
+        focus() {},
+        querySelector(selector) {
+          if (selector !== "[data-button-label]") return null;
+          if (!this.label) this.label = { textContent: id === "demoButton" ? "Demo Login" : "Button" };
+          return this.label;
+        },
+        reset() {}
+      };
+      elements.set(id, value);
+    }
+    return elements.get(id);
+  };
+  const auth = {
+    client: {},
+    config: { demoEmail: "demo@biya.id", demoPassword: "BIYA-Demo-2026!" },
+    friendlyAuthError: () => "Auth gagal",
+    getSession: async () => null,
+    safeRedirectTarget: () => "/menu-modules/dashboard.html",
+    signIn: async (email, password) => {
+      submittedCredentials = { email, password };
+      throw new Error("Invalid login credentials");
+    },
+    validateCredentials: () => ""
+  };
+  const context = {
+    console: { error() {} },
+    document: {
+      getElementById: element,
+      querySelectorAll: () => [],
+      title: ""
+    },
+    requestAnimationFrame: (callback) => callback(),
+    URLSearchParams,
+    window: {
+      BiyaAuth: auth,
+      history: { replaceState() {} },
+      location: {
+        hash: "",
+        origin: "https://biya.test",
+        pathname: "/index.html",
+        replace() {},
+        search: ""
+      }
+    }
+  };
+
+  vm.runInNewContext(read("assets/js/login-page.js"), context);
+  assert.equal(typeof demoClick, "function");
+  await demoClick();
+
+  assert.deepEqual(submittedCredentials, {
+    email: "demo@biya.id",
+    password: "BIYA-Demo-2026!"
+  });
+  assert.equal(
+    element("loginStatus").textContent,
+    "Akun demo belum dibuat di Supabase atau password demo tidak sesuai. Silakan buat akun demo di Supabase Auth."
+  );
+  assert.equal(element("demoButton").disabled, false);
+  assert.equal(element("demoButton").label.textContent, "Demo Login");
 });
