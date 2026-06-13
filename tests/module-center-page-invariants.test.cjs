@@ -10,23 +10,25 @@ const COST_ROUTE = '/modules/cost-management/costdashboard.html';
 const LEGACY_SETTINGS_ROUTE = '/modules/cost-management/settings.html';
 const ACCOUNT_CENTER_FALLBACK = 'https://biya-account-center.vercel.app';
 
-test('Module Center memisahkan URL Portal dari Cost Management Settings', () => {
+test('Module Center mempertahankan akses utama tanpa shortcut hero yang duplikat', () => {
   assert.match(source, /<script src="\/menu-modules\/config\.js"><\/script>/);
   assert.match(config, /COST_MANAGEMENT_URL/);
   assert.match(config, new RegExp(COST_ROUTE.replaceAll('/', '\\/')));
   assert.match(config, /ACCOUNT_CENTER_URL/);
   assert.match(config, new RegExp(ACCOUNT_CENTER_FALLBACK.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(config, /window\.BIYA_ACCOUNT_CENTER_URL/);
-  assert.match(source, /Open Cost Management/);
-  assert.match(source, /Open Account Center/);
-  assert.equal((source.match(/data-portal-link="cost-management"/g) || []).length, 3);
-  assert.equal((source.match(/<a\b[^>]*data-portal-link="account-center"[^>]*>/g) || []).length, 3);
+  assert.doesNotMatch(source, />\s*Open Cost Management\s*</);
+  assert.doesNotMatch(source, />\s*Open Account Center\s*</);
+  assert.doesNotMatch(source, /<a\b[^>]*href="\/modules\/cost-management\/exportcenter\.html"[^>]*>/);
+  assert.equal((source.match(/data-portal-link="cost-management"/g) || []).length, 2);
+  assert.equal((source.match(/<a\b[^>]*data-portal-link="account-center"[^>]*>/g) || []).length, 2);
+  assert.match(source, /<a class="account-shortcut"[^>]*data-portal-link="account-center"[^>]*>/);
+  assert.match(source, /<a class="module-card available"[^>]*data-portal-link="cost-management"[^>]*>/);
   assert.match(
     source,
     /document\.querySelectorAll\('\[data-portal-link="account-center"\]'\)\.forEach\(\(link\) => \{\s*link\.href = ACCOUNT_CENTER_URL;/
   );
   assert.doesNotMatch(source, new RegExp(`href="${LEGACY_SETTINGS_ROUTE}"`));
-  assert.match(source, /href="\/modules\/cost-management\/exportcenter\.html"/);
   assert.doesNotMatch(source, />Open Settings</);
   assert.doesNotMatch(source, /<h3 class="module-name">Settings<\/h3>/);
 });

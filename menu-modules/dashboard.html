@@ -244,7 +244,7 @@
     .complete-account.is-visible { display: inline-flex; }
     .complete-account:hover { text-decoration: underline; }
 
-    .hero-section { padding: 30px 1px 20px; }
+    .hero-section { padding: 30px 1px 18px; }
 
     .hero-title {
       margin: 0;
@@ -262,82 +262,14 @@
       line-height: 1.65;
     }
 
-    .quick-actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .button {
-      display: inline-flex;
-      min-height: 50px;
-      align-items: center;
-      justify-content: center;
-      gap: 9px;
-      padding: 0 18px;
-      border: 1px solid transparent;
-      border-radius: var(--radius-md);
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1;
-      text-align: center;
-      text-decoration: none;
-      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
-    }
-
-    .button svg { width: 17px; height: 17px; }
-
-    .button-primary {
-      background: var(--gradient);
-      box-shadow: 0 12px 28px rgba(18, 184, 189, 0.2);
-      color: #fff;
-    }
-
-    .button-secondary {
-      border-color: var(--border);
-      background: rgba(255, 255, 255, 0.06);
-      color: var(--text);
-    }
-
-    .button:hover { transform: translateY(-2px); }
-    .button-primary:hover { box-shadow: 0 15px 34px rgba(18, 184, 189, 0.28); }
-    .button-secondary:hover { border-color: var(--border-active); background: rgba(255, 255, 255, 0.09); }
-
-    .button:focus-visible,
     .module-card:focus-visible,
     .account-shortcut:focus-visible,
-    .utility-link:focus-visible,
     .complete-account:focus-visible {
       outline: 3px solid rgba(88, 216, 255, 0.55);
       outline-offset: 3px;
     }
 
-    .utility-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px 16px;
-      margin-top: 13px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .utility-label { color: rgba(169, 185, 211, 0.68); }
-
-    .utility-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--muted-strong);
-      font-weight: 700;
-      text-decoration: none;
-    }
-
-    .utility-link:hover { color: #fff; }
-    .utility-link svg { width: 14px; height: 14px; }
-
-    .modules-section { padding-top: 14px; }
+    .modules-section { padding-top: 10px; }
 
     .section-heading {
       display: flex;
@@ -505,7 +437,6 @@
     @media (min-width: 560px) {
       .page-shell { padding: 24px 24px 48px; }
       .welcome-card { grid-template-columns: minmax(0, 1fr) minmax(240px, 0.72fr); align-items: center; padding: 24px; }
-      .quick-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
 
@@ -514,9 +445,7 @@
       .topbar { margin-bottom: 22px; }
       .welcome-card { padding: 28px 30px; }
       .account-summary { grid-template-columns: 1fr; }
-      .hero-section { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 32px; padding: 42px 2px 28px; }
-      .hero-actions { min-width: 410px; }
-      .quick-actions { margin-top: 0; }
+      .hero-section { padding: 42px 2px 24px; }
       .section-note { display: block; }
       .module-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
       .module-card { min-height: 210px; padding: 22px; }
@@ -552,7 +481,6 @@
     <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-7"/></symbol>
     <symbol id="icon-pos" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h4"/></symbol>
     <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01"/></symbol>
-    <symbol id="icon-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
   </svg>
 
   <main class="page-shell">
@@ -589,30 +517,9 @@
     </section>
 
     <section class="hero-section" aria-labelledby="moduleCenterTitle">
-      <div>
-        <p class="eyebrow">BIYA operating system</p>
-        <h2 class="hero-title" id="moduleCenterTitle">Module Center</h2>
-        <p class="hero-subtitle">Pilih modul operasional BIYA untuk mengelola bisnis secara lebih rapi, cepat, dan terukur.</p>
-      </div>
-      <div class="hero-actions">
-        <div class="quick-actions" aria-label="Quick actions">
-          <a class="button button-primary" href="#cost-management" data-portal-link="cost-management">
-            <svg class="biya-icon" aria-hidden="true"><use href="#icon-grid"></use></svg>
-            Open Cost Management
-          </a>
-          <a class="button button-secondary" href="#account-center" data-portal-link="account-center">
-            <svg class="biya-icon" aria-hidden="true"><use href="#icon-user"></use></svg>
-            Open Account Center
-          </a>
-        </div>
-        <div class="utility-row">
-          <span class="utility-label">Quick link</span>
-          <a class="utility-link" href="/modules/cost-management/exportcenter.html">
-            <svg class="biya-icon" aria-hidden="true"><use href="#icon-download"></use></svg>
-            Export Center
-          </a>
-        </div>
-      </div>
+      <p class="eyebrow">BIYA operating system</p>
+      <h2 class="hero-title" id="moduleCenterTitle">Module Center</h2>
+      <p class="hero-subtitle">Pilih modul operasional BIYA untuk mengelola bisnis secara lebih rapi, cepat, dan terukur.</p>
     </section>
 
     <section class="modules-section" aria-labelledby="coreModulesTitle">
