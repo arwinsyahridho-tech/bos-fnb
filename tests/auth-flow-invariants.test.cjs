@@ -66,6 +66,98 @@ test("seluruh halaman internal memasang auth guard sebelum body", () => {
   }
 });
 
+function runAuthGuard(getSession) {
+  const replacedUrls = [];
+  const removedClasses = [];
+  const authStateHandlers = [];
+  const appendedElements = [];
+  const windowListeners = new Map();
+  const context = {
+    console: { error() {} },
+    document: {
+      documentElement: {
+        classList: {
+          add() {},
+          remove(className) {
+            removedClasses.push(className);
+          }
+        }
+      },
+      body: {
+        appendChild(element) {
+          appendedElements.push(element);
+        }
+      }
+    },
+    URLSearchParams,
+    window: {
+      BiyaAuth: {
+        client: {
+          auth: {
+            onAuthStateChange(handler) {
+              authStateHandlers.push(handler);
+            }
+          }
+        },
+        config: { loginPath: "/index.html" },
+        getSession
+      },
+      location: {
+        hash: "",
+        pathname: "/modules/cost-management/costdashboard.html",
+        replace(url) {
+          replacedUrls.push(url);
+        },
+        search: ""
+      },
+      addEventListener(event, handler) {
+        windowListeners.set(event, handler);
+      }
+    }
+  };
+
+  vm.runInNewContext(read("assets/js/auth-guard.js"), context);
+  return {
+    appendedElements,
+    authStateHandlers,
+    context,
+    removedClasses,
+    replacedUrls,
+    windowListeners
+  };
+}
+
+test("auth guard membuka halaman untuk sesi valid tanpa membuat tombol logout floating", async () => {
+  const session = { user: { id: "user-1" } };
+  const result = runAuthGuard(async () => session);
+  await new Promise(setImmediate);
+
+  assert.equal(result.context.window.BIYA_SESSION, session);
+  assert.equal(result.context.window.BIYA_CURRENT_USER, session.user);
+  assert.deepEqual(result.removedClasses, ["biya-auth-pending"]);
+  assert.equal(result.appendedElements.length, 0);
+  assert.equal(result.replacedUrls.length, 0);
+  assert.doesNotMatch(read("assets/js/auth-guard.js"), /installLogout|data-biya-logout|biya-logout-button/);
+  assert.doesNotMatch(read("assets/css/auth-guard.css"), /biya-logout-button/);
+});
+
+test("auth guard tetap mengarahkan sesi kosong dan event logout ke halaman login", async () => {
+  const result = runAuthGuard(async () => null);
+  await new Promise(setImmediate);
+
+  assert.equal(result.authStateHandlers.length, 1);
+  assert.equal(
+    result.replacedUrls[0],
+    "/index.html?redirect=%2Fmodules%2Fcost-management%2Fcostdashboard.html&reason=auth"
+  );
+
+  result.authStateHandlers[0]("SIGNED_OUT");
+  assert.equal(
+    result.replacedUrls[1],
+    "/index.html?redirect=%2Fmodules%2Fcost-management%2Fcostdashboard.html&reason=logout"
+  );
+});
+
 test("demo login menggunakan credential konfigurasi dan pesan kegagalan yang jelas", () => {
   const source = read("assets/js/login-page.js");
   assert.match(source, /demoEmail, demoPassword/);

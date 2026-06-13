@@ -17,28 +17,6 @@
     document.documentElement.classList.remove("biya-auth-pending");
   }
 
-  function installLogout() {
-    if (document.querySelector("[data-biya-logout]")) return;
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "biya-logout-button";
-    button.dataset.biyaLogout = "";
-    button.textContent = "Keluar";
-    button.setAttribute("aria-label", "Keluar dari BIYA");
-    button.addEventListener("click", async () => {
-      button.disabled = true;
-      button.textContent = "Keluar…";
-      try {
-        await auth.signOut();
-      } catch (error) {
-        console.error("[BIYA Auth] Logout gagal", error);
-        button.disabled = false;
-        button.textContent = "Keluar";
-      }
-    });
-    document.body.appendChild(button);
-  }
-
   async function protectPage() {
     if (!auth || !auth.client) {
       redirectToLogin("config");
@@ -54,11 +32,6 @@
       window.BIYA_SESSION = session;
       window.BIYA_CURRENT_USER = session.user;
       revealPage();
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", installLogout, { once: true });
-      } else {
-        installLogout();
-      }
     } catch (error) {
       console.error("[BIYA Auth] Pemeriksaan sesi gagal", error);
       redirectToLogin("session");
