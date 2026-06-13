@@ -329,8 +329,13 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 .export-card .action svg,.restore-upload-btn svg{width:17px;height:17px}
 .export-card .action.alt{border:1px solid rgba(100,175,255,.2)!important;background:rgba(18,59,129,.86)!important;box-shadow:none!important}
 .restore-upload-wrap{margin-top:14px;padding:12px;border:1px dashed rgba(98,173,255,.32);border-radius:14px;background:rgba(2,18,50,.28)}
+.restore-dropzone{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px}
+.restore-upload-icon{display:grid;place-items:center;width:42px;height:42px;border:1px solid rgba(89,162,255,.24);border-radius:13px;background:linear-gradient(145deg,rgba(0,102,255,.27),rgba(0,214,107,.15));color:#dffaff}
+.restore-upload-icon .biya-icon{width:21px;height:21px;margin:0}
+.restore-upload-content{display:grid;min-width:0;gap:5px}
 .restore-upload-btn{margin:0;border:1px solid rgba(100,175,255,.24);background:rgba(18,59,129,.74)}
 .restore-file-name{padding:2px 4px;color:#c9d9f1;font-size:11.5px;text-align:center}
+.restore-file-name.is-selected{color:#b8ffd4;font-weight:700}
 .restore-message{min-height:0;white-space:normal}
 .csv-grid .export-card{gap:8px;padding:15px!important}
 .csv-grid .export-card-head{align-items:center}
@@ -344,7 +349,9 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 .snapshot-card{padding:13px;border-color:var(--export-line);border-radius:15px;background:var(--export-panel)}
 .snapshot-name{font-size:13.5px}
 .snapshot-count{background:rgba(0,102,255,.18);color:#d7efff}
-.snapshot-date{color:var(--export-muted)}
+.snapshot-date{display:flex;justify-content:space-between;gap:12px;color:var(--export-muted)}
+.snapshot-date strong{color:#c8d7ef;font-weight:650}
+.export-action:focus-visible,.restore-upload-btn:focus-visible,.menu-toggle:focus-visible{outline:3px solid rgba(46,216,255,.38);outline-offset:3px}
 @media (max-width:1100px){.csv-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:699px){
   .export-hero{align-items:flex-start;gap:13px;margin-bottom:13px;padding:16px;border-radius:20px}
@@ -363,6 +370,8 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
   .export-card h3{font-size:15px!important}
   .export-card p{font-size:12px!important}
   .export-card .action,.restore-upload-btn{min-height:42px!important}
+  .restore-dropzone{grid-template-columns:1fr}
+  .restore-upload-icon{display:none}
   .csv-grid .export-card{padding:13px!important}
   .csv-grid .export-card p{min-height:0}
   .snapshot-table-wrap{display:none}
@@ -415,8 +424,13 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 <div class="export-card-head"><div class="export-card-icon purple" aria-hidden="true"><svg class="biya-icon" viewBox="0 0 24 24"><path d="M12 21V9m0 0 4 4m-4-4-4 4M5 3h14a2 2 0 0 1 2 2v3M3 8V5a2 2 0 0 1 2-2"/></svg></div><div class="export-card-copy"><h3>Restore Backup</h3><p>Pilih file backup JSON untuk mengembalikan data ke Supabase.</p></div></div>
 <div class="restore-upload-wrap">
 <input accept=".json" class="restore-file-input" id="restoreFile" type="file"/>
-<label class="restore-upload-btn" for="restoreFile"><svg class="biya-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m0-12 4 4m-4-4L8 7M5 21h14a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2"/></svg>Pilih File JSON</label>
+<div class="restore-dropzone">
+<div class="restore-upload-icon" aria-hidden="true"><svg class="biya-icon" viewBox="0 0 24 24"><path d="M12 3v12m0-12 4 4m-4-4L8 7M5 21h14a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2"/></svg></div>
+<div class="restore-upload-content">
+<label class="restore-upload-btn" for="restoreFile">Pilih File JSON</label>
 <div class="restore-file-name" id="restoreFileName">Belum ada file dipilih</div>
+</div>
+</div>
 </div>
 <button class="action alt export-action" id="restoreButton" onclick="restoreBackup()" disabled>Restore Backup</button>
 <div class="restore-message" id="restoreMessage" aria-live="polite"></div>
@@ -497,6 +511,9 @@ const snapshotCards = document.getElementById("snapshotCards");
 let exportDataset = null;
 let isBusy = false;
 
+function isRestoreFileValid(file = restoreFile.files?.[0]){
+  return Boolean(file && (file.name.toLowerCase().endsWith(".json") || file.type === "application/json"));
+}
 function escapeHTML(value){
   return String(value ?? "").replace(/[&<>"']/g, character => ({
     "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;"
@@ -513,7 +530,7 @@ function setRestoreMessage(message = "", tone = ""){
 function setBusy(state, message){
   isBusy = state;
   document.querySelectorAll(".export-action").forEach(button => {
-    button.disabled = state || (button === restoreButton && !restoreFile.files?.[0]);
+    button.disabled = state || (button === restoreButton && !isRestoreFileValid());
   });
   if(message) showStatus(message, state ? "loading" : "info");
 }
@@ -562,7 +579,7 @@ function renderSnapshot(dataset){
     `<tr><td>${escapeHTML(row[0])}</td><td>${escapeHTML(row[1])}</td><td>${escapeHTML(row[2])}</td></tr>`
   ).join("");
   snapshotCards.innerHTML = rows.map(row =>
-    `<div class="snapshot-card"><div class="snapshot-card-top"><div class="snapshot-name">${escapeHTML(row[0])}</div><div class="snapshot-count">Count: ${escapeHTML(row[1])}</div></div><div class="snapshot-date">Last Update: ${escapeHTML(row[2])}</div></div>`
+    `<article class="snapshot-card"><div class="snapshot-card-top"><div class="snapshot-name">${escapeHTML(row[0])}</div><div class="snapshot-count" aria-label="${escapeHTML(row[1])} data">${escapeHTML(row[1])}</div></div><div class="snapshot-date"><strong>Last Update</strong><span>${escapeHTML(row[2])}</span></div></article>`
   ).join("");
 }
 async function loadExportData(){
@@ -579,7 +596,7 @@ async function loadExportData(){
     exportDataset = await exportService.loadAll(supabaseClient, settingsService);
     renderSnapshot(exportDataset);
     const warning = exportDataset.warnings.join(" ");
-    showStatus(warning || "Data Supabase siap diekspor.", warning ? "error" : "success");
+    showStatus(warning || "Data Cost Management berhasil dimuat dan siap diekspor.", warning ? "error" : "success");
     return exportDataset;
   }catch(error){
     exportService.logError("Load seluruh data Supabase gagal", error);
@@ -714,14 +731,16 @@ async function exportPrintable(kind){
 }
 function updateRestoreFileName(){
   const file = restoreFile.files?.[0];
+  const isJson = isRestoreFileValid(file);
   restoreFileName.textContent = file ? file.name : "Belum ada file dipilih";
-  restoreButton.disabled = isBusy || !file;
-  setRestoreMessage("");
+  restoreFileName.classList.toggle("is-selected", Boolean(isJson));
+  restoreButton.disabled = isBusy || !isJson;
+  setRestoreMessage(file && !isJson ? "Format file harus JSON." : "", file && !isJson ? "error" : "");
 }
 async function restoreBackup(){
   const file = restoreFile.files?.[0];
-  if(!file){
-    setRestoreMessage("Pilih file JSON terlebih dahulu.", "error");
+  if(!isRestoreFileValid(file)){
+    setRestoreMessage(file ? "Format file harus JSON." : "Pilih file JSON terlebih dahulu.", "error");
     return;
   }
   if(!supabaseClient || !settingsService || !exportService){
