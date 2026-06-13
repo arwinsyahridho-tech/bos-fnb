@@ -10,6 +10,7 @@
   const loginStatus = document.getElementById("loginStatus");
   const registerStatus = document.getElementById("registerStatus");
   const redirectTarget = auth.safeRedirectTarget(new URLSearchParams(window.location.search).get("redirect"));
+  const demoLoginError = "Akun demo belum dibuat di Supabase atau password demo tidak sesuai. Silakan buat akun demo di Supabase Auth.";
 
   function showStatus(element, message = "", type = "error") {
     element.textContent = message;
@@ -133,7 +134,7 @@
       window.location.replace(redirectTarget);
     } catch (error) {
       console.error("[BIYA Auth] Demo login gagal", error);
-      showStatus(loginStatus, "Demo akun belum tersedia atau konfigurasi demo salah.");
+      showStatus(loginStatus, demoLoginError);
       setButtonLoading(demoButton, false);
     }
   });

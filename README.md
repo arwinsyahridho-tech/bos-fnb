@@ -5,12 +5,17 @@ Halaman `/index.html` menggunakan Supabase Auth untuk login, pendaftaran, dan de
 
 ### Menyiapkan akun demo
 
-1. Buka **Supabase Dashboard → Authentication → Users → Add user**.
-2. Buat user dan tandai email sebagai terverifikasi:
+Demo Login **tetap menggunakan Supabase Auth** melalui `signInWithPassword`; aplikasi tidak membuat sesi demo palsu dan tidak melewati auth guard. Karena aplikasi frontend tidak boleh memakai Supabase service-role key, user demo harus dibuat manual oleh admin pada project Supabase yang dikonfigurasi di `assets/js/biya-config.js`.
+
+1. Masuk ke [Supabase Dashboard](https://supabase.com/dashboard), lalu buka project BIYA.
+2. Pilih **Authentication → Users → Add user → Create new user**.
+3. Isi credential berikut dan tandai email sebagai terverifikasi (**Auto Confirm User**):
    - Email: `demo@biya.id`
    - Password: `BIYA-Demo-2026!`
-3. Pastikan data contoh milik user demo tersebut (gunakan UUID user demo sebagai `user_id`/owner terkait).
-4. Pastikan kebijakan RLS setiap tabel hanya memberi akses ke row milik `auth.uid()`. Karena kredensial demo dapat dilihat oleh pengunjung web, akun demo tidak boleh memiliki data sensitif atau hak administratif.
+4. Klik **Create user**, lalu pastikan user `demo@biya.id` muncul di daftar Users.
+5. Uji tombol **Demo Login** dari `/index.html`. Jika muncul pesan bahwa akun demo belum dibuat atau password tidak sesuai, periksa kembali email, password, status konfirmasi email, dan project Supabase yang digunakan.
+6. Pastikan data contoh milik user demo tersebut (gunakan UUID user demo sebagai `user_id`/owner terkait).
+7. Pastikan kebijakan RLS setiap tabel hanya memberi akses ke row milik `auth.uid()`. Karena kredensial demo dapat dilihat oleh pengunjung web, akun demo tidak boleh memiliki data sensitif atau hak administratif.
 
 Nilai default dapat diganti sebelum `biya-config.js` dimuat:
 
