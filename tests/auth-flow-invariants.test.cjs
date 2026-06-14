@@ -18,6 +18,15 @@ test("halaman login menyediakan login, register, demo, status, dan password togg
   assert.match(source, /Phase 1 Development - BIYA Operating System/);
 });
 
+test("halaman login memosisikan BIYA sebagai operating system F&B", () => {
+  const source = read("index.html");
+  assert.match(source, /<meta name="description" content="BIYA Operating System for F&B Business">/);
+  assert.match(source, /BIYA Operating System<br><span>for F&amp;B Business<\/span>/);
+  assert.match(source, /Dari Cost Management, Inventory, Finance, POS, hingga Reservation/);
+  assert.doesNotMatch(source, /Costing System for F&amp;B Teams/i);
+  assert.doesNotMatch(source, /workspace costing/i);
+});
+
 test("auth helper memakai API Supabase resmi dan metadata pendaftaran", () => {
   const source = read("assets/js/biya-auth.js");
   assert.match(source, /auth\.signInWithPassword/);
