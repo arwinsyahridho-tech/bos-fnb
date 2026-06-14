@@ -16,14 +16,22 @@ test("Cost Settings menyediakan localStorage fallback dan API load/save/apply/re
   assert.match(service, /Supabase tidak tersedia; memakai localStorage/);
 });
 
-test("halaman Settings menghubungkan seluruh input, logo, save, dan reset", () => {
-  for (const id of ["businessName", "logoFile", "logoPreview", "foodCostTarget", "profitTarget", "defaultWaste", "defaultOverhead", "serviceCharge", "taxRate", "currency", "numberFormat", "dateFormat", "autoCapitalize", "defaultStatus", "saveBtn", "resetBtn"]) {
+test("halaman Settings menghubungkan input costing, save, dan reset", () => {
+  for (const id of ["foodCostTarget", "profitTarget", "defaultWaste", "defaultOverhead", "serviceCharge", "taxRate", "currency", "numberFormat", "dateFormat", "autoCapitalize", "defaultStatus", "saveBtn", "resetBtn"]) {
     assert.match(settings, new RegExp(`id="${id}"`));
   }
+  for (const removedId of ["businessName", "logoFile", "logoPreview", "resetLogoBtn"]) {
+    assert.doesNotMatch(settings, new RegExp(`id="${removedId}"`));
+  }
+  assert.doesNotMatch(settings, /Bisnis &amp; Logo/);
+  assert.match(settings, /id="profitTarget"[^>]*readonly/);
+  assert.match(settings, /function calculateTargetProfit\(/);
+  assert.match(service, /profit_target:calculateTargetProfit\(foodCostTarget\)/);
+  assert.match(service, /food_cost_target: 35, profit_target: 65/);
   assert.match(settings, /async function loadCostSettings\(/);
   assert.match(settings, /async function saveCostSettings\(/);
   assert.match(settings, /async function resetCostSettings\(/);
-  assert.match(settings, /settingsService\.uploadLogo/);
+  assert.doesNotMatch(settings, /settingsService\.uploadLogo/);
   assert.match(settings, /document\.addEventListener\("DOMContentLoaded",loadCostSettings\)/);
 });
 
