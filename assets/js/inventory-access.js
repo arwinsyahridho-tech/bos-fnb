@@ -5,6 +5,7 @@
   const LOGIN_PATH = "/index.html";
   const MODULE_CENTER_PATH = "/menu-modules/dashboard.html";
   const ACCESS_MESSAGE = "Akses modul Inventory masih terbatas.";
+  let loginRedirectStarted = false;
 
   function normalizeEmail(value) {
     return String(value || "").trim().toLowerCase();
@@ -31,29 +32,45 @@
   }
 
   function redirectToLogin() {
+    if (loginRedirectStarted) return;
+    loginRedirectStarted = true;
     const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`;
     const params = new URLSearchParams({ redirect: currentPath, reason: "auth" });
     window.location.replace(`${LOGIN_PATH}?${params.toString()}`);
   }
 
   async function requireInventoryAccess(options = {}) {
-    const user = await getCurrentUser();
+    console.log("[Inventory] Opening module");
+    let user;
+    try {
+      user = await getCurrentUser();
+    } catch (error) {
+      console.error("[Inventory] Session check failed", error);
+      if (typeof options.onError === "function") options.onError(error);
+      return null;
+    }
+    console.log("[Inventory] User session:", user);
     if (!user) {
       redirectToLogin();
       return null;
     }
-    if (isInventoryAllowed(user)) return user;
-
-    if (options.showMessage !== false) {
-      window.sessionStorage.setItem("biya_inventory_notice", ACCESS_MESSAGE);
+    const email = normalizeEmail(user.email);
+    console.log("[Inventory] User email:", email);
+    if (isInventoryAllowed(user)) {
+      console.log("[Inventory] Access granted");
+      return user;
     }
-    window.location.replace(options.redirectTo || MODULE_CENTER_PATH);
+
+    console.log("[Inventory] Access denied");
+    if (typeof options.onDenied === "function") options.onDenied(user);
     return null;
   }
 
   window.BIYAInventoryAccess = Object.freeze({
     ACCESS_MESSAGE,
     ALLOWED_EMAIL: INVENTORY_ALLOWED_EMAIL,
+    LOGIN_PATH,
+    MODULE_CENTER_PATH,
     getCurrentUser,
     isInventoryAllowed,
     requireInventoryAccess

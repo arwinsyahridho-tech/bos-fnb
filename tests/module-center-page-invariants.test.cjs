@@ -10,12 +10,14 @@ const profileBridge = fs.readFileSync('assets/js/biya-profile-bridge.js', 'utf8'
 const COST_ROUTE = '/modules/cost-management/costdashboard.html';
 const LEGACY_SETTINGS_ROUTE = '/modules/cost-management/settings.html';
 const ACCOUNT_CENTER_FALLBACK = '/account-center/';
+const INVENTORY_ROUTE = '/modules/inventory/index.html';
 
 test('Module Center mempertahankan akses utama tanpa shortcut hero yang duplikat', () => {
   assert.match(source, /<script src="\/menu-modules\/config\.js"><\/script>/);
   assert.match(config, /COST_MANAGEMENT_URL/);
   assert.match(config, new RegExp(COST_ROUTE.replaceAll('/', '\\/')));
   assert.match(config, /ACCOUNT_CENTER_URL/);
+  assert.match(config, new RegExp(INVENTORY_ROUTE.replaceAll('/', '\\/')));
   assert.match(config, new RegExp(ACCOUNT_CENTER_FALLBACK.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(config, /biya-account-center\.vercel\.app/);
   assert.match(config, /window\.BIYA_ACCOUNT_CENTER_URL/);
@@ -39,6 +41,7 @@ test('Config Portal menyediakan fallback dan mendukung override deployment', () 
   const fallbackContext = { window: {} };
   vm.runInNewContext(config, fallbackContext);
   assert.equal(fallbackContext.window.BIYA_PORTAL_CONFIG.COST_MANAGEMENT_URL, COST_ROUTE);
+  assert.equal(fallbackContext.window.BIYA_PORTAL_CONFIG.INVENTORY_URL, INVENTORY_ROUTE);
   assert.equal(fallbackContext.window.BIYA_PORTAL_CONFIG.ACCOUNT_CENTER_URL, ACCOUNT_CENTER_FALLBACK);
 
   const overrideContext = {
