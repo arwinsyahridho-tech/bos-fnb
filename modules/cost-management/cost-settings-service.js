@@ -7,15 +7,16 @@
   const SETTINGS_EVENT = "biya:cost-settings-applied";
   const DEFAULTS = Object.freeze({
     business_name: "BIYA Cost Management", business_type: "F&B", owner_name: "", phone: "", email: "", address: "", logo_url: "",
-    food_cost_target: 35, profit_target: 50, default_waste: 5, default_overhead: 0, service_charge: 0, tax_rate: 0,
+    food_cost_target: 35, profit_target: 65, default_waste: 5, default_overhead: 0, service_charge: 0, tax_rate: 0,
     currency: "IDR", number_format: "id-ID", date_format: "dd/mm/yyyy", auto_capitalize: "on", default_status: "ACTIVE"
   });
   let activeSettings = null;
 
   function logError(context, error, extra) { console.error("[Cost Settings] " + context, { error, message:error&&error.message, details:error&&error.details, hint:error&&error.hint, code:error&&error.code, ...(extra||{}) }); }
   function asPercent(value, fallback, allowZero) { const number=Number(value); return Number.isFinite(number) && number >= (allowZero?0:0.01) && number <= 100 ? number : fallback; }
-  function normalize(row) { const source=row||{}; return { ...DEFAULTS, ...source,
-    food_cost_target:asPercent(source.food_cost_target,DEFAULTS.food_cost_target,false), profit_target:asPercent(source.profit_target,DEFAULTS.profit_target,false),
+  function calculateTargetProfit(foodCostTarget) { const foodCost=asPercent(foodCostTarget,DEFAULTS.food_cost_target,true); return Number((100-foodCost).toFixed(2)); }
+  function normalize(row) { const source=row||{}; const foodCostTarget=asPercent(source.food_cost_target,DEFAULTS.food_cost_target,true); return { ...DEFAULTS, ...source,
+    food_cost_target:foodCostTarget, profit_target:calculateTargetProfit(foodCostTarget),
     default_waste:asPercent(source.default_waste,DEFAULTS.default_waste,true), default_overhead:asPercent(source.default_overhead,DEFAULTS.default_overhead,true),
     service_charge:asPercent(source.service_charge,DEFAULTS.service_charge,true), tax_rate:asPercent(source.tax_rate,DEFAULTS.tax_rate,true)
   }; }
@@ -55,7 +56,7 @@
   async function removeLogo(client,scope){ if(client&&scope&&scope.userId){ try{ const path=global.BiyaData.storagePath(scope.userId,"logos","business-logo"); await client.storage.from(LOGO_BUCKET).remove([path]); }catch(error){logError("Hapus logo Storage gagal",error);} } }
   async function reset(client,scope){ clearLocal(); return save(client,scope,normalize()); }
   function healthyFoodCostLimit(target){return asPercent(target,DEFAULTS.food_cost_target,false)*.85;}
-  const api={DEFAULTS,LOGO_BUCKET,STORAGE_KEY,SETTINGS_EVENT,applyCostSettings,clearLocal,formatCurrency,getActive:()=>normalize(activeSettings||readLocal()),healthyFoodCostLimit,load,loadCostSettings:load,logError,normalize,removeLogo,reset,resetCostSettings:reset,resolveScope,save,saveCostSettings:save,uploadLogo};
+  const api={DEFAULTS,LOGO_BUCKET,STORAGE_KEY,SETTINGS_EVENT,applyCostSettings,calculateTargetProfit,clearLocal,formatCurrency,getActive:()=>normalize(activeSettings||readLocal()),healthyFoodCostLimit,load,loadCostSettings:load,logError,normalize,removeLogo,reset,resetCostSettings:reset,resolveScope,save,saveCostSettings:save,uploadLogo};
   global.BiyaCostSettings=Object.freeze(api); global.loadCostSettings=(client)=>api.load(client); global.saveCostSettings=(client,scope,settings)=>api.save(client,scope,settings); global.applyCostSettings=applyCostSettings; global.resetCostSettings=(client,scope)=>api.reset(client,scope);
   if(global.document){ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",()=>applyCostSettings(readLocal()),{once:true}); else applyCostSettings(readLocal()); global.addEventListener("storage",event=>{if(event.key===STORAGE_KEY) applyCostSettings(readLocal());}); }
 })(window);
