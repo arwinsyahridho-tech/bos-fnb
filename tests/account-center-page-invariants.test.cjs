@@ -45,8 +45,18 @@ test('dashboard menyediakan seluruh tab, form, modul, billing, security, dan dan
     'Open Cost Management', 'Danger Zone', 'Hapus Akun'
   ]) assert.match(html, new RegExp(label, 'i'));
   assert.match(html, /href="\/modules\/cost-management\/costdashboard\.html"/);
-  assert.match(script, /\.from\(table\)\.upsert\(payload, \{ onConflict: "user_id" \}\)/);
+  assert.match(script, /\.upsert\(payload, \{ onConflict: "user_id" \}\)/);
+  assert.match(script, /\.select\(\)\s*\.single\(\)/);
   assert.match(script, /metadataFallback/);
+});
+
+test('Account Center menampilkan diagnosis penyimpanan Business yang jelas', () => {
+  for (const message of [
+    'Tabel ${table} belum tersedia di Supabase.',
+    'Akses RLS ditolak. Periksa policy user_id = auth.uid().',
+    'Struktur kolom ${table} belum sesuai.',
+    'Data bisnis berhasil disimpan.'
+  ]) assert.match(script, new RegExp(message.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 });
 
 test('Asset Account Center valid dan mobile-first', () => {

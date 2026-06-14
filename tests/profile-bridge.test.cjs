@@ -69,6 +69,7 @@ test("mapping nama dan subtitle mengikuti prioritas Account Center", () => {
     { displayName: complete.displayName, subtitle: complete.subtitle, hasBusinessName: complete.hasBusinessName },
     { displayName: "Arwinsyah Ridho", subtitle: "BIYA Kitchen", hasBusinessName: true }
   );
+  assert.equal(complete.businessName, "BIYA Kitchen");
 
   const withoutBusiness = bridge.getDisplayAccountInfo(
     { email: "arwinsyahridho@gmail.com", user_metadata: {} },
