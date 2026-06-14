@@ -5,12 +5,12 @@ const vm = require("node:vm");
 
 const helperSource = fs.readFileSync("assets/js/inventory-access.js", "utf8");
 const inventoryPage = fs.readFileSync("modules/inventory/dashboard-inventory.html", "utf8");
+const inventoryEntry = fs.readFileSync("modules/inventory/index.html", "utf8");
 const inventoryScript = fs.readFileSync("modules/inventory/inventory.js", "utf8");
 const migration = fs.readFileSync("supabase/migrations/20260614020000_restrict_inventory_access.sql", "utf8");
 
 function loadHelper(user) {
   const redirects = [];
-  const notices = new Map();
   const context = {
     URLSearchParams,
     window: {
@@ -23,11 +23,11 @@ function loadHelper(user) {
         hash: "", pathname: "/modules/inventory/dashboard-inventory.html", search: "",
         replace(url) { redirects.push(url); }
       },
-      sessionStorage: { setItem(key, value) { notices.set(key, value); } }
+      sessionStorage: { setItem() {} }
     }
   };
   vm.runInNewContext(helperSource, context);
-  return { access: context.window.BIYAInventoryAccess, notices, redirects };
+  return { access: context.window.BIYAInventoryAccess, redirects };
 }
 
 test("Inventory helper hanya mengizinkan email developer tanpa mempedulikan kapitalisasi", async () => {
@@ -37,16 +37,23 @@ test("Inventory helper hanya mengizinkan email developer tanpa mempedulikan kapi
   assert.deepEqual(allowed.redirects, []);
 
   const denied = loadHelper({ id: "demo", email: "demo@biya.id" });
+  let deniedUser = null;
   assert.equal(denied.access.isInventoryAllowed({ email: "demo@biya.id" }), false);
-  assert.equal(await denied.access.requireInventoryAccess(), null);
-  assert.deepEqual(denied.redirects, ["/menu-modules/dashboard.html"]);
-  assert.match(denied.notices.get("biya_inventory_notice"), /Akses modul Inventory masih terbatas/);
+  assert.equal(await denied.access.requireInventoryAccess({ onDenied: (user) => { deniedUser = user; } }), null);
+  assert.equal(deniedUser.email, "demo@biya.id");
+  assert.deepEqual(denied.redirects, []);
 });
 
 test("Inventory page menjalankan auth guard dan access guard sebelum fitur modul", () => {
+  assert.match(inventoryEntry, /dashboard-inventory\.html/);
+  assert.ok(inventoryPage.indexOf("/assets/js/biya-deletion-guard.js") < inventoryPage.indexOf("/assets/js/auth-guard.js"));
   assert.ok(inventoryPage.indexOf("/assets/js/auth-guard.js") < inventoryPage.indexOf("<body"));
   assert.match(inventoryPage, /modules\/inventory\/inventory\.js/);
-  assert.match(inventoryScript, /BIYAInventoryAccess\.requireInventoryAccess\(\)/);
+  assert.match(inventoryScript, /BIYAInventoryAccess\.requireInventoryAccess\(\{onDenied:showAccessDenied,onError:showLoadError\}\)/);
+  assert.match(inventoryScript, /onDenied:showAccessDenied/);
+  assert.match(inventoryScript, /Modul Inventory belum bisa dibuka/);
+  assert.match(inventoryPage, /Kembali ke Module Center/);
+  assert.match(inventoryPage, /Coba Lagi/);
   assert.match(inventoryPage, /Inventory Dashboard/);
   assert.match(inventoryPage, /Stock Movement/);
   assert.match(inventoryPage, /Waste & Spoilage/);

@@ -12,7 +12,7 @@
     INVENTORY_URL:
       existingConfig.INVENTORY_URL ||
       window.BIYA_INVENTORY_URL ||
-      "/modules/inventory/dashboard-inventory.html",
+      "/modules/inventory/index.html",
     ACCOUNT_CENTER_URL:
       existingConfig.ACCOUNT_CENTER_URL ||
       window.BIYA_ACCOUNT_CENTER_URL ||
