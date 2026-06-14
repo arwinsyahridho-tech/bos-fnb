@@ -34,7 +34,9 @@
     showStatus(loginStatus);
     showStatus(registerStatus);
     window.history.replaceState(null, "", isRegister ? "#register" : window.location.pathname + window.location.search);
-    document.title = isRegister ? "Daftar Akun · BIYA" : "Masuk · BIYA";
+    document.title = isRegister
+      ? "Daftar Akun · BIYA Operating System"
+      : "BIYA Operating System for F&B Business";
     requestAnimationFrame(() => document.getElementById(isRegister ? "registerName" : "loginEmail").focus());
   }
 
