@@ -598,7 +598,7 @@
       const ACCOUNT_CENTER_URL = portalConfig.ACCOUNT_CENTER_URL;
       const SUPABASE_URL = window.BIYA_SUPABASE_URL || "https://pkjmkjyylgzjvhcreucc.supabase.co";
       const SUPABASE_ANON_KEY = window.BIYA_SUPABASE_ANON_KEY || "sb_publishable_Tq4d0o3PIAd_zh11uJa2uQ_M_zPIYFX";
-      const configuredClient = window.biyaSupabase || window.supabaseClient || null;
+      const configuredClient = (window.BiyaAuth && window.BiyaAuth.client) || window.biyaSupabase || window.supabaseClient || null;
       const supabaseClient = configuredClient || ((SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase)
         ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
         : null);
@@ -668,16 +668,23 @@
           : window.BIYA_SESSION;
         if (!guardedSession) return;
 
+        const sessionUser = guardedSession.user;
+        if (!sessionUser || !sessionUser.id) return;
         const { data, error } = await supabaseClient.auth.getUser();
-        const user = !error && data && data.user && data.user.id === guardedSession.user.id
-          ? data.user
-          : null;
-        if (!user) return;
+        const user = !error && data && data.user && data.user.id === sessionUser.id ? data.user : sessionUser;
+        if (error) console.warn("[BIYA Module Center] User terbaru gagal dibaca; memakai user dari auth session.", error);
+        if (user.id !== sessionUser.id) {
+          console.warn("[BIYA Module Center] user_id auth tidak cocok; profil tidak dimuat.", {
+            sessionUserId: sessionUser.id,
+            authUserId: user.id
+          });
+          return;
+        }
 
         const [accountResult, businessResult, subscriptionResult] = await Promise.allSettled([
-          profileBridge.getAccountProfile(supabaseClient, user.id),
-          profileBridge.getBusinessProfile(supabaseClient, user.id),
-          maybeSingle("subscriptions", user.id)
+          profileBridge.getAccountProfile(supabaseClient, sessionUser.id),
+          profileBridge.getBusinessProfile(supabaseClient, sessionUser.id),
+          maybeSingle("subscriptions", sessionUser.id)
         ]);
         const accountProfile = accountResult.status === "fulfilled" ? accountResult.value : null;
         const businessProfile = businessResult.status === "fulfilled" ? businessResult.value : null;

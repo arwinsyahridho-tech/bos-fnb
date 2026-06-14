@@ -15,40 +15,65 @@
     if (!userId) throw new Error("User ID tidak tersedia untuk memuat profil BIYA.");
   }
 
-  async function getAccountProfile(supabaseClient, userId) {
+  function warnProfileRead(table, userId, error, reason) {
+    const code = String((error && error.code) || "").toUpperCase();
+    const details = [error && error.message, error && error.details, error && error.hint]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    let diagnosis = reason || "query gagal";
+
+    if (code === "42P01" || details.includes("does not exist") || details.includes("schema cache")) {
+      diagnosis = "tabel tidak ada atau belum tersedia di schema cache";
+    } else if (code === "42501" || code === "PGRST301" || details.includes("row-level security") || details.includes("permission denied")) {
+      diagnosis = "RLS ditolak untuk auth.uid() yang aktif";
+    }
+
+    console.warn(`[BIYA Profile Bridge] ${table}: ${diagnosis}. user_id=${userId}`, error || "");
+  }
+
+  async function readProfile(supabaseClient, table, columns, userId) {
     assertUserId(userId);
     if (!supabaseClient || typeof supabaseClient.from !== "function") return null;
 
     const { data, error } = await supabaseClient
-      .from("account_profiles")
-      .select("full_name, phone, role, plan, plan_name, account_status, subscription_status, subscription_start, subscription_end")
+      .from(table)
+      .select(`user_id, ${columns}`)
       .eq("user_id", userId)
       .maybeSingle();
 
     if (error) {
-      console.warn("[BIYA] Account profile belum tersedia, memakai fallback.", error);
+      warnProfileRead(table, userId, error);
+      return null;
+    }
+    if (!data) {
+      warnProfileRead(table, userId, null, "data tidak ditemukan (pastikan row tersimpan untuk session.user.id)");
+      return null;
+    }
+    if (data.user_id && data.user_id !== userId) {
+      warnProfileRead(table, userId, null, `user_id tidak cocok (row=${data.user_id})`);
       return null;
     }
 
-    return data || null;
+    return data;
+  }
+
+  async function getAccountProfile(supabaseClient, userId) {
+    return readProfile(
+      supabaseClient,
+      "account_profiles",
+      "full_name, phone, role, plan, plan_name, account_status, subscription_status, subscription_start, subscription_end",
+      userId
+    );
   }
 
   async function getBusinessProfile(supabaseClient, userId) {
-    assertUserId(userId);
-    if (!supabaseClient || typeof supabaseClient.from !== "function") return null;
-
-    const { data, error } = await supabaseClient
-      .from("business_profiles")
-      .select("business_name, business_type, owner_name, phone, email, address, city, province, description")
-      .eq("user_id", userId)
-      .maybeSingle();
-
-    if (error) {
-      console.warn("[BIYA] Business profile belum tersedia, memakai fallback.", error);
-      return null;
-    }
-
-    return data || null;
+    return readProfile(
+      supabaseClient,
+      "business_profiles",
+      "business_name, business_type, owner_name, phone, email, address, city, province, description",
+      userId
+    );
   }
 
   function getDisplayAccountInfo(user, accountProfile, businessProfile) {
@@ -61,14 +86,16 @@
     return {
       displayName: firstText(
         accountName,
-        metadata.name,
         metadata.full_name,
+        metadata.name,
         emailName,
         FALLBACK.displayName
       ),
       subtitle: firstText(
         businessName,
         accountName,
+        metadata.business_name,
+        metadata.full_name,
         email,
         FALLBACK.subtitle
       ),
