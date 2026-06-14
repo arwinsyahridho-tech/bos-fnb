@@ -18,3 +18,61 @@ body[data-page="stockitem"] .stock-mobile-card button[data-action="delete-item"]
 body[data-page="stockitem"] .stock-mobile-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;margin-top:14px}
 body[data-page="stockitem"] .stock-mobile-actions button{min-height:54px;border-radius:14px;cursor:pointer}
 @media(max-width:700px){body[data-page="stockitem"] .stock-filter-card{padding:16px;border-radius:16px}body[data-page="stockitem"] .stock-category-filters{gap:8px}body[data-page="stockitem"] .stock-category-btn{min-height:40px;padding:0 14px;font-size:14px}}
+
+/* Stock Item content follows the Cost Management visual language. */
+body[data-page="stockitem"] .stock-hero,
+body[data-page="stockitem"] .stock-data-panel{position:relative;overflow:hidden;border:1px solid rgba(97,163,255,.24);border-radius:26px;background:linear-gradient(150deg,rgba(10,42,101,.98),rgba(5,25,66,.99));box-shadow:0 18px 55px rgba(0,53,151,.18),0 0 30px rgba(19,111,255,.1)}
+body[data-page="stockitem"] .stock-hero{min-height:0;margin-bottom:24px;padding:28px}
+body[data-page="stockitem"] .stock-hero::before{position:absolute;top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,#087cf7,#28d7ef 52%,#03d477);content:"";opacity:.85}
+body[data-page="stockitem"] .stock-heading,
+body[data-page="stockitem"] .stock-section-heading{display:flex;align-items:center;gap:16px;min-width:0}
+body[data-page="stockitem"] .stock-heading-copy{min-width:0}
+body[data-page="stockitem"] .stock-heading-glyph{fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:2}
+body[data-page="stockitem"] .stock-heading-icon,
+body[data-page="stockitem"] .stock-section-icon{display:grid;flex:0 0 auto;place-items:center;border:1px solid rgba(89,162,255,.28);background:linear-gradient(145deg,rgba(6,193,133,.42),rgba(5,75,115,.75));color:#d9fff4}
+body[data-page="stockitem"] .stock-heading-icon{width:58px;height:58px;border-radius:18px}
+body[data-page="stockitem"] .stock-heading-icon .stock-heading-glyph{width:29px;height:29px}
+body[data-page="stockitem"] .stock-hero h1{font-size:36px;line-height:1.12}
+body[data-page="stockitem"] .stock-hero .muted{max-width:680px;margin:8px 0 0}
+body[data-page="stockitem"] .stock-add-button{min-width:180px;min-height:58px;border-radius:14px;background:linear-gradient(105deg,#087cf7,#00b9d7 52%,#02da75);box-shadow:0 14px 27px rgba(0,119,219,.22)}
+body[data-page="stockitem"] .stock-data-panel{padding:28px}
+body[data-page="stockitem"] .stock-panel-head{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(123,173,255,.18)}
+body[data-page="stockitem"] .stock-section-icon{width:48px;height:48px;border-radius:15px}
+body[data-page="stockitem"] .stock-section-icon .stock-heading-glyph{width:25px;height:25px}
+body[data-page="stockitem"] .stock-data-panel h2{font-size:28px;line-height:1.2}
+body[data-page="stockitem"] .stock-data-panel .panel-head .muted{margin:5px 0 0}
+body[data-page="stockitem"] .stock-search input{margin:0;min-height:54px;padding:0 17px;border-color:rgba(97,163,255,.27);border-radius:14px;background:rgba(10,40,94,.84)}
+body[data-page="stockitem"] .stock-filter-card{margin-top:14px;padding:18px;border-color:rgba(97,163,255,.24);border-radius:18px;background:rgba(4,22,58,.58)}
+body[data-page="stockitem"] .stock-filter-head{flex-direction:row;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+body[data-page="stockitem"] .stock-filter-head h3{font-size:14px}
+body[data-page="stockitem"] .stock-filter-head .muted{text-align:right}
+body[data-page="stockitem"] .stock-category-filters{gap:9px}
+body[data-page="stockitem"] .stock-category-btn{min-height:42px;padding:0 15px;border-color:rgba(104,167,255,.24);border-radius:12px;background:#0d2158}
+body[data-page="stockitem"] .stock-category-btn:hover{border-color:rgba(46,216,255,.6);background:#163a87;color:#fff}
+
+@media(max-width:700px){
+body[data-page="stockitem"] main{padding:22px 14px}
+body[data-page="stockitem"] .stock-hero{align-items:stretch;margin-bottom:16px;padding:24px;border-radius:24px}
+body[data-page="stockitem"] .stock-heading{align-items:flex-start;gap:12px}
+body[data-page="stockitem"] .stock-heading-icon{width:48px;height:48px;border-radius:15px}
+body[data-page="stockitem"] .stock-heading-icon .stock-heading-glyph{width:25px;height:25px}
+body[data-page="stockitem"] .stock-hero h1{font-size:34px;line-height:1.1}
+body[data-page="stockitem"] .stock-hero .eyebrow{margin-bottom:6px;font-size:10px;line-height:1.35}
+body[data-page="stockitem"] .stock-hero .muted{margin-top:7px;font-size:13px;line-height:1.5}
+body[data-page="stockitem"] .stock-add-button{width:100%;min-height:58px;margin-top:18px;border-radius:14px}
+body[data-page="stockitem"] .stock-data-panel{padding:24px;border-radius:24px}
+body[data-page="stockitem"] .stock-panel-head{gap:16px;margin-bottom:18px;padding-bottom:18px}
+body[data-page="stockitem"] .stock-section-heading{align-items:flex-start;gap:12px}
+body[data-page="stockitem"] .stock-section-icon{width:44px;height:44px;border-radius:14px}
+body[data-page="stockitem"] .stock-section-icon .stock-heading-glyph{width:23px;height:23px}
+body[data-page="stockitem"] .stock-data-panel h2{font-size:28px;line-height:1.15}
+body[data-page="stockitem"] .stock-data-panel .panel-head .muted{font-size:13px;line-height:1.45}
+body[data-page="stockitem"] .stock-panel-head .btn{min-height:50px}
+body[data-page="stockitem"] .stock-search input{min-height:52px}
+body[data-page="stockitem"] .stock-filter-card{padding:14px;border-radius:16px}
+body[data-page="stockitem"] .stock-filter-head{align-items:flex-start;flex-direction:column;gap:5px;margin-bottom:12px}
+body[data-page="stockitem"] .stock-filter-head .muted{text-align:left}
+body[data-page="stockitem"] .stock-category-filters{gap:8px}
+body[data-page="stockitem"] .stock-category-btn{flex:1 1 auto;min-height:40px;padding:0 13px;font-size:13px}
+body[data-page="stockitem"] .stock-mobile-card{padding:16px;border-color:rgba(97,163,255,.22);border-radius:18px;background:linear-gradient(145deg,rgba(13,48,109,.88),rgba(7,30,74,.94));box-shadow:0 12px 30px rgba(0,20,68,.2)}
+}
