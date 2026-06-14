@@ -21,7 +21,7 @@
 
     const { data, error } = await supabaseClient
       .from("account_profiles")
-      .select("full_name, phone, role")
+      .select("full_name, phone, role, plan, plan_name, account_status, subscription_status, subscription_start, subscription_end")
       .eq("user_id", userId)
       .maybeSingle();
 
@@ -39,7 +39,7 @@
 
     const { data, error } = await supabaseClient
       .from("business_profiles")
-      .select("business_name, business_type, owner_name, city, province")
+      .select("business_name, business_type, owner_name, phone, email, address, city, province, description")
       .eq("user_id", userId)
       .maybeSingle();
 

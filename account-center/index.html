@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Kelola akun dan profil bisnis BIYA">
+  <meta name="description" content="Kelola profil, bisnis, subscription, pembayaran, dan akses modul BIYA.">
   <meta name="theme-color" content="#041127">
   <title>Account Center · BIYA</title>
   <link rel="stylesheet" href="/assets/css/account.css">
@@ -14,77 +14,173 @@
   <script src="/assets/js/biya-profile-bridge.js"></script>
 </head>
 <body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
   <main class="account-shell">
     <header class="topbar">
-      <a class="brand" href="/menu-modules/dashboard.html" aria-label="Kembali ke Module Center">
+      <a class="brand" href="/menu-modules/dashboard.html" aria-label="BIYA Module Center">
         <span class="brand-mark" aria-hidden="true">B</span>
-        <span><strong>BIYA</strong><small>BUSINESS IN YOUR HAND</small></span>
+        <span><strong>BIYA</strong><small>Business in Your Hand</small></span>
       </a>
-      <span class="secure-label"><span aria-hidden="true">●</span> Secure Account Center</span>
+      <div class="header-actions">
+        <a class="button button-compact button-secondary" href="/menu-modules/dashboard.html">Kembali ke Module Center</a>
+        <button id="headerSwitchAccountButton" class="button button-compact button-ghost" type="button" hidden>Ganti Akun</button>
+      </div>
     </header>
 
     <section class="hero">
-      <p class="eyebrow">ACCOUNT CENTER</p>
-      <h1>Akun dan bisnis Anda,<br><span>dalam satu pusat kendali.</span></h1>
-      <p>Session Account Center terhubung langsung dengan BIYA Module Center untuk pengalaman yang aman dan konsisten.</p>
+      <p class="eyebrow">BIYA ACCOUNT</p>
+      <h1>Account Center</h1>
+      <p class="hero-lead">Kelola akun BIYA dalam satu pusat.</p>
+      <p>Kelola profil, data bisnis, subscription, pembayaran, dan akses modul BIYA.</p>
     </section>
 
-    <section class="account-card" aria-live="polite" aria-busy="true">
+    <section id="stateCard" class="account-card state-card" aria-live="polite" aria-busy="true">
       <div id="loadingState" class="state state-loading">
         <span class="loader" aria-hidden="true"></span>
         <p>Memeriksa session BIYA…</p>
       </div>
 
-      <div id="signedOutState" class="state" hidden>
+      <div id="signedOutState" class="state empty-auth" hidden>
         <span class="status-badge status-out">BELUM LOGIN</span>
         <div class="state-icon" aria-hidden="true">↗</div>
-        <h2>Masuk untuk membuka Account Center</h2>
-        <p>Gunakan akun BIYA Anda untuk melihat identitas akun dan informasi bisnis.</p>
+        <h2>Sesi akun belum terbaca</h2>
+        <p>Masuk menggunakan akun BIYA agar Account Center dapat menampilkan profil dan data bisnis Anda.</p>
         <div class="action-stack">
           <a class="button button-primary" href="/index.html?redirect=%2Faccount-center%2F">Login di Account Center</a>
           <a class="button button-secondary" href="/index.html">Kembali ke Halaman Awal BIYA</a>
         </div>
       </div>
 
-      <div id="demoState" class="state" hidden>
+      <div id="demoState" class="state empty-auth" hidden>
         <span class="status-badge status-demo">MODE DEMO</span>
         <div class="profile-heading">
           <div class="avatar" aria-hidden="true">D</div>
           <div><h2>Workspace Demo BIYA</h2><p id="demoEmail">demo@biya.id</p></div>
         </div>
-        <div class="notice">Data pada mode demo bersifat contoh. Keluar dari demo untuk masuk menggunakan akun bisnis Anda.</div>
+        <div class="notice">Data mode demo hanya contoh. Keluar dari demo untuk masuk menggunakan akun bisnis Anda.</div>
         <div class="action-stack">
           <button id="exitDemoButton" class="button button-primary" type="button">Keluar Demo &amp; Login Akun</button>
           <a class="button button-secondary" href="/menu-modules/dashboard.html">Kembali ke Module Center</a>
         </div>
       </div>
-
-      <div id="accountState" class="state" hidden>
-        <div class="state-toolbar">
-          <span class="status-badge status-active">AKUN AKTIF</span>
-          <button id="logoutButton" class="text-button" type="button">Keluar Akun</button>
-        </div>
-        <div class="profile-heading">
-          <div id="accountAvatar" class="avatar" aria-hidden="true">B</div>
-          <div><h2 id="displayName">User BIYA</h2><p id="accountEmail">—</p></div>
-        </div>
-        <dl class="detail-grid">
-          <div><dt>Nama lengkap</dt><dd id="fullName">Belum dilengkapi</dd></div>
-          <div><dt>Nomor telepon</dt><dd id="phone">Belum dilengkapi</dd></div>
-          <div><dt>Nama bisnis</dt><dd id="businessName">Belum dilengkapi</dd></div>
-          <div><dt>Jenis bisnis</dt><dd id="businessType">Belum dilengkapi</dd></div>
-          <div><dt>Pemilik</dt><dd id="ownerName">Belum dilengkapi</dd></div>
-          <div><dt>Lokasi</dt><dd id="businessLocation">Belum dilengkapi</dd></div>
-        </dl>
-        <div id="accountStatus" class="inline-status" role="status"></div>
-        <div class="action-stack">
-          <button id="switchAccountButton" class="button button-primary" type="button">Ganti Akun</button>
-          <a class="button button-secondary" href="/menu-modules/dashboard.html">Kembali ke Module Center</a>
-        </div>
-      </div>
     </section>
+
+    <div id="accountState" class="dashboard" hidden>
+      <section class="account-card overview-card" aria-labelledby="overviewTitle">
+        <div class="section-heading overview-heading">
+          <div>
+            <p class="section-kicker">ACCOUNT OVERVIEW</p>
+            <h2 id="overviewTitle">Ringkasan akun Anda</h2>
+          </div>
+          <span id="overviewStatusBadge" class="status-badge status-active">AKUN AKTIF</span>
+        </div>
+        <div class="overview-grid">
+          <div class="identity-tile">
+            <div id="accountAvatar" class="avatar avatar-large" aria-hidden="true">B</div>
+            <div><strong id="overviewName">User BIYA</strong><span id="overviewEmail">—</span></div>
+          </div>
+          <div class="overview-item"><span>Nama bisnis</span><strong id="overviewBusiness">Belum dilengkapi</strong></div>
+          <div class="overview-item"><span>Plan aktif</span><strong id="overviewPlan">Free Plan</strong></div>
+          <div class="overview-item"><span>Status akun</span><strong id="overviewAccountStatus">Active</strong></div>
+        </div>
+      </section>
+
+      <nav class="tab-nav" aria-label="Navigasi Account Center" role="tablist">
+        <button class="tab-button is-active" id="tab-profile" type="button" role="tab" aria-selected="true" aria-controls="panel-profile" data-tab="profile">Profile</button>
+        <button class="tab-button" id="tab-business" type="button" role="tab" aria-selected="false" aria-controls="panel-business" data-tab="business">Business</button>
+        <button class="tab-button" id="tab-subscription" type="button" role="tab" aria-selected="false" aria-controls="panel-subscription" data-tab="subscription">Subscription</button>
+        <button class="tab-button" id="tab-billing" type="button" role="tab" aria-selected="false" aria-controls="panel-billing" data-tab="billing">Billing</button>
+        <button class="tab-button" id="tab-modules" type="button" role="tab" aria-selected="false" aria-controls="panel-modules" data-tab="modules">Module Access</button>
+        <button class="tab-button" id="tab-security" type="button" role="tab" aria-selected="false" aria-controls="panel-security" data-tab="security">Security</button>
+      </nav>
+
+      <section class="account-card tab-panel" id="panel-profile" role="tabpanel" aria-labelledby="tab-profile" data-panel="profile">
+        <div class="section-heading"><div><p class="section-kicker">PERSONAL INFO</p><h2>Profile</h2><p>Informasi utama pemilik akun BIYA.</p></div></div>
+        <form id="profileForm" class="form-grid">
+          <label class="field field-wide"><span>Nama User</span><input id="profileFullName" name="full_name" type="text" autocomplete="name" placeholder="Nama lengkap Anda"></label>
+          <label class="field"><span>Email login</span><input id="profileEmail" name="email" type="email" readonly></label>
+          <label class="field"><span>Nomor HP</span><input id="profilePhone" name="phone" type="tel" autocomplete="tel" placeholder="08xxxxxxxxxx"></label>
+          <label class="field field-wide"><span>Role</span><input id="profileRole" name="role" type="text" placeholder="Owner / Manager"></label>
+          <div class="form-actions field-wide"><button class="button button-primary" type="submit">Simpan Profile</button><p id="profileStatus" class="form-status" role="status"></p></div>
+        </form>
+      </section>
+
+      <section class="account-card tab-panel" id="panel-business" role="tabpanel" aria-labelledby="tab-business" data-panel="business" hidden>
+        <div class="section-heading"><div><p class="section-kicker">BUSINESS IDENTITY</p><h2>Business</h2><p>Data bisnis yang digunakan di ekosistem BIYA.</p></div></div>
+        <form id="businessForm" class="form-grid">
+          <label class="field"><span>Nama Bisnis</span><input id="businessName" name="business_name" type="text" autocomplete="organization" placeholder="Nama bisnis"></label>
+          <label class="field"><span>Tipe Bisnis</span><input id="businessType" name="business_type" type="text" placeholder="Restaurant, Cafe, Catering"></label>
+          <label class="field"><span>Nama Owner</span><input id="businessOwner" name="owner_name" type="text" autocomplete="name" placeholder="Nama pemilik"></label>
+          <label class="field"><span>Nomor HP Bisnis</span><input id="businessPhone" name="phone" type="tel" autocomplete="tel" placeholder="08xxxxxxxxxx"></label>
+          <label class="field field-wide"><span>Email Bisnis</span><input id="businessEmail" name="email" type="email" autocomplete="email" placeholder="bisnis@email.com"></label>
+          <label class="field field-wide"><span>Alamat Bisnis</span><textarea id="businessAddress" name="address" rows="3" placeholder="Alamat lengkap bisnis"></textarea></label>
+          <label class="field"><span>Kota</span><input id="businessCity" name="city" type="text" autocomplete="address-level2" placeholder="Kota"></label>
+          <label class="field"><span>Provinsi</span><input id="businessProvince" name="province" type="text" autocomplete="address-level1" placeholder="Provinsi"></label>
+          <label class="field field-wide"><span>Deskripsi Bisnis</span><textarea id="businessDescription" name="description" rows="4" placeholder="Ceritakan singkat tentang bisnis Anda"></textarea></label>
+          <div class="form-actions field-wide"><button class="button button-primary" type="submit">Simpan Business</button><p id="businessStatus" class="form-status" role="status"></p></div>
+        </form>
+      </section>
+
+      <section class="account-card tab-panel" id="panel-subscription" role="tabpanel" aria-labelledby="tab-subscription" data-panel="subscription" hidden>
+        <div class="section-heading"><div><p class="section-kicker">CURRENT PLAN</p><h2>Subscription</h2><p>Informasi paket dan masa aktif layanan BIYA.</p></div><div class="badge-row"><span id="planBadge" class="status-badge status-plan">FREE PLAN</span><span id="subscriptionBadge" class="status-badge status-active">ACTIVE</span></div></div>
+        <dl class="detail-grid subscription-grid">
+          <div><dt>Plan Aktif</dt><dd id="subscriptionPlan">Free Plan</dd></div>
+          <div><dt>Status Subscription</dt><dd id="subscriptionStatus">Active</dd></div>
+          <div><dt>Tanggal Mulai</dt><dd id="subscriptionStart">—</dd></div>
+          <div><dt>Tanggal Berakhir</dt><dd id="subscriptionEnd">—</dd></div>
+        </dl>
+      </section>
+
+      <section class="account-card tab-panel" id="panel-billing" role="tabpanel" aria-labelledby="tab-billing" data-panel="billing" hidden>
+        <div class="section-heading"><div><p class="section-kicker">TRANSACTIONS</p><h2>Pembayaran &amp; Invoice</h2><p>Riwayat pembayaran subscription BIYA Anda.</p></div></div>
+        <div id="invoiceList" class="invoice-list" aria-live="polite">
+          <div class="empty-state"><span aria-hidden="true">▤</span><strong>Belum ada invoice.</strong><p>Invoice pembayaran akan tampil di sini.</p></div>
+        </div>
+      </section>
+
+      <section class="account-card tab-panel" id="panel-modules" role="tabpanel" aria-labelledby="tab-modules" data-panel="modules" hidden>
+        <div class="section-heading"><div><p class="section-kicker">BIYA ECOSYSTEM</p><h2>Module Access</h2><p>Modul yang tersedia untuk akun dan plan Anda.</p></div></div>
+        <div class="module-list">
+          <article class="module-item module-featured"><div class="module-icon">CM</div><div><h3>Cost Management</h3><p>Kelola costing, bahan baku, preparation, dan HPP menu.</p></div><span class="module-status included">Included / Available</span><a class="button button-primary button-module" href="/modules/cost-management/costdashboard.html">Open Cost Management</a></article>
+          <article class="module-item"><div class="module-icon">IN</div><div><h3>Inventory</h3><p>Kontrol stok dan pergerakan inventory.</p></div><span class="module-status soon">Coming Soon</span></article>
+          <article class="module-item"><div class="module-icon">FI</div><div><h3>Finance</h3><p>Pantau performa dan arus keuangan bisnis.</p></div><span class="module-status soon">Coming Soon</span></article>
+          <article class="module-item"><div class="module-icon">PO</div><div><h3>POS</h3><p>Transaksi penjualan yang terhubung ke BIYA.</p></div><span class="module-status soon">Coming Soon</span></article>
+          <article class="module-item"><div class="module-icon">RE</div><div><h3>Reservation</h3><p>Kelola reservasi pelanggan secara praktis.</p></div><span class="module-status soon">Coming Soon</span></article>
+        </div>
+      </section>
+
+      <section class="account-card tab-panel" id="panel-security" role="tabpanel" aria-labelledby="tab-security" data-panel="security" hidden>
+        <div class="section-heading"><div><p class="section-kicker">ACCOUNT SAFETY</p><h2>Security</h2><p>Kelola akses dan keamanan akun BIYA.</p></div></div>
+        <div class="security-list">
+          <div><span>Email Login</span><strong id="securityEmail">—</strong></div>
+          <button id="changePasswordButton" class="button button-secondary" type="button">Change Password</button>
+          <button id="securityLogoutButton" class="button button-danger-outline" type="button">Keluar Akun</button>
+        </div>
+        <p id="securityStatus" class="form-status" role="status"></p>
+      </section>
+
+      <section class="account-card danger-zone" aria-labelledby="dangerTitle">
+        <div><p class="section-kicker danger-kicker">DANGER ZONE</p><h2 id="dangerTitle">Tindakan akun</h2><p>Keluar dari perangkat ini atau ajukan penghapusan akun.</p></div>
+        <div class="danger-actions"><button id="logoutButton" class="button button-secondary" type="button">Keluar Akun</button><button id="deleteAccountButton" class="button button-danger" type="button">Hapus Akun</button></div>
+        <p id="accountStatus" class="form-status" role="status"></p>
+      </section>
+    </div>
+
     <footer>BIYA · Business in Your Hand</footer>
   </main>
+
+  <div id="confirmModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDescription" hidden>
+    <div class="modal-backdrop" data-modal-close></div>
+    <div class="modal-card" tabindex="-1">
+      <button class="modal-close" type="button" aria-label="Tutup modal" data-modal-close>×</button>
+      <span class="modal-icon" aria-hidden="true">↗</span>
+      <h2 id="modalTitle">Konfirmasi</h2>
+      <p id="modalDescription">Apakah Anda yakin?</p>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-modal-close>Batal</button><button id="modalConfirmButton" class="button button-primary" type="button">Lanjutkan</button></div>
+    </div>
+  </div>
+
   <script src="/assets/js/account.js"></script>
 </body>
 </html>
