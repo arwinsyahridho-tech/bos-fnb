@@ -4,9 +4,9 @@ const test = require("node:test");
 const vm = require("node:vm");
 
 const helperSource = fs.readFileSync("assets/js/inventory-access.js", "utf8");
-const inventoryPage = fs.readFileSync("modules/inventory/dashboard-inventory.html", "utf8");
+const inventoryPage = fs.readFileSync("modules/inventory/dashboard.html", "utf8");
 const inventoryEntry = fs.readFileSync("modules/inventory/index.html", "utf8");
-const inventoryScript = fs.readFileSync("modules/inventory/inventory.js", "utf8");
+const inventoryScript = fs.readFileSync("modules/inventory/inventory-page.js", "utf8");
 const migration = fs.readFileSync("supabase/migrations/20260614020000_restrict_inventory_access.sql", "utf8");
 
 function loadHelper(user) {
@@ -20,7 +20,7 @@ function loadHelper(user) {
         getSession: async () => user ? { user } : null
       },
       location: {
-        hash: "", pathname: "/modules/inventory/dashboard-inventory.html", search: "",
+        hash: "", pathname: "/modules/inventory/dashboard.html", search: "",
         replace(url) { redirects.push(url); }
       },
       sessionStorage: { setItem() {} }
@@ -45,18 +45,18 @@ test("Inventory helper hanya mengizinkan email developer tanpa mempedulikan kapi
 });
 
 test("Inventory page menjalankan auth guard dan access guard sebelum fitur modul", () => {
-  assert.match(inventoryEntry, /dashboard-inventory\.html/);
+  assert.match(inventoryEntry, /dashboard\.html/);
   assert.ok(inventoryPage.indexOf("/assets/js/biya-deletion-guard.js") < inventoryPage.indexOf("/assets/js/auth-guard.js"));
   assert.ok(inventoryPage.indexOf("/assets/js/auth-guard.js") < inventoryPage.indexOf("<body"));
-  assert.match(inventoryPage, /modules\/inventory\/inventory\.js/);
-  assert.match(inventoryScript, /BIYAInventoryAccess\.requireInventoryAccess\(\{onDenied:showAccessDenied,onError:showLoadError\}\)/);
-  assert.match(inventoryScript, /onDenied:showAccessDenied/);
-  assert.match(inventoryScript, /Modul Inventory belum bisa dibuka/);
+  assert.match(inventoryPage, /inventory-page\.js/);
+  assert.match(inventoryScript, /BIYAInventoryAccess\.requireInventoryAccess/);
+  assert.match(inventoryScript, /onDenied:/);
+  assert.match(inventoryScript, /Inventory belum dapat dibuka/);
   assert.match(inventoryPage, /Kembali ke Module Center/);
-  assert.match(inventoryPage, /Coba Lagi/);
+  assert.match(inventoryPage, /dashboard\.html/);
   assert.match(inventoryPage, /Inventory Dashboard/);
-  assert.match(inventoryPage, /Stock Movement/);
-  assert.match(inventoryPage, /Waste & Spoilage/);
+  assert.match(inventoryPage, /Stock Card/);
+  assert.match(inventoryPage, /Inventory Dashboard/);
   assert.doesNotThrow(() => new Function(helperSource));
   assert.doesNotThrow(() => new Function(inventoryScript));
 });

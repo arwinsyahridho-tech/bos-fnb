@@ -10,7 +10,7 @@ const profileBridge = fs.readFileSync('assets/js/biya-profile-bridge.js', 'utf8'
 const COST_ROUTE = '/modules/cost-management/costdashboard.html';
 const LEGACY_SETTINGS_ROUTE = '/modules/cost-management/settings.html';
 const ACCOUNT_CENTER_FALLBACK = '/account-center/';
-const INVENTORY_ROUTE = '/modules/inventory/index.html';
+const INVENTORY_ROUTE = '/modules/inventory/dashboard.html';
 
 test('Module Center mempertahankan akses utama tanpa shortcut hero yang duplikat', () => {
   assert.match(source, /<script src="\/menu-modules\/config\.js"><\/script>/);
