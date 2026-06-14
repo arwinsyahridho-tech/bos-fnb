@@ -75,11 +75,13 @@ test('Account summary memiliki fallback dan sumber data dinamis Supabase', () =>
 
 test('Daftar modul sesuai status dan Coming Soon bukan link', () => {
   assert.match(source, /<a class="module-card available"[^>]*>[\s\S]*?<h3 class="module-name">Cost Management<\/h3>/);
-  for (const moduleName of ['Inventory', 'Finance', 'POS', 'Reservation']) {
+  assert.match(source, /<a class="module-card available inventory-private"[^>]*data-portal-link="inventory"[^>]*hidden>/);
+  assert.match(source, /inventoryAccess\.isInventoryAllowed\(sessionUser\)/);
+  for (const moduleName of ['Finance', 'POS', 'Reservation']) {
     assert.match(source, new RegExp(`<article class="module-card coming-soon"[^>]*>[\\s\\S]*?<h3 class="module-name">${moduleName}<\\/h3>`));
   }
-  assert.equal((source.match(/<article class="module-card coming-soon"/g) || []).length, 4);
-  assert.equal((source.match(/>Coming Soon<\/span>/g) || []).length, 4);
+  assert.equal((source.match(/<article class="module-card coming-soon"/g) || []).length, 3);
+  assert.equal((source.match(/>Coming Soon<\/span>/g) || []).length, 3);
 });
 
 test('CSS mobile-first mencegah overflow dan menyediakan breakpoint grid', () => {
