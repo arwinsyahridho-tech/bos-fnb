@@ -69,6 +69,29 @@
     element.classList.toggle("is-error", type === "error");
   }
 
+  function profileSaveError(error, table) {
+    const code = String((error && error.code) || "").toUpperCase();
+    const details = [error && error.message, error && error.details, error && error.hint]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    const tableLabel = table === "business_profiles" ? "Business" : "Profile";
+
+    if (code === "42P01" || details.includes("does not exist") || details.includes("schema cache")) {
+      return `Tabel ${table} belum tersedia di Supabase. Jalankan migration Account Center terlebih dahulu.`;
+    }
+    if (code === "42501" || code === "PGRST301" || details.includes("row-level security") || details.includes("permission denied")) {
+      return `Akses ${tableLabel} ditolak oleh RLS. Pastikan policy select, insert, dan update mengizinkan auth.uid() = user_id.`;
+    }
+    if (["42703", "PGRST204"].includes(code) || details.includes("column") && details.includes("not found")) {
+      return `Kolom tabel ${table} tidak cocok dengan Account Center. Jalankan migration terbaru dan refresh schema cache Supabase.`;
+    }
+    if (code === "23505") {
+      return `${tableLabel} untuk akun ini sudah ada, tetapi constraint user_id belum mendukung upsert. Pastikan user_id memiliki UNIQUE constraint.`;
+    }
+    return `${tableLabel} belum berhasil disimpan${error && error.message ? `: ${error.message}` : ". Silakan coba lagi."}`;
+  }
+
   function formatDate(value) {
     if (!value) return "—";
     const date = new Date(value);
@@ -235,7 +258,7 @@
   }
 
   async function saveRecord(table, values, statusElement, button, successMessage) {
-    if (!currentSession || !currentSession.user) return;
+    if (!currentSession || !currentSession.user) return false;
     setBusy(button, true, "Menyimpan…");
     setStatus(statusElement, "");
     const payload = { user_id: currentSession.user.id, ...values };
@@ -243,9 +266,11 @@
       const { error } = await auth.client.from(table).upsert(payload, { onConflict: "user_id" });
       if (error) throw error;
       setStatus(statusElement, successMessage, "success");
+      return true;
     } catch (error) {
-      console.warn(`[BIYA Account Center] ${table} belum dapat disimpan`, error);
-      setStatus(statusElement, "Data tetap ditampilkan dari profil akun, tetapi tabel penyimpanan belum tersedia atau belum dapat diakses.", "error");
+      console.error(`[BIYA Account Center] Gagal menyimpan ${table}`, error);
+      setStatus(statusElement, profileSaveError(error, table), "error");
+      return false;
     } finally {
       setBusy(button, false);
     }
@@ -272,18 +297,22 @@
       phone: document.getElementById("profilePhone").value.trim(),
       role: document.getElementById("profileRole").value.trim()
     };
-    await saveRecord("account_profiles", values, document.getElementById("profileStatus"), button, "Profile berhasil disimpan.");
-    currentAccountProfile = { ...currentAccountProfile, ...values };
-    renderAccount(currentSession, currentAccountProfile, currentBusinessProfile);
+    const saved = await saveRecord("account_profiles", values, document.getElementById("profileStatus"), button, "Profile berhasil disimpan.");
+    if (saved) {
+      currentAccountProfile = { ...currentAccountProfile, ...values };
+      renderAccount(currentSession, currentAccountProfile, currentBusinessProfile);
+    }
   });
 
   document.getElementById("businessForm").addEventListener("submit", async (event) => {
     event.preventDefault();
     const button = event.currentTarget.querySelector('button[type="submit"]');
     const values = Object.fromEntries(new FormData(event.currentTarget).entries());
-    await saveRecord("business_profiles", values, document.getElementById("businessStatus"), button, "Data bisnis berhasil disimpan.");
-    currentBusinessProfile = { ...currentBusinessProfile, ...values };
-    renderAccount(currentSession, currentAccountProfile, currentBusinessProfile);
+    const saved = await saveRecord("business_profiles", values, document.getElementById("businessStatus"), button, "Data bisnis berhasil disimpan.");
+    if (saved) {
+      currentBusinessProfile = { ...currentBusinessProfile, ...values };
+      renderAccount(currentSession, currentAccountProfile, currentBusinessProfile);
+    }
   });
 
   document.getElementById("headerSwitchAccountButton").addEventListener("click", () => confirmSignOut("switch"));
