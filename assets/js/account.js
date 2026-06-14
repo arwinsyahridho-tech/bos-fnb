@@ -22,6 +22,51 @@
   let currentBusinessProfile = null;
   let modalAction = null;
   let lastFocusedElement = null;
+  const buildMarker = "account-save-debug-v1";
+
+  console.info(`BIYA Account Center build: ${buildMarker}`);
+
+  function supabaseProjectRef(url) {
+    try {
+      return new URL(url).hostname.split(".")[0] || "";
+    } catch (_) {
+      return "";
+    }
+  }
+
+  function hasProjectMismatch() {
+    const activeRef = supabaseProjectRef(auth && auth.config && auth.config.supabaseUrl);
+    const expectedRef = String((auth && auth.config && auth.config.expectedSupabaseProjectRef) || "");
+    return Boolean(activeRef && expectedRef && activeRef !== expectedRef);
+  }
+
+  function safePayload(payload) {
+    const sensitiveFields = new Set(["access_token", "anon_key", "password", "refresh_token"]);
+    const personalFields = new Set(["address", "description", "email", "full_name", "owner_name", "phone"]);
+    return Object.fromEntries(
+      Object.entries(payload || {}).map(([key, value]) => [
+        key,
+        sensitiveFields.has(key.toLowerCase())
+          ? "[REDACTED]"
+          : personalFields.has(key.toLowerCase()) && value
+            ? `[REDACTED ${String(value).length} chars]`
+            : value
+      ])
+    );
+  }
+
+  function logSupabaseError(error, table, payload, operation = "upsert") {
+    console.error(`[BIYA Account Center] Supabase ${operation} gagal`, {
+      table,
+      payload: safePayload(payload),
+      code: error && error.code ? error.code : "",
+      message: error && error.message ? error.message : "",
+      details: error && error.details ? error.details : "",
+      hint: error && error.hint ? error.hint : "",
+      supabaseUrl: auth && auth.config ? auth.config.supabaseUrl : "",
+      supabaseProjectRef: supabaseProjectRef(auth && auth.config && auth.config.supabaseUrl)
+    });
+  }
 
   function showState(name) {
     Object.entries(states).forEach(([key, element]) => {
@@ -77,7 +122,13 @@
       .toLowerCase();
     const tableLabel = table === "business_profiles" ? "Business" : "Profile";
 
-    if (code === "42P01" || details.includes("does not exist") || details.includes("schema cache")) {
+    if (hasProjectMismatch()) {
+      return "Web live terhubung ke Supabase project berbeda dari database yang sedang dicek.";
+    }
+    if (details.includes("schema cache")) {
+      return "Supabase schema cache belum reload. Jalankan notify pgrst, 'reload schema';";
+    }
+    if (code === "42P01") {
       return `Tabel ${table} belum tersedia di Supabase.`;
     }
     if (code === "42501" || code === "PGRST301" || details.includes("row-level security") || details.includes("permission denied")) {
@@ -226,6 +277,18 @@
       showState("signedOut");
       return;
     }
+    console.info("[BIYA Account Center] Supabase aktif", {
+      url: auth.config.supabaseUrl,
+      projectRef: supabaseProjectRef(auth.config.supabaseUrl),
+      configSource: auth.config.supabaseConfigSource
+    });
+    console.info("[BIYA Account Center] User aktif", { userId: currentSession.user.id });
+    if (hasProjectMismatch()) {
+      console.error("[BIYA Account Center] Web live terhubung ke Supabase project berbeda dari database yang sedang dicek.", {
+        activeProjectRef: supabaseProjectRef(auth.config.supabaseUrl),
+        expectedProjectRef: auth.config.expectedSupabaseProjectRef
+      });
+    }
 
     try {
       const blocked = await deletionGuard.blockAndSignOutIfNeeded(auth.client, currentSession.user.id);
@@ -263,6 +326,23 @@
     setStatus(statusElement, "");
     const payload = { user_id: currentSession.user.id, ...values };
     try {
+      if (table === "business_profiles") {
+        const { data: testData, error: testError } = await auth.client
+          .from("business_profiles")
+          .select("user_id")
+          .limit(1);
+        console.info("[BIYA Account Center] Test select business_profiles", {
+          table: "business_profiles",
+          rowsVisible: Array.isArray(testData) ? testData.length : 0,
+          error: testError ? {
+            code: testError.code || "",
+            message: testError.message || "",
+            details: testError.details || "",
+            hint: testError.hint || ""
+          } : null
+        });
+        if (testError) logSupabaseError(testError, "business_profiles", { select: "user_id", limit: 1 }, "test select");
+      }
       const { data, error } = await auth.client
         .from(table)
         .upsert(payload, { onConflict: "user_id" })
@@ -272,7 +352,7 @@
       setStatus(statusElement, successMessage, "success");
       return data;
     } catch (error) {
-      console.error(`[BIYA Account Center] Gagal menyimpan ${table}`, error);
+      logSupabaseError(error, table, payload);
       setStatus(statusElement, profileSaveError(error, table), "error");
       return null;
     } finally {
