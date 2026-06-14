@@ -5,6 +5,7 @@ const vm = require("node:vm");
 
 const helperSource = fs.readFileSync("assets/js/inventory-access.js", "utf8");
 const inventoryPage = fs.readFileSync("modules/inventory/dashboard-inventory.html", "utf8");
+const inventoryScript = fs.readFileSync("modules/inventory/inventory.js", "utf8");
 const migration = fs.readFileSync("supabase/migrations/20260614020000_restrict_inventory_access.sql", "utf8");
 
 function loadHelper(user) {
@@ -44,9 +45,13 @@ test("Inventory helper hanya mengizinkan email developer tanpa mempedulikan kapi
 
 test("Inventory page menjalankan auth guard dan access guard sebelum fitur modul", () => {
   assert.ok(inventoryPage.indexOf("/assets/js/auth-guard.js") < inventoryPage.indexOf("<body"));
-  assert.match(inventoryPage, /BIYAInventoryAccess\.requireInventoryAccess\(\)/);
-  assert.match(inventoryPage, /Inventory masih dalam tahap development/);
+  assert.match(inventoryPage, /modules\/inventory\/inventory\.js/);
+  assert.match(inventoryScript, /BIYAInventoryAccess\.requireInventoryAccess\(\)/);
+  assert.match(inventoryPage, /Inventory Dashboard/);
+  assert.match(inventoryPage, /Stock Movement/);
+  assert.match(inventoryPage, /Waste & Spoilage/);
   assert.doesNotThrow(() => new Function(helperSource));
+  assert.doesNotThrow(() => new Function(inventoryScript));
 });
 
 test("Migration membatasi seluruh tabel inventory berdasarkan email JWT", () => {
