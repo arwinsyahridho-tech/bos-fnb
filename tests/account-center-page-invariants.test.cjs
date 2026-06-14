@@ -53,10 +53,17 @@ test('dashboard menyediakan seluruh tab, form, modul, billing, security, dan dan
 test('Account Center menampilkan diagnosis penyimpanan Business yang jelas', () => {
   for (const message of [
     'Tabel ${table} belum tersedia di Supabase.',
+    "Supabase schema cache belum reload. Jalankan notify pgrst, 'reload schema';",
     'Akses RLS ditolak. Periksa policy user_id = auth.uid().',
+    'Web live terhubung ke Supabase project berbeda dari database yang sedang dicek.',
     'Struktur kolom ${table} belum sesuai.',
     'Data bisnis berhasil disimpan.'
   ]) assert.match(script, new RegExp(message.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(script, /code === "42P01"/);
+  assert.doesNotMatch(script, /code === "42P01" \|\|/);
+  assert.match(script, /\.from\("business_profiles"\)\s*\.select\("user_id"\)\s*\.limit\(1\)/);
+  assert.match(script, /BIYA Account Center build: \$\{buildMarker\}/);
+  assert.match(html, /account\.js\?v=account-save-debug-v1/);
 });
 
 test('Asset Account Center valid dan mobile-first', () => {
