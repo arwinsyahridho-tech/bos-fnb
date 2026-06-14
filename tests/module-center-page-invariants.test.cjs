@@ -9,7 +9,7 @@ const profileBridge = fs.readFileSync('assets/js/biya-profile-bridge.js', 'utf8'
 
 const COST_ROUTE = '/modules/cost-management/costdashboard.html';
 const LEGACY_SETTINGS_ROUTE = '/modules/cost-management/settings.html';
-const ACCOUNT_CENTER_FALLBACK = 'https://biya-account-center.vercel.app';
+const ACCOUNT_CENTER_FALLBACK = '/account-center/';
 
 test('Module Center mempertahankan akses utama tanpa shortcut hero yang duplikat', () => {
   assert.match(source, /<script src="\/menu-modules\/config\.js"><\/script>/);
@@ -17,6 +17,7 @@ test('Module Center mempertahankan akses utama tanpa shortcut hero yang duplikat
   assert.match(config, new RegExp(COST_ROUTE.replaceAll('/', '\\/')));
   assert.match(config, /ACCOUNT_CENTER_URL/);
   assert.match(config, new RegExp(ACCOUNT_CENTER_FALLBACK.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.doesNotMatch(config, /biya-account-center\.vercel\.app/);
   assert.match(config, /window\.BIYA_ACCOUNT_CENTER_URL/);
   assert.doesNotMatch(source, />\s*Open Cost Management\s*</);
   assert.doesNotMatch(source, />\s*Open Account Center\s*</);
