@@ -78,13 +78,13 @@
     const tableLabel = table === "business_profiles" ? "Business" : "Profile";
 
     if (code === "42P01" || details.includes("does not exist") || details.includes("schema cache")) {
-      return `Tabel ${table} belum tersedia di Supabase. Jalankan migration Account Center terlebih dahulu.`;
+      return `Tabel ${table} belum tersedia di Supabase.`;
     }
     if (code === "42501" || code === "PGRST301" || details.includes("row-level security") || details.includes("permission denied")) {
-      return `Akses ${tableLabel} ditolak oleh RLS. Pastikan policy select, insert, dan update mengizinkan auth.uid() = user_id.`;
+      return "Akses RLS ditolak. Periksa policy user_id = auth.uid().";
     }
     if (["42703", "PGRST204"].includes(code) || details.includes("column") && details.includes("not found")) {
-      return `Kolom tabel ${table} tidak cocok dengan Account Center. Jalankan migration terbaru dan refresh schema cache Supabase.`;
+      return `Struktur kolom ${table} belum sesuai.`;
     }
     if (code === "23505") {
       return `${tableLabel} untuk akun ini sudah ada, tetapi constraint user_id belum mendukung upsert. Pastikan user_id memiliki UNIQUE constraint.`;
@@ -263,14 +263,18 @@
     setStatus(statusElement, "");
     const payload = { user_id: currentSession.user.id, ...values };
     try {
-      const { error } = await auth.client.from(table).upsert(payload, { onConflict: "user_id" });
+      const { data, error } = await auth.client
+        .from(table)
+        .upsert(payload, { onConflict: "user_id" })
+        .select()
+        .single();
       if (error) throw error;
       setStatus(statusElement, successMessage, "success");
-      return true;
+      return data;
     } catch (error) {
       console.error(`[BIYA Account Center] Gagal menyimpan ${table}`, error);
       setStatus(statusElement, profileSaveError(error, table), "error");
-      return false;
+      return null;
     } finally {
       setBusy(button, false);
     }
@@ -297,9 +301,9 @@
       phone: document.getElementById("profilePhone").value.trim(),
       role: document.getElementById("profileRole").value.trim()
     };
-    const saved = await saveRecord("account_profiles", values, document.getElementById("profileStatus"), button, "Profile berhasil disimpan.");
-    if (saved) {
-      currentAccountProfile = { ...currentAccountProfile, ...values };
+    const savedProfile = await saveRecord("account_profiles", values, document.getElementById("profileStatus"), button, "Profile berhasil disimpan.");
+    if (savedProfile) {
+      currentAccountProfile = { ...currentAccountProfile, ...savedProfile };
       renderAccount(currentSession, currentAccountProfile, currentBusinessProfile);
     }
   });
@@ -308,9 +312,9 @@
     event.preventDefault();
     const button = event.currentTarget.querySelector('button[type="submit"]');
     const values = Object.fromEntries(new FormData(event.currentTarget).entries());
-    const saved = await saveRecord("business_profiles", values, document.getElementById("businessStatus"), button, "Data bisnis berhasil disimpan.");
-    if (saved) {
-      currentBusinessProfile = { ...currentBusinessProfile, ...values };
+    const savedBusiness = await saveRecord("business_profiles", values, document.getElementById("businessStatus"), button, "Data bisnis berhasil disimpan.");
+    if (savedBusiness) {
+      currentBusinessProfile = { ...currentBusinessProfile, ...savedBusiness };
       renderAccount(currentSession, currentAccountProfile, currentBusinessProfile);
     }
   });

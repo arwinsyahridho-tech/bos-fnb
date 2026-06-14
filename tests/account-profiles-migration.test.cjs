@@ -3,7 +3,7 @@ const fs = require("node:fs");
 const test = require("node:test");
 
 const migration = fs.readFileSync(
-  "supabase/migrations/20260614000000_add_account_and_business_profiles.sql",
+  "supabase/migrations/20260614010000_create_account_center_profiles.sql",
   "utf8"
 );
 
@@ -30,4 +30,10 @@ test("migration mengaktifkan RLS dan ownership policy untuk kedua tabel", () => 
   assert.equal((migration.match(/for insert to authenticated/gi) || []).length, 2);
   assert.equal((migration.match(/for update to authenticated/gi) || []).length, 2);
   assert.equal((migration.match(/auth\.uid\(\) = user_id/gi) || []).length, 8);
+});
+
+test("migration memberi authenticated hak schema dan operasi profile", () => {
+  assert.match(migration, /grant usage on schema public to authenticated/i);
+  assert.match(migration, /grant select, insert, update on public\.account_profiles to authenticated/i);
+  assert.match(migration, /grant select, insert, update on public\.business_profiles to authenticated/i);
 });

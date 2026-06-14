@@ -583,7 +583,6 @@
     <footer class="footer">BIYA · Business in Your Hand</footer>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     (() => {
       "use strict";
@@ -596,12 +595,7 @@
       const portalConfig = window.BIYA_PORTAL_CONFIG || {};
       const COST_MANAGEMENT_URL = portalConfig.COST_MANAGEMENT_URL;
       const ACCOUNT_CENTER_URL = portalConfig.ACCOUNT_CENTER_URL;
-      const SUPABASE_URL = window.BIYA_SUPABASE_URL || "https://pkjmkjyylgzjvhcreucc.supabase.co";
-      const SUPABASE_ANON_KEY = window.BIYA_SUPABASE_ANON_KEY || "sb_publishable_Tq4d0o3PIAd_zh11uJa2uQ_M_zPIYFX";
-      const configuredClient = (window.BiyaAuth && window.BiyaAuth.client) || window.biyaSupabase || window.supabaseClient || null;
-      const supabaseClient = configuredClient || ((SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase)
-        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-        : null);
+      const supabaseClient = (window.BiyaAuth && window.BiyaAuth.client) || null;
       const profileBridge = window.BiyaProfileBridge;
 
       const elements = {
@@ -693,7 +687,7 @@
 
         renderAccount({
           userName: displayInfo.displayName,
-          businessName: displayInfo.subtitle,
+          businessName: displayInfo.businessName,
           hasBusinessName: displayInfo.hasBusinessName,
           planName: getPlanName(user, accountProfile, subscription)
         });

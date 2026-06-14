@@ -99,6 +99,14 @@
         email,
         FALLBACK.subtitle
       ),
+      businessName: firstText(
+        businessName,
+        accountName,
+        metadata.business_name,
+        metadata.full_name,
+        email,
+        FALLBACK.subtitle
+      ),
       hasBusinessName: Boolean(businessName)
     };
   }

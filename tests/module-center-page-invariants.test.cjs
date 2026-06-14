@@ -59,6 +59,7 @@ test('Account summary memiliki fallback dan sumber data dinamis Supabase', () =>
   assert.match(source, /Cost Management Available/);
   assert.match(source, /supabaseClient\.auth\.getUser\(\)/);
   assert.match(source, /window\.BiyaAuth && window\.BiyaAuth\.client/);
+  assert.doesNotMatch(source, /createClient\(/);
   assert.match(source, /assets\/js\/biya-profile-bridge\.js/);
   assert.match(profileBridge, /"account_profiles"/);
   assert.match(profileBridge, /"business_profiles"/);
@@ -68,6 +69,7 @@ test('Account summary memiliki fallback dan sumber data dinamis Supabase', () =>
   assert.match(profileBridge, /metadata\.full_name/);
   assert.match(profileBridge, /metadata\.business_name/);
   assert.match(source, /getBusinessProfile\(supabaseClient, sessionUser\.id\)/);
+  assert.match(source, /businessName: displayInfo\.businessName/);
   assert.match(source, /Lengkapi Account Center/);
 });
 
