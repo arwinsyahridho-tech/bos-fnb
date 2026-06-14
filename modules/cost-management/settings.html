@@ -230,7 +230,7 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 .settings-field label{margin-bottom:7px;color:rgba(215,227,255,.78);font-size:12px;font-weight:600;line-height:1.3}
 .settings-field input,.settings-field select{height:46px;padding:0 14px;font-size:14px}
 .settings-field textarea{min-height:86px;padding:12px 14px;font-size:14px;line-height:1.5}
-.settings-helper{display:block;width:fit-content;max-width:100%;margin-top:12px;padding:5px 9px;font-size:11px;line-height:1.4}
+.logo-upload-row{display:flex;align-items:center;gap:14px}.logo-preview{width:72px;height:72px;flex:0 0 auto;object-fit:contain;border:1px solid var(--biya-border);border-radius:14px;background:#fff}.logo-preview[hidden]{display:none}.logo-upload-actions{display:flex;flex:1;gap:8px;flex-wrap:wrap}.logo-upload-actions input{padding:10px;height:auto}.logo-reset{width:auto!important;height:40px;padding:0 14px;border:0;border-radius:10px;background:#163A87;color:#fff;cursor:pointer}.settings-helper{display:block;width:fit-content;max-width:100%;margin-top:12px;padding:5px 9px;font-size:11px;line-height:1.4}
 .settings-actions{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:2px 0}
 .settings-actions .btn-action{width:auto!important;min-width:138px;height:44px;padding:0 18px;font-size:13px}
 .settings-actions .btn-reset{min-width:92px;background:linear-gradient(135deg,#ef4444,#f97316)!important;border:1px solid rgba(255,255,255,.08)!important;box-shadow:0 8px 20px rgba(239,68,68,.18)!important;color:#fff!important}
@@ -290,29 +290,18 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 <div class="settings-status hidden" id="settingsStatus" role="status" aria-live="polite"></div>
 <div class="settings-layout">
 <div class="settings-form">
+<section class="section settings-section" aria-labelledby="businessSettingsTitle">
+<div class="settings-section-head"><div class="settings-section-title" id="businessSettingsTitle">Bisnis &amp; Logo</div><div class="settings-section-description">Identitas yang dipakai pada modul dan hasil export.</div></div>
+<div class="settings-grid"><div class="settings-field"><label for="businessName">Nama Bisnis / Outlet</label><input id="businessName" name="business_name" type="text" maxlength="100"/></div><div class="settings-field settings-field-wide"><label for="logoFile">Logo Bisnis</label><div class="logo-upload-row"><img id="logoPreview" class="logo-preview" alt="Preview logo bisnis" hidden/><div class="logo-upload-actions"><input id="logoFile" name="logo_file" type="file" accept="image/*"/><button id="resetLogoBtn" class="logo-reset" type="button">Reset Logo</button></div></div></div></div></section>
 <section class="section settings-section" aria-labelledby="costSettingsTitle">
-<div class="settings-section-head">
-<div class="settings-section-title" id="costSettingsTitle">Cost Settings</div>
-<div class="settings-section-description">Target utama untuk perhitungan biaya dan profit.</div>
-</div>
+<div class="settings-section-head"><div class="settings-section-title" id="costSettingsTitle">Cost Settings</div><div class="settings-section-description">Target dan default perhitungan biaya.</div></div>
 <div class="settings-grid">
-<div class="settings-field"><label for="foodCostTarget">Target Food Cost</label><input id="foodCostTarget" placeholder="35" type="number" min="0.01" max="100" step="0.01"/></div>
-<div class="settings-field"><label for="profitTarget">Target Profit</label><input id="profitTarget" placeholder="50" type="number" min="0.01" max="100" step="0.01"/></div>
-<div class="settings-field"><label for="currency">Mata Uang</label><select id="currency"><option value="IDR">IDR</option><option value="USD">USD</option><option value="MYR">MYR</option></select></div>
-<div class="settings-field"><label for="dateFormat">Format Tanggal</label><select id="dateFormat"><option value="dd/mm/yyyy">DD/MM/YYYY</option><option value="yyyy-mm-dd">YYYY-MM-DD</option></select></div>
-</div>
-<div class="pill-note settings-helper">Dipakai di Dashboard, Product HPP, dan Export Center</div>
-</section>
-<section class="section settings-section" aria-labelledby="systemSettingsTitle">
-<div class="settings-section-head">
-<div class="settings-section-title" id="systemSettingsTitle">System</div>
-<div class="settings-section-description">Preferensi default untuk input dan status data baru.</div>
-</div>
-<div class="settings-grid">
-<div class="settings-field"><label for="autoCapitalize">Auto Kapitalisasi Nama Item</label><select id="autoCapitalize"><option value="on">ON</option><option value="off">OFF</option></select></div>
-<div class="settings-field"><label for="defaultStatus">Status Default Data Baru</label><select id="defaultStatus"><option>ACTIVE</option><option>INACTIVE</option></select></div>
-</div>
-</section>
+<div class="settings-field"><label for="foodCostTarget">Target Food Cost</label><input id="foodCostTarget" name="food_cost_target" type="number" min="0.01" max="100" step="0.01"/></div><div class="settings-field"><label for="profitTarget">Target Profit</label><input id="profitTarget" name="profit_target" type="number" min="0.01" max="100" step="0.01"/></div>
+<div class="settings-field"><label for="defaultWaste">Default Waste %</label><input id="defaultWaste" name="default_waste" type="number" min="0" max="100" step="0.01"/></div><div class="settings-field"><label for="defaultOverhead">Default Overhead %</label><input id="defaultOverhead" name="default_overhead" type="number" min="0" max="100" step="0.01"/></div>
+<div class="settings-field"><label for="serviceCharge">Service Charge %</label><input id="serviceCharge" name="service_charge" type="number" min="0" max="100" step="0.01"/></div><div class="settings-field"><label for="taxRate">Tax %</label><input id="taxRate" name="tax_rate" type="number" min="0" max="100" step="0.01"/></div>
+<div class="settings-field"><label for="currency">Mata Uang</label><select id="currency" name="currency"><option value="IDR">IDR</option><option value="USD">USD</option><option value="MYR">MYR</option></select></div><div class="settings-field"><label for="numberFormat">Format Angka</label><select id="numberFormat" name="number_format"><option value="id-ID">Indonesia (1.234,56)</option><option value="en-US">English (1,234.56)</option><option value="ms-MY">Malaysia (1,234.56)</option></select></div>
+<div class="settings-field"><label for="dateFormat">Format Tanggal</label><select id="dateFormat" name="date_format"><option value="dd/mm/yyyy">DD/MM/YYYY</option><option value="yyyy-mm-dd">YYYY-MM-DD</option></select></div></div><div class="pill-note settings-helper">Dipakai di Dashboard, Raw Material, Preparation, Menu, Product HPP, dan Export Center</div></section>
+<section class="section settings-section" aria-labelledby="systemSettingsTitle"><div class="settings-section-head"><div class="settings-section-title" id="systemSettingsTitle">System</div><div class="settings-section-description">Preferensi default data baru.</div></div><div class="settings-grid"><div class="settings-field"><label for="autoCapitalize">Auto Kapitalisasi Nama Item</label><select id="autoCapitalize" name="auto_capitalize"><option value="on">ON</option><option value="off">OFF</option></select></div><div class="settings-field"><label for="defaultStatus">Status Default Data Baru</label><select id="defaultStatus" name="default_status"><option>ACTIVE</option><option>INACTIVE</option></select></div></div></section>
 <div class="settings-actions" aria-label="Settings actions">
 <button class="btn-action" id="saveBtn">Simpan Settings</button>
 <button class="btn-action btn-reset" id="resetBtn">Reset</button>
@@ -331,158 +320,28 @@ button .biya-icon{ margin-right:8px; vertical-align:-0.18em;
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="cost-settings-service.js"></script>
 <script>
-const SUPABASE_URL = window.BIYA_SUPABASE_URL || "https://pkjmkjyylgzjvhcreucc.supabase.co";
-const SUPABASE_ANON_KEY = window.BIYA_SUPABASE_ANON_KEY || "sb_publishable_Tq4d0o3PIAd_zh11uJa2uQ_M_zPIYFX";
-const configuredSupabaseClient = window.biyaSupabase || window.supabaseClient || null;
-const supabaseClient = configuredSupabaseClient || ((SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
-const settingsService = window.BiyaCostSettings;
-const fields = {
-  foodCostTarget: document.getElementById("foodCostTarget"),
-  profitTarget: document.getElementById("profitTarget"),
-  currency: document.getElementById("currency"),
-  dateFormat: document.getElementById("dateFormat"),
-  autoCapitalize: document.getElementById("autoCapitalize"),
-  defaultStatus: document.getElementById("defaultStatus")
-};
-const summaryGrid = document.getElementById("summaryGrid");
-const saveBtn = document.getElementById("saveBtn");
-const resetBtn = document.getElementById("resetBtn");
-const settingsStatus = document.getElementById("settingsStatus");
-
-let currentScope = null;
-let currentSettings = settingsService ? settingsService.normalize() : {};
-
-function displayValue(value){ return value === null || value === undefined || String(value).trim() === "" ? "-" : value; }
-function displayPercent(value){ return displayValue(value) === "-" ? "-" : `${value}%`; }
-function escapeHTML(value){ return String(value ?? "").replace(/[&<>"']/g, character => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", "\"":"&quot;", "'":"&#39;" }[character])); }
-function showStatus(message = "", tone = "info"){
-  settingsStatus.textContent = message;
-  settingsStatus.className = "settings-status" + (message ? "" : " hidden") + (tone === "error" ? " error" : tone === "success" ? " success" : "");
-}
-function setBusy(isBusy){
-  saveBtn.disabled = isBusy;
-  resetBtn.disabled = isBusy;
-  [saveBtn, resetBtn].forEach(button => {
-    button.style.opacity = isBusy ? ".65" : "";
-    button.style.cursor = isBusy ? "not-allowed" : "";
-  });
-}
-function clearLegacySettings(){
-  try{
-    localStorage.removeItem("biya_settings");
-  }catch(error){
-    console.warn("[Settings] Key localStorage lama tidak dapat dihapus", error);
-  }
-}
-function renderSummary(settings){
-  const details = [
-    ["Target Food Cost", displayPercent(settings.food_cost_target)],
-    ["Target Profit", displayPercent(settings.profit_target)],
-    ["Mata Uang", displayValue(settings.currency)],
-    ["Format Tanggal", displayValue(settings.date_format).toString().toUpperCase()],
-    ["Auto Kapitalisasi", displayValue(settings.auto_capitalize).toString().toUpperCase()],
-    ["Status Default", displayValue(settings.default_status)]
-  ];
-  summaryGrid.innerHTML = details.map(([label,value]) => `<div class="summary-item"><div class="summary-label">${escapeHTML(label)}</div><div class="summary-value">${escapeHTML(value)}</div></div>`).join("");
-}
-function fill(settings){
-  currentSettings = settingsService.normalize(settings);
-  fields.foodCostTarget.value = currentSettings.food_cost_target;
-  fields.profitTarget.value = currentSettings.profit_target;
-  fields.currency.value = currentSettings.currency;
-  fields.dateFormat.value = currentSettings.date_format;
-  fields.autoCapitalize.value = currentSettings.auto_capitalize;
-  fields.defaultStatus.value = currentSettings.default_status;
-  renderSummary(currentSettings);
-}
-function collectForm(){
-  return {
-    ...currentSettings,
-    food_cost_target: Number(fields.foodCostTarget.value),
-    profit_target: Number(fields.profitTarget.value),
-    currency: fields.currency.value,
-    date_format: fields.dateFormat.value,
-    auto_capitalize: fields.autoCapitalize.value,
-    default_status: fields.defaultStatus.value
-  };
-}
-async function loadSettings(){
-  if(!supabaseClient || !settingsService){
-    const error = new Error("Konfigurasi Supabase atau service Cost Settings belum tersedia.");
-    console.error("[Settings] Inisialisasi Supabase gagal", { error });
-    showStatus("Settings tidak dapat dimuat karena konfigurasi Supabase belum tersedia.", "error");
-    setBusy(true);
-    return;
-  }
-  setBusy(true);
-  showStatus("Memuat settings dari Supabase...");
-  try{
-    const result = await settingsService.load(supabaseClient);
-    currentScope = result.scope;
-    fill(result.settings);
-    clearLegacySettings();
-    showStatus(result.exists ? "" : "Belum ada settings tersimpan. Nilai default ditampilkan dan siap disimpan.");
-  }catch(error){
-    settingsService.logError("Halaman Settings gagal dimuat", error);
-    showStatus("Gagal memuat Settings dari Supabase. Periksa koneksi, sesi login, tabel cost_settings, dan policy RLS.", "error");
-  }finally{
-    setBusy(false);
-  }
-}
-saveBtn.addEventListener("click", async () => {
-  if(!supabaseClient || !settingsService || !currentScope){
-    showStatus("Settings belum siap disimpan. Muat ulang halaman dan periksa konfigurasi Supabase.", "error");
-    return;
-  }
-  const payload = collectForm();
-  if(!(payload.food_cost_target > 0 && payload.food_cost_target <= 100) || !(payload.profit_target > 0 && payload.profit_target <= 100)){
-    showStatus("Food Cost Target dan Profit Target harus lebih dari 0 dan maksimal 100.", "error");
-    return;
-  }
-  setBusy(true);
-  showStatus("Menyimpan Settings ke Supabase...");
-  try{
-    const saved = await settingsService.save(supabaseClient, currentScope, payload);
-    fill(saved);
-    clearLegacySettings();
-    showStatus("Settings berhasil disimpan ke Supabase.", "success");
-    alert("Settings tersimpan");
-  }catch(error){
-    settingsService.logError("Simpan Settings gagal", error, { businessId: currentScope.businessId });
-    showStatus("Gagal menyimpan Settings ke Supabase. Data lokal tidak dijadikan fallback. Cek console untuk detail error.", "error");
-  }finally{
-    setBusy(false);
-  }
-});
-resetBtn.addEventListener("click", async () => {
-  if(!supabaseClient || !settingsService || !currentScope){
-    showStatus("Settings belum siap direset. Muat ulang halaman dan periksa konfigurasi Supabase.", "error");
-    return;
-  }
-  setBusy(true);
-  showStatus("Mereset Settings di Supabase...");
-  try{
-    const resetSettings = await settingsService.save(supabaseClient, currentScope, {
-      ...currentSettings,
-      food_cost_target: settingsService.DEFAULTS.food_cost_target,
-      profit_target: settingsService.DEFAULTS.profit_target,
-      currency: settingsService.DEFAULTS.currency,
-      date_format: settingsService.DEFAULTS.date_format,
-      auto_capitalize: settingsService.DEFAULTS.auto_capitalize,
-      default_status: settingsService.DEFAULTS.default_status
-    });
-    fill(resetSettings);
-    clearLegacySettings();
-    showStatus("Settings berhasil direset ke nilai default.", "success");
-    alert("Settings direset");
-  }catch(error){
-    settingsService.logError("Reset Settings gagal", error, { businessId: currentScope.businessId });
-    showStatus("Gagal mereset Settings di Supabase. Cek console untuk detail error.", "error");
-  }finally{
-    setBusy(false);
-  }
-});
-document.addEventListener("DOMContentLoaded", loadSettings);
+const configuredSupabaseClient=window.biyaSupabase||window.supabaseClient||null;
+const supabaseClient=configuredSupabaseClient||((window.BIYA_SUPABASE_URL&&window.BIYA_SUPABASE_ANON_KEY&&window.supabase)?window.supabase.createClient(window.BIYA_SUPABASE_URL,window.BIYA_SUPABASE_ANON_KEY):null);
+const settingsService=window.BiyaCostSettings;
+const fieldNames=["businessName","foodCostTarget","profitTarget","defaultWaste","defaultOverhead","serviceCharge","taxRate","currency","numberFormat","dateFormat","autoCapitalize","defaultStatus"];
+const fields=Object.fromEntries(fieldNames.map(id=>[id,document.getElementById(id)]));
+const summaryGrid=document.getElementById("summaryGrid"),saveBtn=document.getElementById("saveBtn"),resetBtn=document.getElementById("resetBtn"),settingsStatus=document.getElementById("settingsStatus"),logoFile=document.getElementById("logoFile"),logoPreview=document.getElementById("logoPreview"),resetLogoBtn=document.getElementById("resetLogoBtn");
+let currentScope=null,currentSettings=settingsService.normalize(),pendingLogo="";
+function escapeHTML(value){return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));}
+function showStatus(message="",tone="info"){settingsStatus.textContent=message;settingsStatus.className="settings-status"+(message?"":" hidden")+(tone==="error"?" error":tone==="success"?" success":"");}
+function setBusy(busy){[saveBtn,resetBtn,resetLogoBtn].forEach(button=>{button.disabled=busy;button.style.opacity=busy?".65":"";});}
+function setLogoPreview(url){pendingLogo=url||"";logoPreview.hidden=!pendingLogo;if(pendingLogo)logoPreview.src=pendingLogo;else logoPreview.removeAttribute("src");}
+function renderSummary(settings){const details=[["Nama Bisnis",settings.business_name],["Target Food Cost",settings.food_cost_target+"%"],["Target Profit",settings.profit_target+"%"],["Default Waste",settings.default_waste+"%"],["Default Overhead",settings.default_overhead+"%"],["Service / Tax",settings.service_charge+"% / "+settings.tax_rate+"%"],["Mata Uang",settings.currency],["Format Angka",settings.number_format],["Status Default",settings.default_status]];summaryGrid.innerHTML=details.map(([label,value])=>`<div class="summary-item"><div class="summary-label">${escapeHTML(label)}</div><div class="summary-value">${escapeHTML(value||"-")}</div></div>`).join("");}
+function fill(settings){currentSettings=settingsService.normalize(settings);fields.businessName.value=currentSettings.business_name;fields.foodCostTarget.value=currentSettings.food_cost_target;fields.profitTarget.value=currentSettings.profit_target;fields.defaultWaste.value=currentSettings.default_waste;fields.defaultOverhead.value=currentSettings.default_overhead;fields.serviceCharge.value=currentSettings.service_charge;fields.taxRate.value=currentSettings.tax_rate;fields.currency.value=currentSettings.currency;fields.numberFormat.value=currentSettings.number_format;fields.dateFormat.value=currentSettings.date_format;fields.autoCapitalize.value=currentSettings.auto_capitalize;fields.defaultStatus.value=currentSettings.default_status;setLogoPreview(currentSettings.logo_url);renderSummary(currentSettings);applyCostSettings(currentSettings);}
+function collectForm(){return {...currentSettings,business_name:fields.businessName.value.trim()||settingsService.DEFAULTS.business_name,food_cost_target:Number(fields.foodCostTarget.value),profit_target:Number(fields.profitTarget.value),default_waste:Number(fields.defaultWaste.value),default_overhead:Number(fields.defaultOverhead.value),service_charge:Number(fields.serviceCharge.value),tax_rate:Number(fields.taxRate.value),currency:fields.currency.value,number_format:fields.numberFormat.value,date_format:fields.dateFormat.value,auto_capitalize:fields.autoCapitalize.value,default_status:fields.defaultStatus.value,logo_url:pendingLogo};}
+function validate(settings){const values=[settings.food_cost_target,settings.profit_target,settings.default_waste,settings.default_overhead,settings.service_charge,settings.tax_rate];return values.every((value,index)=>Number.isFinite(value)&&value>=(index<2?.01:0)&&value<=100);}
+async function loadCostSettings(){setBusy(true);showStatus("Memuat settings...");try{const result=await settingsService.load(supabaseClient);currentScope=result.scope;fill(result.settings);showStatus(result.syncError?"Settings lokal aktif. Sinkronisasi Supabase tidak tersedia.":"");}catch(error){settingsService.logError("Halaman Settings gagal dimuat",error);fill(settingsService.getActive());showStatus("Settings lokal dimuat, tetapi terjadi masalah saat sinkronisasi.","error");}finally{setBusy(false);}}
+async function saveCostSettings(){const payload=collectForm();if(!validate(payload)){showStatus("Nilai persentase harus berada di rentang 0-100; target harus lebih dari 0.","error");return;}setBusy(true);showStatus("Menyimpan settings...");try{const saved=await settingsService.save(supabaseClient,currentScope,payload);fill(saved);showStatus(saved._syncError?"Settings tersimpan lokal; sinkronisasi Supabase belum berhasil.":"Settings berhasil disimpan dan langsung diterapkan.","success");}catch(error){settingsService.logError("Simpan Settings gagal",error);showStatus("Gagal menyimpan settings: "+(error.message||"error tidak diketahui"),"error");}finally{setBusy(false);}}
+async function resetCostSettings(){if(!confirm("Kembalikan seluruh Cost Management Settings ke default?"))return;setBusy(true);try{const reset=await settingsService.reset(supabaseClient,currentScope);logoFile.value="";fill(reset);showStatus("Settings berhasil dikembalikan ke default.","success");}catch(error){showStatus("Gagal mereset settings: "+(error.message||"error tidak diketahui"),"error");}finally{setBusy(false);}}
+logoFile.addEventListener("change",async()=>{const file=logoFile.files&&logoFile.files[0];if(!file)return;try{showStatus("Memproses logo...");setLogoPreview(await settingsService.uploadLogo(supabaseClient,currentScope,file));showStatus("Preview logo siap. Klik Simpan Settings untuk menyimpan.");}catch(error){showStatus(error.message||"Logo gagal diproses.","error");logoFile.value="";}});
+resetLogoBtn.addEventListener("click",()=>{setLogoPreview("");logoFile.value="";showStatus("Logo akan dikembalikan ke default setelah Settings disimpan.");});
+saveBtn.addEventListener("click",saveCostSettings);resetBtn.addEventListener("click",resetCostSettings);document.addEventListener("DOMContentLoaded",loadCostSettings);
+Object.assign(window,{loadCostSettings,saveCostSettings,applyCostSettings,resetCostSettings});
 </script> <script>
 (function(){ const toggle = document.getElementById('menuToggle'); const sidebar = document.getElementById('biyaSidebar'); const overlay = document.getElementById('mobileOverlay'); if(!toggle || !sidebar || !overlay) return; const mobileQuery = window.matchMedia('(max-width: 980px)'); let closeButton = sidebar.querySelector('.sidebar-close'); if(!closeButton){ closeButton = document.createElement('button'); closeButton.className = 'sidebar-close'; closeButton.type = 'button'; closeButton.setAttribute('aria-label', 'Tutup menu'); closeButton.innerHTML = '&times;'; sidebar.prepend(closeButton); } const style = document.createElement('style'); style.textContent = '.biya-no-scroll{overflow:hidden !important;}.sidebar-close{display:none;}@media (max-width:980px){.sidebar-close{display:flex;align-items:center;justify-content:center;width:42px;height:42px;margin:0 0 18px auto;border:1px solid rgba(255,255,255,.14);border-radius:12px;background:rgba(255,255,255,.08);color:#fff;font-size:28px;line-height:1;cursor:pointer;}}'; document.head.appendChild(style); toggle.setAttribute('aria-controls','biyaSidebar'); toggle.setAttribute('aria-expanded','false'); const closeSidebar = () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); document.body.classList.remove('biya-no-scroll'); toggle.setAttribute('aria-expanded','false'); sidebar.setAttribute('aria-hidden', mobileQuery.matches ? 'true' : 'false'); overlay.setAttribute('aria-hidden','true'); }; const openSidebar = () => { sidebar.classList.add('open'); overlay.classList.add('open'); document.body.classList.add('biya-no-scroll'); toggle.setAttribute('aria-expanded','true'); sidebar.setAttribute('aria-hidden','false'); overlay.setAttribute('aria-hidden','false'); }; toggle.addEventListener('click', () => { if(sidebar.classList.contains('open')) closeSidebar(); else openSidebar(); }); closeButton.addEventListener('click', closeSidebar); overlay.addEventListener('click', closeSidebar); sidebar.addEventListener('click', (event) => { if(!mobileQuery.matches) return; if(event.target.closest('a, .item, .btn')) closeSidebar(); }); document.addEventListener('keydown', (event) => { if(event.key === 'Escape') closeSidebar(); }); const syncLayout = () => { if(mobileQuery.matches){ sidebar.setAttribute('aria-hidden', sidebar.classList.contains('open') ? 'false' : 'true'); } else { closeSidebar(); sidebar.setAttribute('aria-hidden','false'); } }; mobileQuery.addEventListener ? mobileQuery.addEventListener('change', syncLayout) : mobileQuery.addListener(syncLayout); syncLayout();
 })();

@@ -153,7 +153,7 @@ function toNumber(value) {
 
 function formatRupiah(value) {
   const n = Math.round(Number(value) || 0);
-  return "Rp " + n.toLocaleString("id-ID");
+  return settingsService ? settingsService.formatCurrency(n) : "Rp " + n.toLocaleString("id-ID");
 }
 
 function formatPercent(value) {
