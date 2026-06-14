@@ -9,6 +9,7 @@
   <script src="/assets/js/biya-data.js"></script>
   <script src="/assets/js/biya-profile-bridge.js"></script>
   <script src="/assets/js/auth-guard.js"></script>
+  <script src="/assets/js/inventory-access.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#041127" />
@@ -343,6 +344,8 @@
       transform: translateY(-3px);
     }
 
+    .module-card.inventory-private { display: none; }
+
     .module-card.coming-soon {
       cursor: default;
       opacity: 0.66;
@@ -542,14 +545,15 @@
           <span class="card-cta">Open Module <svg class="biya-icon" aria-hidden="true"><use href="#icon-arrow"></use></svg></span>
         </a>
 
-        <article class="module-card coming-soon" aria-disabled="true">
+        <a class="module-card available inventory-private" href="#inventory" data-portal-link="inventory" hidden>
           <div class="card-top">
             <span class="module-icon"><svg class="biya-icon" aria-hidden="true"><use href="#icon-box"></use></svg></span>
-            <span class="badge">Coming Soon</span>
+            <span class="badge available">Private Development</span>
           </div>
           <h3 class="module-name">Inventory</h3>
           <p class="module-description">Kontrol stok, pembelian, penggunaan bahan, dan pergerakan inventory.</p>
-        </article>
+          <span class="card-cta">Open Module <svg class="biya-icon" aria-hidden="true"><use href="#icon-arrow"></use></svg></span>
+        </a>
 
         <article class="module-card coming-soon" aria-disabled="true">
           <div class="card-top">
@@ -594,7 +598,9 @@
       });
       const portalConfig = window.BIYA_PORTAL_CONFIG || {};
       const COST_MANAGEMENT_URL = portalConfig.COST_MANAGEMENT_URL;
+      const INVENTORY_URL = portalConfig.INVENTORY_URL;
       const ACCOUNT_CENTER_URL = portalConfig.ACCOUNT_CENTER_URL;
+      const inventoryAccess = window.BIYAInventoryAccess;
       const supabaseClient = (window.BiyaAuth && window.BiyaAuth.client) || null;
       const profileBridge = window.BiyaProfileBridge;
 
@@ -608,6 +614,11 @@
       if (COST_MANAGEMENT_URL) {
         document.querySelectorAll('[data-portal-link="cost-management"]').forEach((link) => {
           link.href = COST_MANAGEMENT_URL;
+        });
+      }
+      if (INVENTORY_URL) {
+        document.querySelectorAll('[data-portal-link="inventory"]').forEach((link) => {
+          link.href = INVENTORY_URL;
         });
       }
       if (ACCOUNT_CENTER_URL) {
@@ -663,6 +674,11 @@
         if (!guardedSession) return;
 
         const sessionUser = guardedSession.user;
+        const inventoryCard = document.querySelector('[data-portal-link="inventory"]');
+        if (inventoryCard && inventoryAccess && inventoryAccess.isInventoryAllowed(sessionUser)) {
+          inventoryCard.hidden = false;
+          inventoryCard.classList.remove("inventory-private");
+        }
         if (!sessionUser || !sessionUser.id) return;
         const { data, error } = await supabaseClient.auth.getUser();
         const user = !error && data && data.user && data.user.id === sessionUser.id ? data.user : sessionUser;
