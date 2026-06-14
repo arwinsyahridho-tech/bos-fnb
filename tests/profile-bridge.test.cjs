@@ -48,6 +48,7 @@ test("mengambil account dan business profile hanya untuk user login", async () =
 
   assert.equal((await bridge.getAccountProfile(client, "user-a")).full_name, "Arwinsyah Ridho");
   assert.equal((await bridge.getBusinessProfile(client, "user-a")).business_name, "BIYA Kitchen");
+  assert.match(client.calls[1].columns, /business_name, business_type, owner_name, phone, email, address, city, province, description/);
   assert.deepEqual(
     client.calls.map((call) => ({ table: call.table, filter: call.filter })),
     [
@@ -84,6 +85,14 @@ test("mapping nama dan subtitle mengikuti prioritas Account Center", () => {
   );
   assert.equal(emailFallback.displayName, "arwinsyahridho");
   assert.equal(emailFallback.subtitle, "BIYA Kitchen");
+
+  const metadataFallback = bridge.getDisplayAccountInfo(
+    { email: "auth@example.com", user_metadata: { business_name: "Metadata Kitchen", full_name: "Metadata Owner" } },
+    null,
+    null
+  );
+  assert.equal(metadataFallback.subtitle, "Metadata Kitchen");
+  assert.equal(metadataFallback.hasBusinessName, false);
 });
 
 test("kegagalan atau tabel belum tersedia menghasilkan null dan warning", async () => {
@@ -97,5 +106,14 @@ test("kegagalan atau tabel belum tersedia menghasilkan null dan warning", async 
   assert.equal(await bridge.getAccountProfile(client, "user-a"), null);
   assert.equal(await bridge.getBusinessProfile(client, "user-a"), null);
   assert.equal(warnings.length, 2);
-  assert.match(warnings[0][0], /memakai fallback/);
+  assert.match(warnings[0][0], /tabel tidak ada/);
+});
+
+test("row profile yang tidak ditemukan memberi warning user_id yang jelas", async () => {
+  const warnings = [];
+  const bridge = loadBridge({ warn: (...args) => warnings.push(args) });
+
+  assert.equal(await bridge.getBusinessProfile(createClient(), "user-missing"), null);
+  assert.match(warnings[0][0], /data tidak ditemukan/);
+  assert.match(warnings[0][0], /user_id=user-missing/);
 });
