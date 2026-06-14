@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kelola akun dan profil bisnis BIYA">
+  <meta name="theme-color" content="#041127">
+  <title>Account Center · BIYA</title>
+  <link rel="stylesheet" href="/assets/css/account.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/assets/js/biya-config.js"></script>
+  <script src="/assets/js/biya-auth.js"></script>
+  <script src="/assets/js/biya-deletion-guard.js"></script>
+  <script src="/assets/js/biya-profile-bridge.js"></script>
+</head>
+<body>
+  <main class="account-shell">
+    <header class="topbar">
+      <a class="brand" href="/menu-modules/dashboard.html" aria-label="Kembali ke Module Center">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span><strong>BIYA</strong><small>BUSINESS IN YOUR HAND</small></span>
+      </a>
+      <span class="secure-label"><span aria-hidden="true">●</span> Secure Account Center</span>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">ACCOUNT CENTER</p>
+      <h1>Akun dan bisnis Anda,<br><span>dalam satu pusat kendali.</span></h1>
+      <p>Session Account Center terhubung langsung dengan BIYA Module Center untuk pengalaman yang aman dan konsisten.</p>
+    </section>
+
+    <section class="account-card" aria-live="polite" aria-busy="true">
+      <div id="loadingState" class="state state-loading">
+        <span class="loader" aria-hidden="true"></span>
+        <p>Memeriksa session BIYA…</p>
+      </div>
+
+      <div id="signedOutState" class="state" hidden>
+        <span class="status-badge status-out">BELUM LOGIN</span>
+        <div class="state-icon" aria-hidden="true">↗</div>
+        <h2>Masuk untuk membuka Account Center</h2>
+        <p>Gunakan akun BIYA Anda untuk melihat identitas akun dan informasi bisnis.</p>
+        <div class="action-stack">
+          <a class="button button-primary" href="/index.html?redirect=%2Faccount-center%2F">Login di Account Center</a>
+          <a class="button button-secondary" href="/index.html">Kembali ke Halaman Awal BIYA</a>
+        </div>
+      </div>
+
+      <div id="demoState" class="state" hidden>
+        <span class="status-badge status-demo">MODE DEMO</span>
+        <div class="profile-heading">
+          <div class="avatar" aria-hidden="true">D</div>
+          <div><h2>Workspace Demo BIYA</h2><p id="demoEmail">demo@biya.id</p></div>
+        </div>
+        <div class="notice">Data pada mode demo bersifat contoh. Keluar dari demo untuk masuk menggunakan akun bisnis Anda.</div>
+        <div class="action-stack">
+          <button id="exitDemoButton" class="button button-primary" type="button">Keluar Demo &amp; Login Akun</button>
+          <a class="button button-secondary" href="/menu-modules/dashboard.html">Kembali ke Module Center</a>
+        </div>
+      </div>
+
+      <div id="accountState" class="state" hidden>
+        <div class="state-toolbar">
+          <span class="status-badge status-active">AKUN AKTIF</span>
+          <button id="logoutButton" class="text-button" type="button">Keluar Akun</button>
+        </div>
+        <div class="profile-heading">
+          <div id="accountAvatar" class="avatar" aria-hidden="true">B</div>
+          <div><h2 id="displayName">User BIYA</h2><p id="accountEmail">—</p></div>
+        </div>
+        <dl class="detail-grid">
+          <div><dt>Nama lengkap</dt><dd id="fullName">Belum dilengkapi</dd></div>
+          <div><dt>Nomor telepon</dt><dd id="phone">Belum dilengkapi</dd></div>
+          <div><dt>Nama bisnis</dt><dd id="businessName">Belum dilengkapi</dd></div>
+          <div><dt>Jenis bisnis</dt><dd id="businessType">Belum dilengkapi</dd></div>
+          <div><dt>Pemilik</dt><dd id="ownerName">Belum dilengkapi</dd></div>
+          <div><dt>Lokasi</dt><dd id="businessLocation">Belum dilengkapi</dd></div>
+        </dl>
+        <div id="accountStatus" class="inline-status" role="status"></div>
+        <div class="action-stack">
+          <button id="switchAccountButton" class="button button-primary" type="button">Ganti Akun</button>
+          <a class="button button-secondary" href="/menu-modules/dashboard.html">Kembali ke Module Center</a>
+        </div>
+      </div>
+    </section>
+    <footer>BIYA · Business in Your Hand</footer>
+  </main>
+  <script src="/assets/js/account.js"></script>
+</body>
+</html>

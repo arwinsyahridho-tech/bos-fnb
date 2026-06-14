@@ -113,12 +113,15 @@
     return data;
   }
 
-  async function signOut() {
+  async function signOut(options = {}) {
     if (client && client.auth) {
       const { error } = await client.auth.signOut();
       if (error) throw error;
     }
-    window.location.replace(config.loginPath || "/index.html");
+    const redirectTo = typeof options.redirectTo === "string" && options.redirectTo
+      ? options.redirectTo
+      : config.loginPath || "/index.html";
+    window.location.replace(redirectTo);
   }
 
   window.BiyaAuth = Object.freeze({
