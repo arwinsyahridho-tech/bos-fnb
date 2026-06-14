@@ -708,7 +708,7 @@ let products = [];
 function escapeHtml(value){ return String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c])); }
 function safeText(value){ return String(value ?? "").trim(); }
 function parseNumber(value){ if(typeof value === "number") return Number.isFinite(value) ? value : 0; let text = String(value ?? "").trim(); if(!text) return 0; text = text.replace(/rp/gi, "").replace(/\s/g, ""); if(text.includes(",") && text.includes(".")) text = text.replace(/\./g, "").replace(",", "."); else if(text.includes(",")) text = text.replace(",", "."); else text = text.replace(/\.(?=\d{3}(\D|$))/g, ""); const n = Number(text.replace(/[^0-9.-]/g, "")); return Number.isFinite(n) ? n : 0; }
-function formatRupiah(value){ return "Rp " + Math.round(parseNumber(value)).toLocaleString("id-ID"); }
+function formatRupiah(value){ return settingsService ? settingsService.formatCurrency(parseNumber(value)) : "Rp " + Math.round(parseNumber(value)).toLocaleString("id-ID"); }
 function formatPercent(value){ const n = Number(value); return Number.isFinite(n) ? n.toFixed(2) + "%" : "-"; }
 function displayPercent(value, valid = true){ return valid && Number.isFinite(Number(value)) ? Number(value).toFixed(2) + "%" : "-"; }
 function calcAverage(arr, getter){ const values = arr.map(getter).map(Number).filter(Number.isFinite); return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0; }
