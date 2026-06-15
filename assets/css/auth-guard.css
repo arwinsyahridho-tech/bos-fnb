@@ -69,6 +69,42 @@ html.biya-fullscreen-shell-active body {
   white-space: nowrap;
 }
 
+.hero-section[aria-labelledby="moduleCenterTitle"] .eyebrow,
+#moduleCenterTitle,
+.hero-section[aria-labelledby="moduleCenterTitle"] .hero-subtitle {
+  font-size: 0 !important;
+}
+
+.hero-section[aria-labelledby="moduleCenterTitle"] .eyebrow::after {
+  content: "BOS F&B";
+  display: inline-block;
+  color: var(--cyan, #58d8ff);
+  font-size: 11px !important;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+#moduleCenterTitle::after {
+  content: "F&B Module Center";
+  display: inline-block;
+  color: var(--text, #f7faff);
+  font-size: clamp(32px, 10vw, 52px) !important;
+  font-weight: 850;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.hero-section[aria-labelledby="moduleCenterTitle"] .hero-subtitle::after {
+  content: "Pilih modul operasional F&B untuk mengelola bisnis secara lebih rapi, cepat, dan terukur.";
+  display: inline-block;
+  max-width: 680px;
+  color: var(--muted, #a9b9d3);
+  font-size: 14px !important;
+  line-height: 1.65;
+}
+
 .biya-fullscreen-toggle {
   position: fixed;
   right: 18px;
