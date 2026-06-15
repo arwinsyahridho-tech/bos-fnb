@@ -1,5 +1,47 @@
 html.biya-auth-pending body { visibility: hidden !important; }
 
+html.biya-fullscreen-shell-active,
+html.biya-fullscreen-shell-active body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden !important;
+  background: #04122b;
+}
+
+.biya-fullscreen-shell {
+  position: fixed;
+  inset: 0;
+  z-index: 2147482500;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #04122b;
+}
+
+.biya-fullscreen-shell::before {
+  content: "Memuat halaman BIYA...";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: rgba(215, 227, 255, 0.72);
+  font: 700 14px/1.4 Inter, "Segoe UI", Arial, sans-serif;
+  letter-spacing: 0.02em;
+  background:
+    radial-gradient(circle at 72% 10%, rgba(0, 102, 255, 0.16), transparent 32%),
+    #04122b;
+}
+
+.biya-fullscreen-shell-frame {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #04122b;
+}
+
 .biya-fullscreen-toggle {
   position: fixed;
   right: 18px;
@@ -91,7 +133,8 @@ html.biya-auth-pending body { visibility: hidden !important; }
 }
 
 @media print {
-  .biya-fullscreen-toggle {
+  .biya-fullscreen-toggle,
+  .biya-fullscreen-shell {
     display: none !important;
   }
 }
