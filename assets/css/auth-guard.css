@@ -54,24 +54,25 @@ html.biya-fullscreen-shell-active body {
   min-width: 0;
   min-height: 46px;
   padding: 0 15px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(0, 102, 255, 0.5), rgba(0, 214, 107, 0.5));
-  color: #ffffff;
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.25), rgba(0, 214, 107, 0.25));
+  color: rgba(255, 255, 255, 0.82);
   font: 700 13px/1 Inter, "Segoe UI", Arial, sans-serif;
   letter-spacing: 0.1px;
-  box-shadow: 0 14px 32px rgba(0, 15, 48, 0.24);
+  box-shadow: 0 10px 24px rgba(0, 15, 48, 0.14);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, opacity 0.18s ease;
 }
 
 .biya-fullscreen-toggle:hover {
-  background: linear-gradient(135deg, rgba(0, 102, 255, 0.72), rgba(0, 214, 107, 0.72));
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.48), rgba(0, 214, 107, 0.48));
+  color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 18px 40px rgba(0, 15, 48, 0.32);
+  box-shadow: 0 14px 32px rgba(0, 15, 48, 0.24);
 }
 
 .biya-fullscreen-toggle:active {
@@ -80,20 +81,20 @@ html.biya-fullscreen-shell-active body {
 
 .biya-fullscreen-toggle:disabled {
   cursor: wait;
-  opacity: 0.72;
+  opacity: 0.55;
 }
 
 .biya-fullscreen-toggle.is-active {
-  background: linear-gradient(135deg, rgba(16, 43, 99, 0.5), rgba(22, 58, 135, 0.5));
-  border-color: rgba(46, 216, 255, 0.28);
+  background: linear-gradient(135deg, rgba(16, 43, 99, 0.25), rgba(22, 58, 135, 0.25));
+  border-color: rgba(46, 216, 255, 0.18);
 }
 
 .biya-fullscreen-toggle.is-active:hover {
-  background: linear-gradient(135deg, rgba(16, 43, 99, 0.72), rgba(22, 58, 135, 0.72));
+  background: linear-gradient(135deg, rgba(16, 43, 99, 0.48), rgba(22, 58, 135, 0.48));
 }
 
 .biya-fullscreen-toggle.is-error {
-  background: linear-gradient(135deg, rgba(255, 77, 79, 0.68), rgba(180, 35, 24, 0.68));
+  background: linear-gradient(135deg, rgba(255, 77, 79, 0.5), rgba(180, 35, 24, 0.5));
 }
 
 .biya-fullscreen-icon {
