@@ -59,6 +59,28 @@
     return exit.call(document);
   }
 
+  function getEnterFullscreenIcon() {
+    return `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3"></path>
+        <path d="M16 3h3a2 2 0 0 1 2 2v3"></path>
+        <path d="M8 21H5a2 2 0 0 1-2-2v-3"></path>
+        <path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>
+      </svg>
+    `;
+  }
+
+  function getExitFullscreenIcon() {
+    return `
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 9H5V5"></path>
+        <path d="M15 9h4V5"></path>
+        <path d="M9 15H5v4"></path>
+        <path d="M15 15h4v4"></path>
+      </svg>
+    `;
+  }
+
   function readFullscreenLock() {
     try {
       return window.localStorage.getItem(FULLSCREEN_LOCK_KEY) === "true";
@@ -285,28 +307,27 @@
     button.setAttribute("title", "Fullscreen mode");
     button.innerHTML = `
       <span class="biya-fullscreen-icon" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M8 3H5a2 2 0 0 0-2 2v3"></path>
-          <path d="M16 3h3a2 2 0 0 1 2 2v3"></path>
-          <path d="M8 21H5a2 2 0 0 1-2-2v-3"></path>
-          <path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>
-        </svg>
+        ${getEnterFullscreenIcon()}
       </span>
       <span class="biya-fullscreen-label">Fullscreen</span>
     `;
 
+    const icon = button.querySelector(".biya-fullscreen-icon");
     const label = button.querySelector(".biya-fullscreen-label");
 
     function updateState() {
       const isFullscreen = Boolean(getFullscreenElement());
-      button.classList.toggle("is-active", isFullscreen || readFullscreenLock());
+      const isActive = isFullscreen || readFullscreenLock();
+
+      button.classList.toggle("is-active", isActive);
       button.classList.remove("is-error");
       button.setAttribute(
         "aria-label",
-        isFullscreen ? "Keluar dari fullscreen mode" : "Aktifkan fullscreen mode"
+        isActive ? "Keluar dari fullscreen mode" : "Aktifkan fullscreen mode"
       );
-      button.setAttribute("title", isFullscreen ? "Exit fullscreen" : "Fullscreen mode");
-      if (label) label.textContent = isFullscreen || readFullscreenLock() ? "Exit" : "Fullscreen";
+      button.setAttribute("title", isActive ? "Exit fullscreen" : "Fullscreen mode");
+      if (label) label.textContent = isActive ? "Exit" : "Fullscreen";
+      if (icon) icon.innerHTML = isActive ? getExitFullscreenIcon() : getEnterFullscreenIcon();
 
       if (!isFullscreen && !exitingViaButton) {
         setFullscreenLock(false);
