@@ -28,3 +28,12 @@ test("status stok card menggunakan label ACTIVE, HABIS, dan LOW STOCK", () => {
   assert.match(pageScript, /Number\(item\.current_stock\) <= 0 \? "Habis"/);
   assert.match(pageScript, /Number\(item\.current_stock\) <= Number\(item\.minimum_stock\) \? "Low stock"/);
 });
+
+test("card meringkas kode Raw Material dan tidak menampilkan Stock ID", () => {
+  const mobileCard = pageScript.match(/<article class="stock-mobile-card">.*?<\/article>/s)?.[0] || "";
+
+  assert.match(pageScript, /function shortRawMaterialCode\(code\).*?value\.slice\(-6\).*?`RAW-\$\{suffix\}`/s);
+  assert.match(mobileCard, /\$\{itemCode\(i\)\}/);
+  assert.doesNotMatch(mobileCard, /Stock: \$\{esc\(i\.code\)\}|itemCodes\(i\)/);
+  assert.match(styles, /\.stock-mobile-code\{[^}]*overflow:hidden[^}]*text-overflow:ellipsis[^}]*white-space:nowrap/);
+});

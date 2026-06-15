@@ -58,6 +58,7 @@ body[data-page="stockitem"] .stock-mobile-title{min-width:0;flex:1}
 body[data-page="stockitem"] .stock-mobile-title>strong{display:block;color:#fff;font-size:17px;font-weight:850;line-height:1.25;text-transform:uppercase;overflow-wrap:anywhere}
 body[data-page="stockitem"] .stock-mobile-support{display:flex;flex-direction:column;gap:3px;margin-top:6px;color:var(--muted);font-size:11px;line-height:1.3}
 body[data-page="stockitem"] .stock-mobile-support small{margin:1px 0 0;color:#7897ca}
+body[data-page="stockitem"] .stock-mobile-code{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 body[data-page="stockitem"] .stock-mobile-summary{display:flex;min-width:125px;flex-direction:column;align-items:flex-end;gap:5px;color:var(--muted);font-size:12px;text-align:right}
 body[data-page="stockitem"] .stock-mobile-unit-price{color:#66efb2;font-size:15px;font-weight:850;line-height:1.25}
 body[data-page="stockitem"] .stock-mobile-summary .badge{margin-top:2px}
