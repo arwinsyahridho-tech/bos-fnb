@@ -42,31 +42,10 @@ html.biya-fullscreen-shell-active body {
   background: #04122b;
 }
 
-.brand-card .brand-name,
-.brand-card .brand-tagline {
-  font-size: 0 !important;
-}
-
-.brand-card .brand-name::after {
-  content: "BOS";
-  display: inline-block;
-  color: #f7faff;
-  font-size: 15px !important;
-  font-weight: 850;
-  letter-spacing: 0.12em;
-  line-height: 1.1;
-}
-
+.brand-card .brand-name::after,
 .brand-card .brand-tagline::after {
-  content: "BIYA OPERATING SYSTEM FOR F&B";
-  display: inline-block;
-  color: #a9b9d3;
-  font-size: 9px !important;
-  font-weight: 650;
-  letter-spacing: 0.11em;
-  line-height: 1.2;
-  text-transform: uppercase;
-  white-space: nowrap;
+  content: none !important;
+  display: none !important;
 }
 
 .hero-section[aria-labelledby="moduleCenterTitle"] .eyebrow,
