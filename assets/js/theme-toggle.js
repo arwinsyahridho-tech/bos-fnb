@@ -25,6 +25,10 @@ html[data-theme="light"] {
   --muted: #526760;
 }
 
+html[data-theme="light"] body {
+  background: radial-gradient(circle at 82% -8%, rgba(200,239,85,.34), transparent 28rem), radial-gradient(circle at -12% 30%, rgba(22,160,100,.13), transparent 24rem), #f8faf6 !important;
+}
+
 html[data-theme="light"] .dashboard-hero,
 html[data-theme="light"] .dashboard-section,
 html[data-theme="light"] .dashboard-product-card,
@@ -220,20 +224,164 @@ html[data-theme="light"] .recipe-delete {
   border: 0 !important;
 }
 
+/* Cost Management Dashboard: stronger BIYA identity for light mode. */
+html[data-theme="light"] body:has(.dashboard-stack) .main {
+  background: radial-gradient(circle at 85% 4%, rgba(200,239,85,.22), transparent 22rem), radial-gradient(circle at 0 24%, rgba(22,160,100,.10), transparent 20rem) !important;
+}
+
+html[data-theme="light"] .dashboard-stack {
+  gap: 20px !important;
+}
+
+html[data-theme="light"] .dashboard-hero,
+html[data-theme="light"] .dashboard-section {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(22,160,100,.20) !important;
+  border-radius: 26px !important;
+  background: linear-gradient(145deg, rgba(255,255,255,.98), rgba(244,251,241,.96)) !important;
+  box-shadow: 0 20px 50px rgba(31,78,53,.10), inset 0 1px rgba(255,255,255,.9) !important;
+}
+
+html[data-theme="light"] .dashboard-hero::before,
+html[data-theme="light"] .dashboard-section::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  height: 4px !important;
+  background: linear-gradient(90deg, #0b6945 0%, #16a064 46%, #c8ef55 100%) !important;
+}
+
+html[data-theme="light"] .dashboard-hero::after {
+  content: "" !important;
+  position: absolute !important;
+  right: -85px !important;
+  top: -95px !important;
+  width: 230px !important;
+  height: 230px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle, rgba(200,239,85,.42), rgba(22,160,100,.16) 50%, transparent 72%) !important;
+  pointer-events: none !important;
+}
+
+html[data-theme="light"] .dashboard-hero-head,
+html[data-theme="light"] .dashboard-section-head,
+html[data-theme="light"] .dashboard-hero .dashboard-kpi-grid,
+html[data-theme="light"] .dashboard-section > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+html[data-theme="light"] .dashboard-hero-icon {
+  width: 64px !important;
+  height: 64px !important;
+  flex-basis: 64px !important;
+  border-radius: 20px !important;
+  background: linear-gradient(145deg, rgba(9,132,85,.12), rgba(200,239,85,.46)) !important;
+  border: 1px solid rgba(22,160,100,.24) !important;
+  color: #08714b !important;
+  box-shadow: 0 16px 34px rgba(22,160,100,.15) !important;
+}
+
+html[data-theme="light"] .dashboard-hero-icon .biya-icon {
+  width: 32px !important;
+  height: 32px !important;
+}
+
+html[data-theme="light"] .dashboard-title {
+  color: #10243f !important;
+  letter-spacing: -.04em !important;
+}
+
+html[data-theme="light"] .dashboard-description,
+html[data-theme="light"] .dashboard-section-description {
+  color: #526760 !important;
+}
+
+html[data-theme="light"] .dashboard-divider {
+  height: 1px !important;
+  background: linear-gradient(90deg, rgba(22,160,100,.22), rgba(200,239,85,.38), rgba(22,160,100,.05)) !important;
+}
+
+html[data-theme="light"] .dashboard-kpi,
+html[data-theme="light"] .dashboard-health .health-metric,
+html[data-theme="light"] .dashboard-health .health-score-compact,
+html[data-theme="light"] .dashboard-alerts .alert-item,
+html[data-theme="light"] .dashboard-product-card,
+html[data-theme="light"] .dashboard-ranking .ranking-item,
+html[data-theme="light"] .dashboard-category .mini-box {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(22,160,100,.18) !important;
+  background: linear-gradient(145deg, rgba(237,248,238,.92), rgba(255,255,255,.98)) !important;
+  box-shadow: 0 10px 28px rgba(31,78,53,.07) !important;
+}
+
+html[data-theme="light"] .dashboard-kpi::after,
+html[data-theme="light"] .dashboard-product-card::after {
+  content: "" !important;
+  position: absolute !important;
+  right: -44px !important;
+  top: -54px !important;
+  width: 120px !important;
+  height: 120px !important;
+  border-radius: 50% !important;
+  background: radial-gradient(circle, rgba(200,239,85,.34), transparent 68%) !important;
+  pointer-events: none !important;
+}
+
+html[data-theme="light"] .dashboard-kpi-icon,
+html[data-theme="light"] .dashboard-ranking .ranking-position {
+  background: linear-gradient(145deg, #dff8dc, #c8ef55) !important;
+  color: #08714b !important;
+  border: 1px solid rgba(22,160,100,.18) !important;
+  box-shadow: 0 8px 18px rgba(22,160,100,.12) !important;
+}
+
+html[data-theme="light"] .dashboard-kpi .summary-title,
+html[data-theme="light"] .dashboard-health .metric-label,
+html[data-theme="light"] .dashboard-category .mini-title {
+  color: #526760 !important;
+  font-weight: 700 !important;
+}
+
+html[data-theme="light"] .dashboard-kpi .summary-value,
+html[data-theme="light"] .dashboard-health .metric-value,
+html[data-theme="light"] .dashboard-category .mini-value,
+html[data-theme="light"] .ranking-profit {
+  color: #10243f !important;
+}
+
+html[data-theme="light"] .dashboard-health .score-circle {
+  background: linear-gradient(145deg, rgba(22,160,100,.16), rgba(200,239,85,.56)) !important;
+  color: #08714b !important;
+  border-color: rgba(22,160,100,.22) !important;
+  box-shadow: 0 14px 28px rgba(22,160,100,.14) !important;
+}
+
+html[data-theme="light"] .dashboard-product-label span,
+html[data-theme="light"] .dashboard-category-meta {
+  border-color: rgba(22,160,100,.20) !important;
+  background: linear-gradient(135deg, rgba(22,160,100,.10), rgba(200,239,85,.28)) !important;
+  color: #0b6945 !important;
+}
+
+html[data-theme="light"] .dashboard-product-card.worst .dashboard-product-label span {
+  background: #fee2e2 !important;
+  border-color: rgba(220,38,38,.20) !important;
+  color: #991b1b !important;
+}
+
 /* Mobile readability layer: make labels, helper text, cards, and badges easier to read on phones. */
 @media (max-width: 700px) {
-  html[data-theme="light"] body {
-    font-size: 16px !important;
-  }
+  html[data-theme="light"] body { font-size: 16px !important; }
 
   html[data-theme="light"] .ingredients-panel,
-  html[data-theme="light"] .menu-recipe-panel {
-    padding: 18px 14px !important;
-  }
+  html[data-theme="light"] .menu-recipe-panel { padding: 18px 14px !important; }
 
-  html[data-theme="light"] .export-hero {
-    background: #ffffff !important;
-  }
+  html[data-theme="light"] .export-hero { background: #ffffff !important; }
 
   html[data-theme="light"] .sub,
   html[data-theme="light"] .muted,
@@ -323,9 +471,7 @@ html[data-theme="light"] .recipe-delete {
   html[data-theme="light"] .dashboard-kpi .summary-value,
   html[data-theme="light"] .selling-price .cost-main,
   html[data-theme="light"] .recipe-mobile-field.total .recipe-mobile-value,
-  html[data-theme="light"] .selected-recipe-total-value {
-    font-size: 23px !important;
-  }
+  html[data-theme="light"] .selected-recipe-total-value { font-size: 23px !important; }
 
   html[data-theme="light"] .pill,
   html[data-theme="light"] .badge,
@@ -353,9 +499,7 @@ html[data-theme="light"] .recipe-delete {
   html[data-theme="light"] .recipe-mobile-field,
   html[data-theme="light"] .selected-recipe-field,
   html[data-theme="light"] .snapshot-card,
-  html[data-theme="light"] .export-card {
-    padding: 14px !important;
-  }
+  html[data-theme="light"] .export-card { padding: 14px !important; }
 
   html[data-theme="light"] .ranking-name,
   html[data-theme="light"] .snapshot-name,
@@ -376,6 +520,17 @@ html[data-theme="light"] .recipe-delete {
   html[data-theme="light"] .product-category-badge.secondary {
     font-size: 13px !important;
     line-height: 1.35 !important;
+  }
+
+  html[data-theme="light"] .dashboard-hero,
+  html[data-theme="light"] .dashboard-section {
+    border-radius: 24px !important;
+  }
+
+  html[data-theme="light"] .dashboard-hero-icon {
+    width: 58px !important;
+    height: 58px !important;
+    flex-basis: 58px !important;
   }
 }
 `;
