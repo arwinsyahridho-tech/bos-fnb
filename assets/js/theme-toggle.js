@@ -26,7 +26,7 @@ html[data-theme="light"] {
   --muted: #526760;
 }
 
-/* Light mode only changes color tokens and surfaces. Layout, spacing, font sizes, card shape, and icons follow the dark theme. */
+/* Light mode only changes colors/surfaces. Layout, spacing, font sizes, card shape, and icons follow the dark theme. */
 html[data-theme="light"] body {
   background: #f8faf6 !important;
   color: var(--text) !important;
@@ -208,7 +208,8 @@ html[data-theme="light"] .export-card h3,
 html[data-theme="light"] .summary-value,
 html[data-theme="light"] .ranking-name,
 html[data-theme="light"] .ranking-profit,
-html[data-theme="light"] .mini-value {
+html[data-theme="light"] .mini-value,
+html[data-theme="light"] .module-name {
   color: var(--text) !important;
 }
 
@@ -233,7 +234,8 @@ html[data-theme="light"] .small,
 html[data-theme="light"] .small-note,
 html[data-theme="light"] .summary-title,
 html[data-theme="light"] .ranking-category,
-html[data-theme="light"] .mini-title {
+html[data-theme="light"] .mini-title,
+html[data-theme="light"] .module-description {
   color: var(--muted) !important;
   opacity: 1 !important;
 }
@@ -287,7 +289,8 @@ html[data-theme="light"] .export-card-icon,
 html[data-theme="light"] .restore-upload-icon,
 html[data-theme="light"] .selected-prep-icon,
 html[data-theme="light"] .dashboard-ranking .ranking-position,
-html[data-theme="light"] .summary-icon {
+html[data-theme="light"] .summary-icon,
+html[data-theme="light"] .module-icon {
   background: linear-gradient(135deg, rgba(22,160,100,.14), rgba(200,239,85,.34)) !important;
   border-color: var(--border) !important;
   color: var(--primary-dark) !important;
@@ -361,7 +364,44 @@ html[data-theme="light"] .status.danger {
   text-shadow: none !important;
 }
 
-/* Module Center CTA must stay text-link style; remove the large green block caused by global button recolor. */
+/* Module Center card colors: stronger but still the same dark-mode structure. */
+html[data-theme="light"] .module-card {
+  background: linear-gradient(155deg, #ffffff 0%, #f8fcf5 58%, #eef9ed 100%) !important;
+  border-color: rgba(22,160,100,.20) !important;
+  box-shadow: 0 14px 34px rgba(16,36,63,.08), 0 8px 24px rgba(22,160,100,.06) !important;
+}
+
+html[data-theme="light"] .module-card.available {
+  background: linear-gradient(155deg, #ffffff 0%, #f4fbf1 52%, rgba(226,247,222,.96) 100%) !important;
+  border-color: rgba(22,160,100,.30) !important;
+  box-shadow: 0 18px 42px rgba(16,36,63,.10), 0 10px 30px rgba(22,160,100,.12) !important;
+}
+
+html[data-theme="light"] .module-card.available::after {
+  background: radial-gradient(circle, rgba(200,239,85,.44), rgba(22,160,100,.14) 42%, transparent 70%) !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="light"] .module-card.coming-soon {
+  background: linear-gradient(155deg, #ffffff 0%, #fbfdf9 64%, #f1f8ef 100%) !important;
+  border-color: rgba(22,160,100,.14) !important;
+  opacity: .86 !important;
+}
+
+html[data-theme="light"] .module-card .badge,
+html[data-theme="light"] .module-card .badge.available {
+  background: rgba(255,255,255,.68) !important;
+  border-color: rgba(22,160,100,.22) !important;
+  color: var(--primary-dark) !important;
+  box-shadow: 0 8px 18px rgba(22,160,100,.07) !important;
+}
+
+html[data-theme="light"] .module-card.coming-soon .badge {
+  background: rgba(237,248,238,.75) !important;
+  border-color: rgba(22,160,100,.15) !important;
+  color: #6a837a !important;
+}
+
 html[data-theme="light"] .module-card .card-cta,
 html[data-theme="light"] .module-card.available .card-cta {
   background: transparent !important;
