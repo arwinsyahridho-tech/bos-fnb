@@ -24,7 +24,10 @@
     const brandTagline = document.querySelector(".topbar .brand-tagline");
 
     if (brandName) brandName.textContent = "BOS";
-    if (brandTagline) brandTagline.textContent = "Biya Operating Sistem";
+    if (brandTagline) {
+      brandTagline.textContent = "Biya Operating Sistem";
+      brandTagline.style.textTransform = "none";
+    }
   }
 
   if (document.readyState === "loading") {
