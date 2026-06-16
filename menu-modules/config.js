@@ -18,4 +18,18 @@
       window.BIYA_ACCOUNT_CENTER_URL ||
       "/account-center/"
   });
+
+  function updateModuleCenterBrandCopy() {
+    const brandName = document.querySelector(".topbar .brand-name");
+    const brandTagline = document.querySelector(".topbar .brand-tagline");
+
+    if (brandName) brandName.textContent = "BOS";
+    if (brandTagline) brandTagline.textContent = "Biya Operating Sistem";
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", updateModuleCenterBrandCopy);
+  } else {
+    updateModuleCenterBrandCopy();
+  }
 })();
