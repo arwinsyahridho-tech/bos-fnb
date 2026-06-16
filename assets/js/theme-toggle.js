@@ -360,6 +360,15 @@ html[data-theme="light"] .status.danger {
   opacity: 1 !important;
   text-shadow: none !important;
 }
+
+/* Module Center CTA must stay text-link style; remove the large green block caused by global button recolor. */
+html[data-theme="light"] .module-card .card-cta,
+html[data-theme="light"] .module-card.available .card-cta {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: var(--primary-dark) !important;
+}
 `;
     document.head.appendChild(style);
   }
