@@ -39,6 +39,14 @@ html[data-theme="light"] {
   --gradient: linear-gradient(135deg, #0b6945 0%, #16a064 58%, #c8ef55 100%);
   --shadow: 0 18px 45px rgba(37, 80, 55, 0.10);
   --shadow-soft: 0 10px 28px rgba(37, 80, 55, 0.08);
+  --dashboard-border: rgba(22, 160, 100, 0.18);
+  --dashboard-surface: #ffffff;
+  --dashboard-soft: #edf8ee;
+  --dashboard-muted: #63776f;
+  --export-line: rgba(22, 160, 100, 0.18);
+  --export-panel: #ffffff;
+  --export-panel-soft: #edf8ee;
+  --export-muted: #63776f;
 
   --panel: var(--surface);
   --panel-2: #f1f8ef;
@@ -413,4 +421,126 @@ html[data-theme="light"] .mini.warning {
   background: #fef3c7 !important;
   border-color: rgba(217, 119, 6, .24) !important;
   color: #92400e !important;
+}
+
+
+/* Page-specific light-mode overrides for legacy dark card classes. */
+html[data-theme="light"] .dashboard-hero,
+html[data-theme="light"] .dashboard-section,
+html[data-theme="light"] .dashboard-kpi,
+html[data-theme="light"] .dashboard-health .health-score-compact,
+html[data-theme="light"] .dashboard-health .health-metric,
+html[data-theme="light"] .dashboard-alerts .alert-item,
+html[data-theme="light"] .dashboard-product-card,
+html[data-theme="light"] .dashboard-ranking .ranking-item,
+html[data-theme="light"] .dashboard-category .mini-box,
+html[data-theme="light"] .dashboard-section .notice,
+html[data-theme="light"] .metric,
+html[data-theme="light"] .selling-price,
+html[data-theme="light"] .product-photo,
+html[data-theme="light"] .recipe-mobile-item,
+html[data-theme="light"] .recipe-mobile-field,
+html[data-theme="light"] .detail-desc,
+html[data-theme="light"] .export-card,
+html[data-theme="light"] .export-section,
+html[data-theme="light"] .export-item,
+html[data-theme="light"] .backup-card,
+html[data-theme="light"] .dataset-card,
+html[data-theme="light"] .data-card,
+html[data-theme="light"] .settings-summary,
+html[data-theme="light"] .summary-grid .summary-box {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+
+html[data-theme="light"] .dashboard-kpi,
+html[data-theme="light"] .health-metric,
+html[data-theme="light"] .product-mini-stat,
+html[data-theme="light"] .recipe-mobile-field,
+html[data-theme="light"] .stock-levels > div,
+html[data-theme="light"] .selected-recipe-total {
+  background: var(--surface-soft) !important;
+}
+
+html[data-theme="light"] .dashboard-hero-icon,
+html[data-theme="light"] .dashboard-kpi-icon,
+html[data-theme="light"] .hero-icon,
+html[data-theme="light"] .recipe-number,
+html[data-theme="light"] .score-circle,
+html[data-theme="light"] .export-hero-icon,
+html[data-theme="light"] .section-heading-icon,
+html[data-theme="light"] .export-card-icon {
+  background: linear-gradient(135deg, rgba(22,160,100,.16), rgba(200,239,85,.36)) !important;
+  border-color: var(--border) !important;
+  color: var(--primary-dark) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .dashboard-title,
+html[data-theme="light"] .dashboard-section-title,
+html[data-theme="light"] .health-label,
+html[data-theme="light"] .metric-value,
+html[data-theme="light"] .recipe-mobile-title,
+html[data-theme="light"] .recipe-mobile-value,
+html[data-theme="light"] .cost-main,
+html[data-theme="light"] .selling-price .cost-main,
+html[data-theme="light"] .summary-value,
+html[data-theme="light"] .export-card h3,
+html[data-theme="light"] .settings-summary h2,
+html[data-theme="light"] .summary-box strong {
+  color: var(--text) !important;
+}
+
+html[data-theme="light"] .dashboard-description,
+html[data-theme="light"] .dashboard-section-description,
+html[data-theme="light"] .metric-label,
+html[data-theme="light"] .metric-note,
+html[data-theme="light"] .recipe-mobile-label,
+html[data-theme="light"] .recipe-mobile-type,
+html[data-theme="light"] .recipe-mobile-meta,
+html[data-theme="light"] .recipe-mobile-sub,
+html[data-theme="light"] .cost-label,
+html[data-theme="light"] .detail-desc,
+html[data-theme="light"] .export-card p,
+html[data-theme="light"] .sub,
+html[data-theme="light"] .muted,
+html[data-theme="light"] .small,
+html[data-theme="light"] .small-note {
+  color: var(--muted) !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="light"] .recipe-mobile-field.total {
+  border-color: rgba(22,160,100,.22) !important;
+  background: rgba(22,160,100,.09) !important;
+}
+
+html[data-theme="light"] .recipe-mobile-field.total .recipe-mobile-value,
+html[data-theme="light"] .ranking-margin {
+  color: var(--primary-dark) !important;
+}
+
+html[data-theme="light"] .bar-track,
+html[data-theme="light"] .thumb,
+html[data-theme="light"] .product-compact-thumb {
+  background: var(--surface-soft) !important;
+  border-color: var(--border) !important;
+}
+
+html[data-theme="light"] .export-card .action.alt,
+html[data-theme="light"] .restore-upload-wrap,
+html[data-theme="light"] .restore-upload-btn {
+  background: var(--surface-soft) !important;
+  border-color: var(--border) !important;
+  color: var(--primary-dark) !important;
+  box-shadow: none !important;
+}
+
+
+html[data-theme="light"] .restore-upload-icon {
+  background: linear-gradient(135deg, rgba(22,160,100,.16), rgba(200,239,85,.36)) !important;
+  border-color: var(--border) !important;
+  color: var(--primary-dark) !important;
 }
