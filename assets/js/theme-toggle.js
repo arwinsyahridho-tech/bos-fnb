@@ -18,6 +18,14 @@
   function applyTheme(theme) {
     var safeTheme = THEMES[theme] ? theme : 'dark';
     document.documentElement.dataset.theme = safeTheme;
+    var themeColor = safeTheme === 'light' ? '#f8faf6' : '#04122b';
+    var metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (!metaThemeColor) {
+      metaThemeColor = document.createElement('meta');
+      metaThemeColor.setAttribute('name', 'theme-color');
+      document.head.appendChild(metaThemeColor);
+    }
+    metaThemeColor.setAttribute('content', themeColor);
     document.querySelectorAll('[data-theme-toggle]').forEach(function (button) {
       var isLight = safeTheme === 'light';
       button.setAttribute('aria-label', 'Aktifkan ' + (isLight ? 'dark' : 'light') + ' mode');

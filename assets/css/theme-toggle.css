@@ -193,3 +193,224 @@ html[data-theme="light"] .empty-state { background: rgba(237,248,238,.74) !impor
 }
 
 @media (max-width: 980px) { body.has-mobile-theme-toggle .theme-toggle-floating { display: none; } }
+
+/* Final BIYA light-mode hardening for legacy page-specific dark styles. */
+html[data-theme="light"] .wrapper,
+html[data-theme="light"] main,
+html[data-theme="light"] .page,
+html[data-theme="light"] body[data-page="stockitem"] {
+  background: transparent !important;
+  color: var(--text) !important;
+}
+
+html[data-theme="light"] .mobile-header {
+  background: rgba(248, 250, 246, .9) !important;
+  box-shadow: var(--shadow-soft) !important;
+  backdrop-filter: blur(16px);
+}
+
+html[data-theme="light"] .mobile-logo,
+html[data-theme="light"] .mobile-logo small,
+html[data-theme="light"] .logo small {
+  color: var(--text) !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="light"] .mobile-overlay {
+  background: rgba(16, 36, 63, .28) !important;
+}
+
+html[data-theme="light"] .sidebar {
+  background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,246,.96)) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+
+html[data-theme="light"] .item {
+  border-color: transparent !important;
+  color: var(--muted-strong) !important;
+}
+
+html[data-theme="light"] .item:hover {
+  background: var(--surface-soft) !important;
+  border-color: var(--border) !important;
+  color: var(--primary-dark) !important;
+}
+
+html[data-theme="light"] .item.active {
+  background: linear-gradient(135deg, rgba(22,160,100,.14), rgba(200,239,85,.28)) !important;
+  border-color: var(--border-active) !important;
+  box-shadow: var(--shadow-soft) !important;
+  color: var(--primary-dark) !important;
+}
+
+html[data-theme="light"] .sidebar > .btn,
+html[data-theme="light"] .menu-toggle,
+html[data-theme="light"] .btn:not(.secondary):not(.danger):not(.warning),
+html[data-theme="light"] .button-primary,
+html[data-theme="light"] .primary-btn,
+html[data-theme="light"] .card-cta {
+  background: var(--gradient) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+html[data-theme="light"] .welcome-card,
+html[data-theme="light"] .complete-account,
+html[data-theme="light"] .summary-chip,
+html[data-theme="light"] .raw-list-toolbar,
+html[data-theme="light"] .menu-recipe-panel,
+html[data-theme="light"] .selected-recipe-panel,
+html[data-theme="light"] .stock-filter-card,
+html[data-theme="light"] .stock-levels > div,
+html[data-theme="light"] .detail-box,
+html[data-theme="light"] .photo-preview-empty,
+html[data-theme="light"] .category-empty,
+html[data-theme="light"] .category-row,
+html[data-theme="light"] .selected-menu-metric,
+html[data-theme="light"] .selected-recipe-total,
+html[data-theme="light"] .edit-menu-recipe,
+html[data-theme="light"] .stock-mobile-meta > span {
+  background: var(--surface-soft) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .module-card,
+html[data-theme="light"] .raw-card,
+html[data-theme="light"] .list-section,
+html[data-theme="light"] .menu-page-card,
+html[data-theme="light"] .menu-list-card,
+html[data-theme="light"] .selected-menu-detail,
+html[data-theme="light"] .selected-recipe-item,
+html[data-theme="light"] .stock-mobile-card,
+html[data-theme="light"] .form-panel,
+html[data-theme="light"] .gate-card {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+
+html[data-theme="light"] .summary-icon,
+html[data-theme="light"] .module-icon,
+html[data-theme="light"] .section-icon,
+html[data-theme="light"] .menu-card-icon,
+html[data-theme="light"] .selected-recipe-number {
+  background: linear-gradient(135deg, rgba(22,160,100,.16), rgba(200,239,85,.36)) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--primary-dark) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] label,
+html[data-theme="light"] .identity-subheading,
+html[data-theme="light"] .menu-field label,
+html[data-theme="light"] .edit-menu-field label,
+html[data-theme="light"] .stock-filter-head h3,
+html[data-theme="light"] .section-heading,
+html[data-theme="light"] .sectionTitle {
+  color: var(--muted-strong) !important;
+}
+
+html[data-theme="light"] .name,
+html[data-theme="light"] .raw-status,
+html[data-theme="light"] .summary-status-value,
+html[data-theme="light"] .menu-card-description,
+html[data-theme="light"] .recipe-count,
+html[data-theme="light"] .menu-photo-name,
+html[data-theme="light"] .selected-menu-description,
+html[data-theme="light"] .selected-menu-metric-value,
+html[data-theme="light"] .selected-recipe-field,
+html[data-theme="light"] .selected-recipe-field-value,
+html[data-theme="light"] .detail-value,
+html[data-theme="light"] body[data-page="stockitem"] .stock-mobile-title > strong,
+html[data-theme="light"] body[data-page="stockitem"] .stock-mobile-code,
+html[data-theme="light"] body[data-page="stockitem"] .stock-mobile-unit-price {
+  color: var(--text) !important;
+}
+
+html[data-theme="light"] .category-filter-btn,
+html[data-theme="light"] .pagination-btn,
+html[data-theme="light"] .category-manage-btn,
+html[data-theme="light"] .stock-category-btn,
+html[data-theme="light"] .btn-action.secondary,
+html[data-theme="light"] .btn.secondary,
+html[data-theme="light"] .edit-menu-cancel,
+html[data-theme="light"] .menu-photo-button,
+html[data-theme="light"] .edit-menu-close,
+html[data-theme="light"] .sidebar-close {
+  background: var(--surface-soft) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--primary-dark) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .category-filter-btn.active,
+html[data-theme="light"] .stock-category-btn.active,
+html[data-theme="light"] .pagination-btn.active {
+  background: var(--gradient) !important;
+  border-color: transparent !important;
+  color: #fff !important;
+}
+
+html[data-theme="light"] .modalBox,
+html[data-theme="light"] .modal-card,
+html[data-theme="light"] .edit-menu-dialog,
+html[data-theme="light"] .edit-menu-header,
+html[data-theme="light"] .edit-menu-body {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+html[data-theme="light"] .edit-menu-modal,
+html[data-theme="light"] .modal {
+  background: rgba(16, 36, 63, .32) !important;
+}
+
+html[data-theme="light"] .edit-menu-field input,
+html[data-theme="light"] .edit-menu-field select,
+html[data-theme="light"] .edit-menu-field textarea {
+  background: #fff !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+
+html[data-theme="light"] .photo-preview {
+  background: #fff !important;
+  border-color: var(--border) !important;
+}
+
+html[data-theme="light"] .toast {
+  background: var(--primary-dark) !important;
+  color: #fff !important;
+  box-shadow: var(--shadow) !important;
+}
+
+html[data-theme="light"] .toast.error,
+html[data-theme="light"] .btn.danger,
+html[data-theme="light"] .mini.danger,
+html[data-theme="light"] .badge.danger {
+  background: #fee2e2 !important;
+  border-color: rgba(220, 38, 38, .24) !important;
+  color: #991b1b !important;
+}
+
+html[data-theme="light"] .badge.ok,
+html[data-theme="light"] .raw-status.ok,
+html[data-theme="light"] .status.ok {
+  background: rgba(22,160,100,.12) !important;
+  border-color: rgba(22,160,100,.22) !important;
+  color: var(--primary-dark) !important;
+}
+
+html[data-theme="light"] .badge.warning,
+html[data-theme="light"] .status.warning,
+html[data-theme="light"] .btn.warning,
+html[data-theme="light"] .mini.warning {
+  background: #fef3c7 !important;
+  border-color: rgba(217, 119, 6, .24) !important;
+  color: #92400e !important;
+}
