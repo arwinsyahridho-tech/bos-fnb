@@ -2,11 +2,93 @@
   var STORAGE_KEY = 'biya-theme';
   var THEMES = { dark: true, light: true };
 
-  function injectLightVisualFixes() {
-    if (document.getElementById('biya-light-visual-fixes')) return;
+  function injectThemeStyles() {
+    if (document.getElementById('biya-theme-runtime-styles')) return;
+
     var style = document.createElement('style');
-    style.id = 'biya-light-visual-fixes';
+    style.id = 'biya-theme-runtime-styles';
     style.textContent = `
+/* Module Center brand header refinement: applies to dark and light, keeps the layout tidy. */
+.topbar .brand-card {
+  flex: 1 1 auto !important;
+  max-width: calc(100% - 112px) !important;
+  min-height: 72px !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 12px 16px 12px 12px !important;
+  border-radius: 22px !important;
+}
+
+.topbar .brand-card > span:last-child {
+  display: flex !important;
+  min-width: 0 !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
+.topbar .brand-mark {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 16px !important;
+  font-size: 20px !important;
+}
+
+.topbar .brand-name {
+  display: block !important;
+  margin: 0 !important;
+  color: var(--text) !important;
+  font-size: 20px !important;
+  font-weight: 850 !important;
+  letter-spacing: .13em !important;
+  line-height: 1 !important;
+}
+
+.topbar .brand-tagline {
+  display: block !important;
+  max-width: 100% !important;
+  margin-top: 8px !important;
+  color: var(--muted-strong, var(--muted)) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .14em !important;
+  line-height: 1.25 !important;
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+}
+
+@media (max-width: 430px) {
+  .topbar {
+    gap: 10px !important;
+  }
+
+  .topbar .brand-card {
+    max-width: calc(100% - 104px) !important;
+    min-height: 66px !important;
+    gap: 11px !important;
+    padding: 10px 12px 10px 10px !important;
+    border-radius: 20px !important;
+  }
+
+  .topbar .brand-mark {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 15px !important;
+    font-size: 18px !important;
+  }
+
+  .topbar .brand-name {
+    font-size: 18px !important;
+    letter-spacing: .12em !important;
+  }
+
+  .topbar .brand-tagline {
+    margin-top: 7px !important;
+    font-size: 8.8px !important;
+    letter-spacing: .105em !important;
+    line-height: 1.25 !important;
+  }
+}
+
 html[data-theme="light"] {
   color-scheme: light;
   --dashboard-border: rgba(22, 160, 100, 0.18);
@@ -26,7 +108,6 @@ html[data-theme="light"] {
   --muted: #526760;
 }
 
-/* Light mode only changes colors/surfaces. Layout, spacing, font sizes, card shape, and icons follow the dark theme. */
 html[data-theme="light"] body {
   background: #f8faf6 !important;
   color: var(--text) !important;
@@ -329,7 +410,6 @@ html[data-theme="light"] .btn-action.red {
   border-color: transparent !important;
 }
 
-/* Keep status badges readable in light mode without changing size or layout. */
 html[data-theme="light"] .status-pill.status-green,
 html[data-theme="light"] .status-green,
 html[data-theme="light"] .badge.ok,
@@ -364,7 +444,6 @@ html[data-theme="light"] .status.danger {
   text-shadow: none !important;
 }
 
-/* Module Center card colors: stronger but still the same dark-mode structure. */
 html[data-theme="light"] .module-card {
   background: linear-gradient(155deg, #ffffff 0%, #f8fcf5 58%, #eef9ed 100%) !important;
   border-color: rgba(22,160,100,.20) !important;
@@ -492,7 +571,7 @@ html[data-theme="light"] .module-card.available .card-cta {
     applyTheme(document.documentElement.dataset.theme || getStoredTheme());
   }
 
-  injectLightVisualFixes();
+  injectThemeStyles();
   applyTheme(getStoredTheme());
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountToggle);
   else mountToggle();
