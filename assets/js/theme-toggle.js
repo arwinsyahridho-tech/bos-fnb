@@ -325,6 +325,41 @@ html[data-theme="light"] .btn-action.red {
   color: #ffffff !important;
   border-color: transparent !important;
 }
+
+/* Keep status badges readable in light mode without changing size or layout. */
+html[data-theme="light"] .status-pill.status-green,
+html[data-theme="light"] .status-green,
+html[data-theme="light"] .badge.ok,
+html[data-theme="light"] .status.ok,
+html[data-theme="light"] .raw-status.ok {
+  background: rgba(22,160,100,.13) !important;
+  border: 1px solid rgba(22,160,100,.24) !important;
+  color: #0b6945 !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="light"] .status-pill.status-yellow,
+html[data-theme="light"] .status-yellow,
+html[data-theme="light"] .badge.warning,
+html[data-theme="light"] .status.warning {
+  background: #fef3c7 !important;
+  border: 1px solid rgba(217,119,6,.24) !important;
+  color: #92400e !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+
+html[data-theme="light"] .status-pill.status-red,
+html[data-theme="light"] .status-red,
+html[data-theme="light"] .badge.danger,
+html[data-theme="light"] .status.danger {
+  background: #fee2e2 !important;
+  border: 1px solid rgba(220,38,38,.22) !important;
+  color: #991b1b !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
 `;
     document.head.appendChild(style);
   }
