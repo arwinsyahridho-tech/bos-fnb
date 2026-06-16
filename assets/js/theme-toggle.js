@@ -6,229 +6,379 @@
     if (document.getElementById('biya-light-visual-fixes')) return;
     var style = document.createElement('style');
     style.id = 'biya-light-visual-fixes';
-    style.textContent = [
-      'html[data-theme="light"] {',
-      '  --dashboard-border: rgba(22, 160, 100, 0.18);',
-      '  --dashboard-surface: #ffffff;',
-      '  --dashboard-soft: #edf8ee;',
-      '  --dashboard-muted: #63776f;',
-      '  --export-line: rgba(22, 160, 100, 0.18);',
-      '  --export-muted: #63776f;',
-      '  --export-panel: #ffffff;',
-      '  --line: rgba(22, 160, 100, 0.18);',
-      '  --line-strong: rgba(22, 160, 100, 0.36);',
-      '  --panel: #ffffff;',
-      '  --panel-deep: #edf8ee;',
-      '  --panel-soft: #edf8ee;',
-      '  --menu-input: #ffffff;',
-      '  --menu-muted: #63776f;',
-      '}',
-      '',
-      'html[data-theme="light"] .dashboard-hero,',
-      'html[data-theme="light"] .dashboard-section,',
-      'html[data-theme="light"] .dashboard-product-card,',
-      'html[data-theme="light"] .dashboard-ranking .ranking-item,',
-      'html[data-theme="light"] .dashboard-category .mini-box,',
-      'html[data-theme="light"] .dashboard-section .notice,',
-      'html[data-theme="light"] .export-hero,',
-      'html[data-theme="light"] .export-page .section,',
-      'html[data-theme="light"] .export-card,',
-      'html[data-theme="light"] .snapshot-card,',
-      'html[data-theme="light"] .selected-section,',
-      'html[data-theme="light"] .product-photo,',
-      'html[data-theme="light"] .selling-price,',
-      'html[data-theme="light"] .metric,',
-      'html[data-theme="light"] .recipe-mobile-item,',
-      'html[data-theme="light"] .selected-prep-hero,',
-      'html[data-theme="light"] .selected-metric,',
-      'html[data-theme="light"] .selected-recipe-panel,',
-      'html[data-theme="light"] .selected-recipe-item {',
-      '  background: #ffffff !important;',
-      '  border-color: var(--border) !important;',
-      '  color: var(--text) !important;',
-      '  box-shadow: var(--shadow-soft) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .dashboard-kpi,',
-      'html[data-theme="light"] .dashboard-health .health-score-compact,',
-      'html[data-theme="light"] .dashboard-health .health-metric,',
-      'html[data-theme="light"] .dashboard-alerts .alert-item,',
-      'html[data-theme="light"] .health-metric,',
-      'html[data-theme="light"] .product-mini-stat,',
-      'html[data-theme="light"] .ingredients-panel,',
-      'html[data-theme="light"] .menu-recipe-panel,',
-      'html[data-theme="light"] .recipe-row,',
-      'html[data-theme="light"] .edit-recipe-row,',
-      'html[data-theme="light"] :is(#ingredientTable, #editIngredientTable) tr,',
-      'html[data-theme="light"] .recipe-mobile-field,',
-      'html[data-theme="light"] .selected-recipe-field,',
-      'html[data-theme="light"] .restore-upload-wrap,',
-      'html[data-theme="light"] .summary-grid > .summary-box,',
-      'html[data-theme="light"] .settings-list > label {',
-      '  background: var(--surface-soft) !important;',
-      '  border-color: var(--border) !important;',
-      '  color: var(--text) !important;',
-      '  box-shadow: none !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .ingredients-panel,',
-      'html[data-theme="light"] .menu-recipe-panel {',
-      '  background: linear-gradient(180deg, rgba(237,248,238,.95), rgba(255,255,255,.98)) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] :is(#ingredientTable, #editIngredientTable) tr,',
-      'html[data-theme="light"] .recipe-row,',
-      'html[data-theme="light"] .edit-recipe-row {',
-      '  background: #ffffff !important;',
-      '  box-shadow: 0 10px 26px rgba(37,80,55,.08) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] :is(#ingredientTable, #editIngredientTable) td {',
-      '  background: transparent !important;',
-      '  border-color: transparent !important;',
-      '  color: var(--text) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .dashboard-hero-icon,',
-      'html[data-theme="light"] .dashboard-kpi-icon,',
-      'html[data-theme="light"] .hero-icon,',
-      'html[data-theme="light"] .recipe-number,',
-      'html[data-theme="light"] .score-circle,',
-      'html[data-theme="light"] .export-hero-icon,',
-      'html[data-theme="light"] .section-heading-icon,',
-      'html[data-theme="light"] .export-card-icon,',
-      'html[data-theme="light"] .restore-upload-icon,',
-      'html[data-theme="light"] .selected-prep-icon {',
-      '  background: linear-gradient(135deg, rgba(22,160,100,.14), rgba(200,239,85,.34)) !important;',
-      '  border-color: var(--border) !important;',
-      '  color: var(--primary-dark) !important;',
-      '  box-shadow: none !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .dashboard-title,',
-      'html[data-theme="light"] .dashboard-section-title,',
-      'html[data-theme="light"] .health-label,',
-      'html[data-theme="light"] .metric-value,',
-      'html[data-theme="light"] .recipe-mobile-title,',
-      'html[data-theme="light"] .recipe-mobile-value,',
-      'html[data-theme="light"] .selected-recipe-value,',
-      'html[data-theme="light"] .selected-prep-name,',
-      'html[data-theme="light"] .cost-main,',
-      'html[data-theme="light"] .selling-price .cost-main,',
-      'html[data-theme="light"] .snapshot-name,',
-      'html[data-theme="light"] .snapshot-date strong,',
-      'html[data-theme="light"] .export-page .title,',
-      'html[data-theme="light"] .export-section-title,',
-      'html[data-theme="light"] .export-card h3,',
-      'html[data-theme="light"] .summary-value {',
-      '  color: var(--text) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .dashboard-description,',
-      'html[data-theme="light"] .dashboard-section-description,',
-      'html[data-theme="light"] .metric-label,',
-      'html[data-theme="light"] .metric-note,',
-      'html[data-theme="light"] .recipe-mobile-label,',
-      'html[data-theme="light"] .recipe-mobile-type,',
-      'html[data-theme="light"] .selected-recipe-label,',
-      'html[data-theme="light"] .cost-label,',
-      'html[data-theme="light"] .detail-desc,',
-      'html[data-theme="light"] .export-page .sub,',
-      'html[data-theme="light"] .export-section-sub,',
-      'html[data-theme="light"] .export-card p,',
-      'html[data-theme="light"] .restore-file-name,',
-      'html[data-theme="light"] .restore-message,',
-      'html[data-theme="light"] .snapshot-date,',
-      'html[data-theme="light"] .sub,',
-      'html[data-theme="light"] .muted,',
-      'html[data-theme="light"] .small,',
-      'html[data-theme="light"] .small-note,',
-      'html[data-theme="light"] .summary-title {',
-      '  color: var(--muted) !important;',
-      '  opacity: 1 !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .recipe-mobile-field.total,',
-      'html[data-theme="light"] .selected-recipe-field.total,',
-      'html[data-theme="light"] .selected-recipe-total {',
-      '  background: rgba(22,160,100,.09) !important;',
-      '  border-color: rgba(22,160,100,.22) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .recipe-mobile-field.total .recipe-mobile-value,',
-      'html[data-theme="light"] .selected-recipe-field.total .selected-recipe-value,',
-      'html[data-theme="light"] .selected-recipe-total-value,',
-      'html[data-theme="light"] .ranking-margin {',
-      '  color: var(--primary-dark) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .bar-track,',
-      'html[data-theme="light"] .thumb,',
-      'html[data-theme="light"] .product-compact-thumb,',
-      'html[data-theme="light"] .photo-preview,',
-      'html[data-theme="light"] .restore-upload-btn {',
-      '  background: #ffffff !important;',
-      '  border-color: var(--border) !important;',
-      '  color: var(--primary-dark) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .export-status {',
-      '  background: rgba(22,160,100,.10) !important;',
-      '  border-color: rgba(22,160,100,.22) !important;',
-      '  color: var(--primary-dark) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .snapshot-count,',
-      'html[data-theme="light"] .dashboard-category-meta,',
-      'html[data-theme="light"] .product-category-badge,',
-      'html[data-theme="light"] .dashboard-product-label span {',
-      '  background: var(--surface-soft) !important;',
-      '  border: 1px solid var(--border) !important;',
-      '  color: var(--primary-dark) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .dashboard-product-card.worst .dashboard-product-label span {',
-      '  background: #fee2e2 !important;',
-      '  border-color: rgba(220,38,38,.18) !important;',
-      '  color: #991b1b !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .action.alt,',
-      'html[data-theme="light"] .export-card .action.alt,',
-      'html[data-theme="light"] .back-btn {',
-      '  background: var(--surface-soft) !important;',
-      '  border: 1px solid var(--border) !important;',
-      '  color: var(--primary-dark) !important;',
-      '  box-shadow: none !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .sidebar.open {',
-      '  background: rgba(255,255,255,.98) !important;',
-      '  box-shadow: 22px 0 60px rgba(16,36,63,.18) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .mobile-overlay.open {',
-      '  background: rgba(16,36,63,.26) !important;',
-      '}',
-      '',
-      'html[data-theme="light"] .delete-btn,',
-      'html[data-theme="light"] .delete-btn-2,',
-      'html[data-theme="light"] .recipe-delete {',
-      '  background: linear-gradient(145deg,#ff4b55,#df242e) !important;',
-      '  color: #fff !important;',
-      '  border: 0 !important;',
-      '}',
-      '',
-      '@media (max-width: 700px) {',
-      '  html[data-theme="light"] .ingredients-panel,',
-      '  html[data-theme="light"] .menu-recipe-panel {',
-      '    padding: 16px 12px !important;',
-      '  }',
-      '  html[data-theme="light"] .export-hero {',
-      '    background: #ffffff !important;',
-      '  }',
-      '}'
-    ].join('\n');
+    style.textContent = `
+html[data-theme="light"] {
+  --dashboard-border: rgba(22, 160, 100, 0.18);
+  --dashboard-surface: #ffffff;
+  --dashboard-soft: #edf8ee;
+  --dashboard-muted: #526760;
+  --export-line: rgba(22, 160, 100, 0.18);
+  --export-muted: #526760;
+  --export-panel: #ffffff;
+  --line: rgba(22, 160, 100, 0.18);
+  --line-strong: rgba(22, 160, 100, 0.36);
+  --panel: #ffffff;
+  --panel-deep: #edf8ee;
+  --panel-soft: #edf8ee;
+  --menu-input: #ffffff;
+  --menu-muted: #526760;
+  --muted: #526760;
+}
+
+html[data-theme="light"] .dashboard-hero,
+html[data-theme="light"] .dashboard-section,
+html[data-theme="light"] .dashboard-product-card,
+html[data-theme="light"] .dashboard-ranking .ranking-item,
+html[data-theme="light"] .dashboard-category .mini-box,
+html[data-theme="light"] .dashboard-section .notice,
+html[data-theme="light"] .export-hero,
+html[data-theme="light"] .export-page .section,
+html[data-theme="light"] .export-card,
+html[data-theme="light"] .snapshot-card,
+html[data-theme="light"] .selected-section,
+html[data-theme="light"] .product-photo,
+html[data-theme="light"] .selling-price,
+html[data-theme="light"] .metric,
+html[data-theme="light"] .recipe-mobile-item,
+html[data-theme="light"] .selected-prep-hero,
+html[data-theme="light"] .selected-metric,
+html[data-theme="light"] .selected-recipe-panel,
+html[data-theme="light"] .selected-recipe-item {
+  background: #ffffff !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: var(--shadow-soft) !important;
+}
+
+html[data-theme="light"] .dashboard-kpi,
+html[data-theme="light"] .dashboard-health .health-score-compact,
+html[data-theme="light"] .dashboard-health .health-metric,
+html[data-theme="light"] .dashboard-alerts .alert-item,
+html[data-theme="light"] .health-metric,
+html[data-theme="light"] .product-mini-stat,
+html[data-theme="light"] .ingredients-panel,
+html[data-theme="light"] .menu-recipe-panel,
+html[data-theme="light"] .recipe-row,
+html[data-theme="light"] .edit-recipe-row,
+html[data-theme="light"] :is(#ingredientTable, #editIngredientTable) tr,
+html[data-theme="light"] .recipe-mobile-field,
+html[data-theme="light"] .selected-recipe-field,
+html[data-theme="light"] .restore-upload-wrap,
+html[data-theme="light"] .summary-grid > .summary-box,
+html[data-theme="light"] .settings-list > label {
+  background: var(--surface-soft) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .ingredients-panel,
+html[data-theme="light"] .menu-recipe-panel {
+  background: linear-gradient(180deg, rgba(237,248,238,.95), rgba(255,255,255,.98)) !important;
+}
+
+html[data-theme="light"] :is(#ingredientTable, #editIngredientTable) tr,
+html[data-theme="light"] .recipe-row,
+html[data-theme="light"] .edit-recipe-row {
+  background: #ffffff !important;
+  box-shadow: 0 10px 26px rgba(37,80,55,.08) !important;
+}
+
+html[data-theme="light"] :is(#ingredientTable, #editIngredientTable) td {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: var(--text) !important;
+}
+
+html[data-theme="light"] .dashboard-hero-icon,
+html[data-theme="light"] .dashboard-kpi-icon,
+html[data-theme="light"] .hero-icon,
+html[data-theme="light"] .recipe-number,
+html[data-theme="light"] .score-circle,
+html[data-theme="light"] .export-hero-icon,
+html[data-theme="light"] .section-heading-icon,
+html[data-theme="light"] .export-card-icon,
+html[data-theme="light"] .restore-upload-icon,
+html[data-theme="light"] .selected-prep-icon {
+  background: linear-gradient(135deg, rgba(22,160,100,.14), rgba(200,239,85,.34)) !important;
+  border-color: var(--border) !important;
+  color: var(--primary-dark) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .dashboard-title,
+html[data-theme="light"] .dashboard-section-title,
+html[data-theme="light"] .health-label,
+html[data-theme="light"] .metric-value,
+html[data-theme="light"] .recipe-mobile-title,
+html[data-theme="light"] .recipe-mobile-value,
+html[data-theme="light"] .selected-recipe-value,
+html[data-theme="light"] .selected-prep-name,
+html[data-theme="light"] .cost-main,
+html[data-theme="light"] .selling-price .cost-main,
+html[data-theme="light"] .snapshot-name,
+html[data-theme="light"] .snapshot-date strong,
+html[data-theme="light"] .export-page .title,
+html[data-theme="light"] .export-section-title,
+html[data-theme="light"] .export-card h3,
+html[data-theme="light"] .summary-value {
+  color: var(--text) !important;
+}
+
+html[data-theme="light"] .dashboard-description,
+html[data-theme="light"] .dashboard-section-description,
+html[data-theme="light"] .metric-label,
+html[data-theme="light"] .metric-note,
+html[data-theme="light"] .recipe-mobile-label,
+html[data-theme="light"] .recipe-mobile-type,
+html[data-theme="light"] .selected-recipe-label,
+html[data-theme="light"] .cost-label,
+html[data-theme="light"] .detail-desc,
+html[data-theme="light"] .export-page .sub,
+html[data-theme="light"] .export-section-sub,
+html[data-theme="light"] .export-card p,
+html[data-theme="light"] .restore-file-name,
+html[data-theme="light"] .restore-message,
+html[data-theme="light"] .snapshot-date,
+html[data-theme="light"] .sub,
+html[data-theme="light"] .muted,
+html[data-theme="light"] .small,
+html[data-theme="light"] .small-note,
+html[data-theme="light"] .summary-title {
+  color: var(--muted) !important;
+  opacity: 1 !important;
+}
+
+html[data-theme="light"] .recipe-mobile-field.total,
+html[data-theme="light"] .selected-recipe-field.total,
+html[data-theme="light"] .selected-recipe-total {
+  background: rgba(22,160,100,.09) !important;
+  border-color: rgba(22,160,100,.22) !important;
+}
+
+html[data-theme="light"] .recipe-mobile-field.total .recipe-mobile-value,
+html[data-theme="light"] .selected-recipe-field.total .selected-recipe-value,
+html[data-theme="light"] .selected-recipe-total-value,
+html[data-theme="light"] .ranking-margin {
+  color: var(--primary-dark) !important;
+}
+
+html[data-theme="light"] .bar-track,
+html[data-theme="light"] .thumb,
+html[data-theme="light"] .product-compact-thumb,
+html[data-theme="light"] .photo-preview,
+html[data-theme="light"] .restore-upload-btn {
+  background: #ffffff !important;
+  border-color: var(--border) !important;
+  color: var(--primary-dark) !important;
+}
+
+html[data-theme="light"] .export-status {
+  background: rgba(22,160,100,.10) !important;
+  border-color: rgba(22,160,100,.22) !important;
+  color: var(--primary-dark) !important;
+}
+
+html[data-theme="light"] .snapshot-count,
+html[data-theme="light"] .dashboard-category-meta,
+html[data-theme="light"] .product-category-badge,
+html[data-theme="light"] .dashboard-product-label span {
+  background: var(--surface-soft) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--primary-dark) !important;
+}
+
+html[data-theme="light"] .dashboard-product-card.worst .dashboard-product-label span {
+  background: #fee2e2 !important;
+  border-color: rgba(220,38,38,.18) !important;
+  color: #991b1b !important;
+}
+
+html[data-theme="light"] .action.alt,
+html[data-theme="light"] .export-card .action.alt,
+html[data-theme="light"] .back-btn {
+  background: var(--surface-soft) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--primary-dark) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .sidebar.open {
+  background: rgba(255,255,255,.98) !important;
+  box-shadow: 22px 0 60px rgba(16,36,63,.18) !important;
+}
+
+html[data-theme="light"] .mobile-overlay.open {
+  background: rgba(16,36,63,.26) !important;
+}
+
+html[data-theme="light"] .delete-btn,
+html[data-theme="light"] .delete-btn-2,
+html[data-theme="light"] .recipe-delete {
+  background: linear-gradient(145deg,#ff4b55,#df242e) !important;
+  color: #fff !important;
+  border: 0 !important;
+}
+
+/* Mobile readability layer: make labels, helper text, cards, and badges easier to read on phones. */
+@media (max-width: 700px) {
+  html[data-theme="light"] body {
+    font-size: 16px !important;
+  }
+
+  html[data-theme="light"] .ingredients-panel,
+  html[data-theme="light"] .menu-recipe-panel {
+    padding: 18px 14px !important;
+  }
+
+  html[data-theme="light"] .export-hero {
+    background: #ffffff !important;
+  }
+
+  html[data-theme="light"] .sub,
+  html[data-theme="light"] .muted,
+  html[data-theme="light"] .small,
+  html[data-theme="light"] .small-note,
+  html[data-theme="light"] .notice,
+  html[data-theme="light"] .card-sub,
+  html[data-theme="light"] .dashboard-description,
+  html[data-theme="light"] .dashboard-section-description,
+  html[data-theme="light"] .export-page .sub,
+  html[data-theme="light"] .export-section-sub,
+  html[data-theme="light"] .export-card p,
+  html[data-theme="light"] .menu-card-description,
+  html[data-theme="light"] .menu-list-description,
+  html[data-theme="light"] .section-sub,
+  html[data-theme="light"] .section-description {
+    font-size: 14.5px !important;
+    line-height: 1.55 !important;
+    color: #526760 !important;
+  }
+
+  html[data-theme="light"] label,
+  html[data-theme="light"] .filter-label,
+  html[data-theme="light"] .menu-field label,
+  html[data-theme="light"] .recipe-field-label,
+  html[data-theme="light"] .edit-menu-field label,
+  html[data-theme="light"] .summary-title,
+  html[data-theme="light"] .metric-label,
+  html[data-theme="light"] .recipe-mobile-label,
+  html[data-theme="light"] .selected-recipe-label,
+  html[data-theme="light"] .detail-label,
+  html[data-theme="light"] .cost-label,
+  html[data-theme="light"] .mini-title {
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    color: #39524a !important;
+    letter-spacing: 0 !important;
+    opacity: 1 !important;
+  }
+
+  html[data-theme="light"] input,
+  html[data-theme="light"] select,
+  html[data-theme="light"] textarea,
+  html[data-theme="light"] .table-input,
+  html[data-theme="light"] .table-select,
+  html[data-theme="light"] .search-box input,
+  html[data-theme="light"] .filter-box select,
+  html[data-theme="light"] .chart-select {
+    min-height: 54px !important;
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+
+  html[data-theme="light"] .title,
+  html[data-theme="light"] .dashboard-title,
+  html[data-theme="light"] .menu-card-title,
+  html[data-theme="light"] .selected-menu-title,
+  html[data-theme="light"] .product-name {
+    font-size: clamp(26px, 7.2vw, 34px) !important;
+    line-height: 1.16 !important;
+  }
+
+  html[data-theme="light"] h2,
+  html[data-theme="light"] h3,
+  html[data-theme="light"] .section-title,
+  html[data-theme="light"] .section-heading-title,
+  html[data-theme="light"] .dashboard-section-title,
+  html[data-theme="light"] .export-section-title,
+  html[data-theme="light"] .menu-section-title,
+  html[data-theme="light"] .menu-list-heading,
+  html[data-theme="light"] .card-title {
+    font-size: 21px !important;
+    line-height: 1.22 !important;
+  }
+
+  html[data-theme="light"] .summary-value,
+  html[data-theme="light"] .metric-value,
+  html[data-theme="light"] .recipe-mobile-value,
+  html[data-theme="light"] .selected-recipe-value,
+  html[data-theme="light"] .detail-value,
+  html[data-theme="light"] .mini-value,
+  html[data-theme="light"] .cost-main {
+    font-size: 20px !important;
+    line-height: 1.25 !important;
+  }
+
+  html[data-theme="light"] .dashboard-kpi .summary-value,
+  html[data-theme="light"] .selling-price .cost-main,
+  html[data-theme="light"] .recipe-mobile-field.total .recipe-mobile-value,
+  html[data-theme="light"] .selected-recipe-total-value {
+    font-size: 23px !important;
+  }
+
+  html[data-theme="light"] .pill,
+  html[data-theme="light"] .badge,
+  html[data-theme="light"] .status,
+  html[data-theme="light"] .menu-badge,
+  html[data-theme="light"] .status-pill,
+  html[data-theme="light"] .recipe-count,
+  html[data-theme="light"] .ingredient-count,
+  html[data-theme="light"] .snapshot-count,
+  html[data-theme="light"] .dashboard-category-meta,
+  html[data-theme="light"] .product-category-badge,
+  html[data-theme="light"] .dashboard-product-label span {
+    min-height: 30px !important;
+    padding: 7px 10px !important;
+    font-size: 13px !important;
+    line-height: 1.15 !important;
+    font-weight: 750 !important;
+  }
+
+  html[data-theme="light"] .dashboard-kpi,
+  html[data-theme="light"] .health-metric,
+  html[data-theme="light"] .product-mini-stat,
+  html[data-theme="light"] .metric,
+  html[data-theme="light"] .summary-box,
+  html[data-theme="light"] .recipe-mobile-field,
+  html[data-theme="light"] .selected-recipe-field,
+  html[data-theme="light"] .snapshot-card,
+  html[data-theme="light"] .export-card {
+    padding: 14px !important;
+  }
+
+  html[data-theme="light"] .ranking-name,
+  html[data-theme="light"] .snapshot-name,
+  html[data-theme="light"] .export-card h3,
+  html[data-theme="light"] .menu-name,
+  html[data-theme="light"] .recipe-mobile-title,
+  html[data-theme="light"] .selected-recipe-name {
+    font-size: 16px !important;
+    line-height: 1.35 !important;
+  }
+
+  html[data-theme="light"] .ranking-category,
+  html[data-theme="light"] .ranking-profit,
+  html[data-theme="light"] .ranking-margin,
+  html[data-theme="light"] .snapshot-date,
+  html[data-theme="light"] .restore-file-name,
+  html[data-theme="light"] .restore-message,
+  html[data-theme="light"] .product-category-badge.secondary {
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+  }
+}
+`;
     document.head.appendChild(style);
   }
 
