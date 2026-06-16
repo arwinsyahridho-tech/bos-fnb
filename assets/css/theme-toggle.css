@@ -32,21 +32,21 @@ html[data-theme="light"] {
   --cyan: #2bbfb0;
   --accent: #c8ef55;
   --text: #10243f;
-  --muted: #63776f;
+  --muted: #526760;
   --muted-strong: #39524a;
   --border: rgba(22, 160, 100, 0.18);
-  --border-active: rgba(22, 160, 100, 0.38);
+  --border-active: rgba(22, 160, 100, 0.36);
   --gradient: linear-gradient(135deg, #0b6945 0%, #16a064 58%, #c8ef55 100%);
   --shadow: 0 18px 45px rgba(37, 80, 55, 0.10);
   --shadow-soft: 0 10px 28px rgba(37, 80, 55, 0.08);
   --dashboard-border: rgba(22, 160, 100, 0.18);
   --dashboard-surface: #ffffff;
   --dashboard-soft: #edf8ee;
-  --dashboard-muted: #63776f;
+  --dashboard-muted: #526760;
   --export-line: rgba(22, 160, 100, 0.18);
   --export-panel: #ffffff;
   --export-panel-soft: #edf8ee;
-  --export-muted: #63776f;
+  --export-muted: #526760;
 
   --panel: var(--surface);
   --panel-2: #f1f8ef;
@@ -62,13 +62,13 @@ html[data-theme="light"] {
   --biya-success: var(--accent);
   --biya-cyan: var(--cyan);
   --biya-text: var(--text);
-  --biya-muted: #63776f;
+  --biya-muted: #526760;
   --biya-border: var(--border);
   --biya-card-shadow: var(--shadow-soft);
 }
 
 html[data-theme="light"] body {
-  background: radial-gradient(circle at 84% -8%, rgba(200, 239, 85, 0.28), transparent 30rem), radial-gradient(circle at -12% 35%, rgba(22, 160, 100, 0.12), transparent 28rem), var(--bg) !important;
+  background: var(--bg) !important;
   color: var(--text) !important;
 }
 
