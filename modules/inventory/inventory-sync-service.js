@@ -31,7 +31,7 @@
     for (const raw of data || []) {
       const existing = inventory.items.find((entry) => String(entry.raw_material_id) === String(raw.id) || entry.raw_material_code === raw.raw_id || entry.code === raw.raw_id);
       const legacyCode = existing?.code === raw.raw_id ? undefined : existing?.code;
-      window.BIYAInventoryService.upsertItem({ ...existing, ...rawToItem(raw), id: existing?.id, code: legacyCode, current_stock: existing?.current_stock || 0, minimum_stock: existing?.minimum_stock });
+      await window.BIYAInventoryService.upsertItem({ ...existing, ...rawToItem(raw), id: existing?.id, code: legacyCode, current_stock: existing?.current_stock || 0, minimum_stock: existing?.minimum_stock });
     }
     return (data || []).length;
   }
@@ -58,7 +58,7 @@
     let query = item.raw_material_id ? client.from("raw_material").update(payload).eq("id", item.raw_material_id).eq("user_id", userId) : client.from("raw_material").insert(payload);
     const { data, error } = await query.select(rawColumns).single();
     if (error) throw error;
-    window.BIYAInventoryService.upsertItem({ ...item, ...rawToItem(data), raw_material_id: data.id, raw_material_code: data.raw_id, source: "raw_material" });
+    await window.BIYAInventoryService.upsertItem({ ...item, ...rawToItem(data), raw_material_id: data.id, raw_material_code: data.raw_id, source: "raw_material" });
     return data;
   }
   window.BIYAInventorySyncService = { syncFromRawMaterials, pushItemToRawMaterial };
