@@ -93,7 +93,7 @@ BEGIN
     raw_material_id_type
   );
   EXECUTE format(
-    'GRANT EXECUTE ON FUNCTION public.get_raw_material_usage(%s) TO anon',
+    'GRANT EXECUTE ON FUNCTION public.get_raw_material_usage(%s) TO authenticated',
     raw_material_id_type
   );
 END

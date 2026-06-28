@@ -4,6 +4,8 @@ const {
   REFERENCE_WARNING,
   checkReferences,
   formatReferenceWarning,
+  getReferenceCheckFailureType,
+  getReferenceCheckFailureAlert,
   isDatabaseReferenceError,
 } = require("../modules/cost-management/raw-material-delete-service.js");
 
@@ -119,6 +121,22 @@ const scenarios = [
   );
 
   assert.equal(formatReferenceWarning(), REFERENCE_WARNING);
+  assert.equal(
+    getReferenceCheckFailureType({ code: "PGRST202", message: "Could not find the function public.get_raw_material_usage" }),
+    "rpc_missing",
+  );
+  assert.equal(
+    getReferenceCheckFailureAlert({ code: "PGRST202", message: "Could not find the function public.get_raw_material_usage" }),
+    "Function get_raw_material_usage belum dibuat di Supabase.",
+  );
+  assert.equal(
+    getReferenceCheckFailureType({ code: "42501", message: "permission denied for function get_raw_material_usage" }),
+    "permission_denied",
+  );
+  assert.equal(
+    getReferenceCheckFailureAlert({ code: "42501", message: "permission denied for function get_raw_material_usage" }),
+    "Role authenticated belum diberi izin execute RPC.",
+  );
   assert.equal(isDatabaseReferenceError({ code: "23503" }), true);
   assert.equal(isDatabaseReferenceError({ code: "OTHER" }), false);
   console.log("Semua skenario deletion guard berbasis RPC lulus.");
