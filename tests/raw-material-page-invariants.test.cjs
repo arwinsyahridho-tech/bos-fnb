@@ -117,12 +117,12 @@ assert.doesNotMatch(deleteFunction, /\.from\("preparation_items"\)/);
 assert.doesNotMatch(deleteFunction, /\.from\("menu_items"\)/);
 assert.match(
   deleteFunction,
-  /Bahan baku tidak dapat dihapus karena masih digunakan pada resep Preparation atau Menu\./,
+  /Bahan baku masih digunakan di Preparation\/Menu\./,
 );
-assert.match(
-  deleteFunction,
-  /Pengecekan penggunaan bahan baku gagal atau Supabase tidak dapat diakses\. Penghapusan dibatalkan\./,
-);
+assert.match(deleteFunction, /getReferenceCheckFailureType/);
+assert.match(deleteFunction, /getReferenceCheckFailureAlert/);
+assert.match(deleteFunction, /rawMaterialId:item\.id/);
+assert.match(deleteFunction, /userId:currentUserId/);
 assert.match(deleteFunction, /rawMaterials\.splice\(index, 1\); render\(\);/);
 
 console.log("Invariant filter, sorting, pagination, dan alur delete lulus.");

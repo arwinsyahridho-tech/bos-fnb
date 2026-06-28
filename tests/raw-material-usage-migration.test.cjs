@@ -31,9 +31,9 @@ assert.match(
 );
 assert.match(
   rpcMigration,
-  /GRANT EXECUTE ON FUNCTION public\.get_raw_material_usage\(%s\) TO anon/,
+  /GRANT EXECUTE ON FUNCTION public\.get_raw_material_usage\(%s\) TO authenticated/,
 );
-assert.doesNotMatch(rpcMigration, /GRANT EXECUTE[\s\S]*TO authenticated/);
+assert.doesNotMatch(rpcMigration, /GRANT EXECUTE[\s\S]*TO anon/);
 assert.doesNotMatch(rpcMigration, /^\s*(DELETE|UPDATE|INSERT)\b/im);
 
 assert.match(

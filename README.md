@@ -45,3 +45,15 @@ Jalankan migration tersebut melalui Supabase SQL Editor atau migration pipeline 
 Frontend sekarang selalu mengambil user terautentikasi, menambahkan `user_id` pada insert/restore, dan memasang filter `user_id` pada select/update/delete. `business_id` pada settings dipertahankan untuk kompatibilitas, tetapi nilainya disamakan dengan UUID user pada mode satu bisnis per akun. Upload logo dan foto menu memakai path `{user_id}/...`; jangan gunakan service-role key di browser. Policy Storage pada migration membatasi operasi authenticated ke folder tersebut. Untuk proteksi baca penuh, bucket terkait harus private; bila bucket saat ini public, rencanakan migrasi URL publik lama sebelum mengubahnya agar gambar lama tidak langsung rusak.
 
 Akun demo tetap merupakan akun Supabase Auth biasa. Setelah migration, backfill atau seed data contoh menggunakan UUID `auth.users.id` milik `demo@biya.id`. Jangan memakai UUID demo hardcoded atau memasukkan data demo dengan `user_id` milik akun lain.
+
+### RPC delete Raw Material
+
+Fitur hapus Raw Material wajib menjalankan guard referensi sebelum delete. Pastikan RPC `public.get_raw_material_usage` sudah dibuat dari migration `supabase/migrations/20260612010000_add_get_raw_material_usage_rpc.sql`, lalu diperkuat/di-scope per user oleh `supabase/migrations/20260613000000_add_user_data_isolation.sql`. Migration harus dijalankan melalui Supabase SQL Editor atau migration pipeline setelah backup database.
+
+RPC tersebut harus dapat dieksekusi oleh role login browser:
+
+```sql
+GRANT EXECUTE ON FUNCTION public.get_raw_material_usage(<tipe_id_raw_material>) TO authenticated;
+```
+
+Gunakan tipe parameter yang sama dengan kolom `public.raw_material.id`; migration sudah mendeteksi tipe ini otomatis. Jika tombol hapus menampilkan pesan `Function get_raw_material_usage belum dibuat di Supabase.`, jalankan migration RPC. Jika pesan yang muncul `Role authenticated belum diberi izin execute RPC.`, ulangi grant execute untuk role `authenticated`. RPC dan trigger delete tetap harus memeriksa `auth.uid()`/`user_id` agar pemakaian Raw Material di `preparation_items` atau `menu_items` milik user lain tidak terbaca dan tidak memengaruhi keputusan delete.

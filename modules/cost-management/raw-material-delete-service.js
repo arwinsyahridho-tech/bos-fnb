@@ -63,6 +63,48 @@
     return REFERENCE_WARNING;
   }
 
+  function getReferenceCheckFailureType(error) {
+    const message = `${error?.message || ""} ${error?.details || ""} ${
+      error?.hint || ""
+    }`.toLowerCase();
+    const code = String(error?.code || "").toUpperCase();
+    const status = Number(error?.status || 0);
+
+    if (
+      code === "PGRST202" ||
+      status === 404 ||
+      message.includes(`could not find the function public.${RAW_MATERIAL_USAGE_RPC}`) ||
+      message.includes(`function public.${RAW_MATERIAL_USAGE_RPC}`) ||
+      message.includes(`${RAW_MATERIAL_USAGE_RPC}(`) && message.includes("does not exist")
+    ) {
+      return "rpc_missing";
+    }
+
+    if (
+      code === "42501" ||
+      status === 401 ||
+      status === 403 ||
+      message.includes("permission denied") ||
+      message.includes("not authorized") ||
+      message.includes("insufficient privilege")
+    ) {
+      return "permission_denied";
+    }
+
+    return "unknown";
+  }
+
+  function getReferenceCheckFailureAlert(error) {
+    const type = getReferenceCheckFailureType(error);
+    if (type === "rpc_missing") {
+      return `Function ${RAW_MATERIAL_USAGE_RPC} belum dibuat di Supabase.`;
+    }
+    if (type === "permission_denied") {
+      return "Role authenticated belum diberi izin execute RPC.";
+    }
+    return "Pengecekan penggunaan bahan baku gagal atau Supabase tidak dapat diakses. Penghapusan dibatalkan.";
+  }
+
   function isDatabaseReferenceError(error) {
     const message =
       `${error?.message || ""} ${error?.details || ""}`.toLowerCase();
@@ -78,6 +120,8 @@
     REFERENCE_WARNING,
     checkReferences,
     formatReferenceWarning,
+    getReferenceCheckFailureType,
+    getReferenceCheckFailureAlert,
     isDatabaseReferenceError,
   };
 });
